@@ -44,6 +44,11 @@ class Scanner constructor(streamReader: InputStreamReader) {
                     '-' -> tokenStream = tokenStream.plus(Token(TokenType.MINUS, currentChar.toString()))
                     '*' -> tokenStream = tokenStream.plus(Token(TokenType.MULTIPLY, currentChar.toString()))
                     '/' -> tokenStream = tokenStream.plus(Token(TokenType.DIVIDE, currentChar.toString()))
+                    else -> {
+                        //TODO Support better error handling
+                        println("illegal character: '$currentChar'")
+                        exitProcess(0)
+                    }
                 }
                 nextChar()
             }
