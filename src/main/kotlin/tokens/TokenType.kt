@@ -15,12 +15,13 @@ enum class TokenType {
     STRING_LITERAL,
     LEFT_PAREN,
     RIGHT_PAREN,
-    LEFT_BRACE,
-    RIGHT_BRACE,
+    LEFT_CURLY_BRACE,
+    RIGHT_CURLY_BRACE,
     COMMA,
     PLUS,
     MINUS,
     MULTIPLY,
     DIVIDE,
+    ASSIGN,
     EQ
 }

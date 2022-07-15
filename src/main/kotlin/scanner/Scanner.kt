@@ -27,9 +27,26 @@ class Scanner constructor(streamReader: InputStreamReader) {
                 parseCharStream()
             } else if (currentChar.isDigit()) {
                 parseDigitStream()
+            } else if (currentChar.isWhitespace()) {
+                skipWhitespace()
             } else if (currentChar == '"') {
                 parseStringLiteral()
-            } else {}
+            } else if (currentChar == '=') {
+                parseEqOrAssignment()
+            } else {
+                when (currentChar) {
+                    '(' -> tokenStream = tokenStream.plus(Token(TokenType.LEFT_PAREN, currentChar.toString()))
+                    ')' -> tokenStream = tokenStream.plus(Token(TokenType.RIGHT_PAREN, currentChar.toString()))
+                    '{' -> tokenStream = tokenStream.plus(Token(TokenType.LEFT_CURLY_BRACE, currentChar.toString()))
+                    '}' -> tokenStream = tokenStream.plus(Token(TokenType.RIGHT_CURLY_BRACE, currentChar.toString()))
+                    ',' -> tokenStream = tokenStream.plus(Token(TokenType.COMMA, currentChar.toString()))
+                    '+' -> tokenStream = tokenStream.plus(Token(TokenType.PLUS, currentChar.toString()))
+                    '-' -> tokenStream = tokenStream.plus(Token(TokenType.MINUS, currentChar.toString()))
+                    '*' -> tokenStream = tokenStream.plus(Token(TokenType.MULTIPLY, currentChar.toString()))
+                    '/' -> tokenStream = tokenStream.plus(Token(TokenType.DIVIDE, currentChar.toString()))
+                }
+                nextChar()
+            }
         }
         return tokenStream
     }
@@ -61,10 +78,17 @@ class Scanner constructor(streamReader: InputStreamReader) {
             nextChar()
         }
 
-        tokenStream.plus(Token(TokenType.INTEGER_LITERAL, result))
+        tokenStream = tokenStream.plus(Token(TokenType.INTEGER_LITERAL, result))
+    }
+
+    private fun skipWhitespace() {
+        while (currentCharValue != EOF && currentChar.isWhitespace()) {
+            nextChar()
+        }
     }
 
     private fun parseStringLiteral() {
+        nextChar()
         var result = ""
         while (currentCharValue != EOF && currentChar != '"') {
             result += currentChar
@@ -79,6 +103,17 @@ class Scanner constructor(streamReader: InputStreamReader) {
         }
 
         nextChar()
-        tokenStream.plus(Token(TokenType.STRING_LITERAL, result))
+        tokenStream = tokenStream.plus(Token(TokenType.STRING_LITERAL, result))
+    }
+
+    private fun parseEqOrAssignment() {
+        val prevChar = currentChar
+        nextChar()
+        if (currentChar == '=') {
+            tokenStream = tokenStream.plus(Token(TokenType.EQ, "${prevChar}${currentChar}"))
+            nextChar()
+        } else {
+            tokenStream = tokenStream.plus(Token(TokenType.ASSIGN, "$prevChar"))
+        }
     }
 }
