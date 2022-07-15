@@ -1,0 +1,26 @@
+package tokens
+
+enum class TokenType {
+    KEYWORD_LET,
+    KEYWORD_AND,
+    KEYWORD_OR,
+    KEYWORD_FUN,
+    KEYWORD_REPEAT,
+    KEYWORD_WHILE,
+    KEYWORD_RETURN,
+    KEYWORD_TRUE,
+    KEYWORD_FALSE,
+    IDENTIFIER,
+    INTEGER_LITERAL,
+    STRING_LITERAL,
+    LEFT_PAREN,
+    RIGHT_PAREN,
+    LEFT_BRACE,
+    RIGHT_BRACE,
+    COMMA,
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE,
+    EQ
+}
