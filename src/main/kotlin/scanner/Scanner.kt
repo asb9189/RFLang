@@ -53,6 +53,9 @@ class Scanner constructor(streamReader: InputStreamReader) {
                 nextChar()
             }
         }
+
+        // Add EOF token
+        tokenStream = tokenStream.plus(Token(TokenType.EOF, String()))
         return tokenStream
     }
 

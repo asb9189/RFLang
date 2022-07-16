@@ -2,8 +2,8 @@ package tokens
 
 enum class TokenType {
     KEYWORD_LET,
-    KEYWORD_AND,
-    KEYWORD_OR,
+    KEYWORD_AND, // BinOp.kt
+    KEYWORD_OR, // BinOp.kt
     KEYWORD_FUN,
     KEYWORD_REPEAT,
     KEYWORD_WHILE,
@@ -18,10 +18,11 @@ enum class TokenType {
     LEFT_CURLY_BRACE,
     RIGHT_CURLY_BRACE,
     COMMA,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
+    PLUS, // BinOp.kt
+    MINUS, // BinOp.kt
+    MULTIPLY, // BinOp.kt
+    DIVIDE, // BinOp.kt
     ASSIGN,
-    EQ
+    EQ, // BinOp.kt
+    EOF
 }

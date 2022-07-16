@@ -1,23 +1,2 @@
-let x = 12
-let name = "Yaga RF"
-let isRaining = true
-
-x = x + 5
-
-name = name + "123"
-
-repeat x {
-    print("Hello World")
-}
-
-while isRaining {
-    isRaining = false
-}
-
-fun myFirstFunction() {
-    return x
-}
-
-fun add(num1, num2) {
-    return num1 + num2
-}
+let firstName = "Yaga"
+let lastName = "RF"
