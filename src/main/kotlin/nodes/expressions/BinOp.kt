@@ -30,4 +30,8 @@ class BinOp (lhs: Expression, op: OPERATOR, rhs: Expression): Node(), Expression
         TODO("Not yet implemented")
     }
 
+    override fun toString(): String {
+        return "BinOp"
+    }
+
 }

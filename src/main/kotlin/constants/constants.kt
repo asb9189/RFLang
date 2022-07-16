@@ -12,7 +12,7 @@ const val KEYWORD_RETURN = "return"
 const val KEYWORD_TRUE = "true"
 const val KEYWORD_FALSE = "false"
 
-val KEYWORDS = listOf<String>(
+val KEYWORDS = listOf(
     KEYWORD_LET,
     KEYWORD_AND,
     KEYWORD_OR,
@@ -35,3 +35,4 @@ val KEYWORDS_MAP = hashMapOf<String, TokenType>(
     KEYWORD_TRUE to TokenType.KEYWORD_TRUE,
     KEYWORD_FALSE to TokenType.KEYWORD_FALSE
 )
+

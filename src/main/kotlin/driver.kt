@@ -1,3 +1,4 @@
+import parser.Parser
 import java.io.File
 import scanner.Scanner
 import kotlin.system.exitProcess
@@ -15,11 +16,17 @@ fun main(args: Array<String>) {
     }
 
     val tokens = Scanner(File(filePath).reader()).scan()
+    val program = Parser(tokens).parse()
 
     println("tokens:")
     for (token in tokens) {
         println(token)
     }
+
+    println("\n\n\n")
+
+    println("Statements:")
+    println(program.toString())
 
 }
 

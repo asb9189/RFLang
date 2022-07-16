@@ -14,6 +14,10 @@ class Token constructor(tokenType: TokenType, literal: String) {
         return this.tokenType
     }
 
+    fun getLiteral(): String {
+        return this.literal
+    }
+
     override fun toString(): String {
         return "$tokenType: '$literal'"
     }
