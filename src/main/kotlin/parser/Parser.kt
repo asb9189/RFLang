@@ -7,6 +7,8 @@ import nodes.expressions.IntegerRF
 import nodes.expressions.StringRF
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
+import nodes.statements.Repeat
+import nodes.statements.VarAssign
 import nodes.statements.VarDec
 import tokens.Token
 import tokens.TokenType
@@ -30,6 +32,14 @@ class Parser(tokenStream: List<Token>) {
     private fun parseStmtList(): List<Statement> {
         var stmtList = emptyList<Statement>()
         while (currentToken.getType() != TokenType.EOF) {
+            stmtList = stmtList.plus(parseStmt())
+        }
+        return stmtList
+    }
+
+    private fun parseBodyStmtList(): List<Statement> {
+        var stmtList = emptyList<Statement>()
+        while (currentToken.getType() != TokenType.RIGHT_CURLY_BRACE && currentToken.getType() != TokenType.EOF) {
             stmtList = stmtList.plus(parseStmt())
         }
         return stmtList
@@ -88,7 +98,26 @@ class Parser(tokenStream: List<Token>) {
     }
 
     private fun parseRepeatStmt(): Statement {
-        return VarDec("stub", BooleanRF(true))
+        matchAndConsume(TokenType.KEYWORD_REPEAT)
+        val value: Expression = when (currentToken.getType()) {
+            TokenType.INTEGER_LITERAL -> {
+                val int = currentToken.getLiteral().toInt()
+                IntegerRF(int).also {
+                    consume()
+                }
+            }
+            TokenType.IDENTIFIER -> {
+                Identifier(currentToken.getLiteral()).also {
+                    consume()
+                }
+            }
+            else -> parseExpr()
+        }
+        matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+        val stmts = parseBodyStmtList()
+        matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+
+        return Repeat(value, stmts)
     }
 
     private fun parseWhileStmt(): Statement {
@@ -104,7 +133,40 @@ class Parser(tokenStream: List<Token>) {
     }
 
     private fun parseVarAssignmentStmt(): Statement {
-        return VarDec("stub", BooleanRF(true))
+        val token = matchAndConsume(TokenType.IDENTIFIER)
+        matchAndConsume(TokenType.ASSIGN)
+
+        val value: Expression = when (currentToken.getType()) {
+            TokenType.INTEGER_LITERAL -> {
+                val int = currentToken.getLiteral().toInt()
+                IntegerRF(int).also {
+                    consume()
+                }
+            }
+            TokenType.STRING_LITERAL -> {
+                StringRF(currentToken.getLiteral()).also {
+                    consume()
+                }
+            }
+            TokenType.KEYWORD_TRUE -> {
+                BooleanRF(true).also {
+                    consume()
+                }
+            }
+            TokenType.KEYWORD_FALSE -> {
+                BooleanRF(false).also {
+                    consume()
+                }
+            }
+            TokenType.IDENTIFIER -> {
+                Identifier(currentToken.getLiteral()).also {
+                    consume()
+                }
+            }
+            else -> parseExpr()
+        }
+
+        return VarAssign(token.getLiteral(), value)
     }
 
     private fun parseExpr(): Expression {

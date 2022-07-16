@@ -1,2 +1,6 @@
 let firstName = "Yaga"
-let lastName = "RF"
+firstName = "RF"
+
+repeat 5 {
+    let x = 19
+}
