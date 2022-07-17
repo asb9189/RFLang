@@ -15,3 +15,13 @@ while true {
 add()
 add(one)
 add(1, 2, 3 + 4, myFavNumber, ((3 + 4)/6))
+
+fun add() {}
+
+fun add() {
+    z = z + 2
+}
+
+fun add(n, n1, n2) {
+    z = z + 2
+}

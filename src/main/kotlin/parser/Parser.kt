@@ -118,7 +118,36 @@ class Parser(tokenStream: List<Token>) {
     }
 
     private fun parseFunctionDeclarationStmt(): Statement {
-        return VarDec("stub", BooleanLiteral(true))
+        matchAndConsume(TokenType.KEYWORD_FUN).getLiteral()
+        val functionName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
+        matchAndConsume(TokenType.LEFT_PAREN)
+
+        if (currentToken.getType() == TokenType.RIGHT_PAREN) {
+            matchAndConsume(TokenType.RIGHT_PAREN)
+            matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+
+            val stmts = parseBodyStmtList()
+            matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+            return FuncDef(functionName, emptyList(), stmts)
+        }
+
+        val params = parseParams()
+        matchAndConsume(TokenType.RIGHT_PAREN)
+        matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+        val stmts = parseBodyStmtList()
+        matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+        return FuncDef(functionName, params, stmts)
+    }
+
+    private fun parseParams(): List<String> {
+        var params = emptyList<String>()
+        params = params.plus(matchAndConsume(TokenType.IDENTIFIER).getLiteral())
+
+        while (currentToken.getType() == TokenType.COMMA) {
+            matchAndConsume(TokenType.COMMA)
+            params = params.plus(matchAndConsume(TokenType.IDENTIFIER).getLiteral())
+        }
+        return params
     }
 
     private fun parseReturnStmt(): Statement {
@@ -245,5 +274,4 @@ class Parser(tokenStream: List<Token>) {
         println("Invalid Expression")
         exitProcess(0)
     }
-
 }
