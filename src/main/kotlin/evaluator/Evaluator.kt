@@ -77,7 +77,11 @@ class Evaluator (program: Program) {
     }
 
     private fun executeFuncCallStmt(funcCallStmt: FuncCall) {
+        if (funcCallStmt.getFunctionName() == "print" && funcCallStmt.getNumberOfArguments() == 1) {
+            val (value, type) = funcCallStmt.getArguments()[0].eval(env)
 
+            println(value)
+        }
     }
 
     private fun executeReturnStmt(returnStmt: Return) {

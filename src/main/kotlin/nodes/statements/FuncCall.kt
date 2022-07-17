@@ -15,6 +15,18 @@ class FuncCall(function: String, arguments: List<Expression>): Node(), Statement
         this.arguments = arguments
     }
 
+    fun getFunctionName(): String {
+        return function
+    }
+
+    fun getArguments(): List<Expression> {
+        return arguments
+    }
+
+    fun getNumberOfArguments(): Int {
+        return arguments.size
+    }
+
     override fun getType(): StatementType {
         return StatementType.FUNC_CALL_STMT
     }

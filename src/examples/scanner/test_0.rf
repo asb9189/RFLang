@@ -1,7 +1,13 @@
 let myVar = "Yaga" + " RF"
+print(myVar)
 
 myVar = true
+print(myVar)
 
-while myVarr {
+while myVar {
     myVar = false
+    print(myVar)
 }
+
+print(myVar)
+
