@@ -70,13 +70,13 @@ class Parser(tokenStream: List<Token>) {
         val token = matchAndConsume(TokenType.IDENTIFIER)
         matchAndConsume(TokenType.EQ)
 
-        val value = parseExpr()
+        val value = parseExpression()
         return VarDec(token.getLiteral(), value)
     }
 
     private fun parseRepeatStmt(): Statement {
         matchAndConsume(TokenType.KEYWORD_REPEAT)
-        val value = parseExpr()
+        val value = parseExpression()
 
         matchAndConsume(TokenType.LEFT_CURLY_BRACE)
         val stmts = parseBodyStmtList()
@@ -87,7 +87,7 @@ class Parser(tokenStream: List<Token>) {
 
     private fun parseWhileStmt(): Statement {
         matchAndConsume(TokenType.KEYWORD_WHILE)
-        val value = parseExpr()
+        val value = parseExpression()
 
         matchAndConsume(TokenType.LEFT_CURLY_BRACE)
         val stmts = parseBodyStmtList()
@@ -111,7 +111,7 @@ class Parser(tokenStream: List<Token>) {
         val token = matchAndConsume(TokenType.IDENTIFIER)
         matchAndConsume(TokenType.EQ)
 
-        val value = parseExpr()
+        val value = parseExpression()
 
         return VarAssign(token.getLiteral(), value)
     }
@@ -150,7 +150,7 @@ class Parser(tokenStream: List<Token>) {
     }
 
     // Expression Parsings
-    private fun parseExpr(): Expression {
+    private fun parseExpression(): Expression {
         return parseEquality()
     }
 
@@ -215,7 +215,7 @@ class Parser(tokenStream: List<Token>) {
         if (match(TokenType.INTEGER_LITERAL)) { return IntegerLiteral(previous().getLiteral().toInt()) }
 
         if (match(TokenType.LEFT_PAREN)) {
-            val expr = parseExpr()
+            val expr = parseExpression()
 
             if (currentToken.getType() != TokenType.RIGHT_PAREN) {
                 println("Expected ')' at the end of expression")
