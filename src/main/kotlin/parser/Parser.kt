@@ -151,7 +151,8 @@ class Parser(tokenStream: List<Token>) {
     }
 
     private fun parseReturnStmt(): Statement {
-        return VarDec("stub", BooleanLiteral(true))
+        matchAndConsume(TokenType.KEYWORD_RETURN)
+        return Return(parseExpression())
     }
 
     private fun parseVarAssignmentStmt(): Statement {
