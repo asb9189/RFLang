@@ -15,6 +15,14 @@ class While(condition: Expression, body: List<Statement>): Node(), Statement {
         this.body = body
     }
 
+    fun getCondition(): Expression {
+        return condition
+    }
+
+    fun getBody(): List<Statement> {
+        return body
+    }
+
     override fun getType(): StatementType {
         return StatementType.WHILE_STMT
     }

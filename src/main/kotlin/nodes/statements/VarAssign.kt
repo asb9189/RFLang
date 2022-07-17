@@ -5,14 +5,22 @@ import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
 
-class VarAssign (varName: String, value: Expression): Node(), Statement {
+class VarAssign (varName: String, expression: Expression): Node(), Statement {
 
     private val varName: String
-    private val value: Expression
+    private val expression: Expression
 
     init {
         this.varName = varName
-        this.value = value
+        this.expression = expression
+    }
+
+    fun getVarName(): String {
+        return varName
+    }
+
+    fun getValue(): Expression {
+        return expression
     }
 
     override fun getType(): StatementType {
@@ -20,6 +28,6 @@ class VarAssign (varName: String, value: Expression): Node(), Statement {
     }
 
     override fun toString(): String {
-        return "[VarAssign] varname=$varName value=$value"
+        return "[VarAssign] varname=$varName value=$expression"
     }
 }

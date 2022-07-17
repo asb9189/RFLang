@@ -1,5 +1,6 @@
 package nodes.expressions
 
+import evaluator.Environment
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
@@ -12,8 +13,8 @@ class Grouping(expression: Expression) : Node(), Expression {
         this.expression = expression
     }
 
-    override fun eval(): Pair<Any, ValueType> {
-        val (value, type) = expression.eval()
+    override fun eval(env: Environment): Pair<Any, ValueType> {
+        val (value, type) = expression.eval(env)
         return Pair(value, type)
     }
 

@@ -259,7 +259,7 @@ class Parser(tokenStream: List<Token>) {
         if (match(TokenType.KEYWORD_TRUE)) { return BooleanLiteral(true) }
         if (match(TokenType.KEYWORD_FALSE)) { return BooleanLiteral(false) }
         if (match(TokenType.STRING_LITERAL)) { return StringLiteral(previous().getLiteral()) }
-        if (match(TokenType.IDENTIFIER)) { return StringLiteral(previous().getLiteral()) }
+        if (match(TokenType.IDENTIFIER)) { return Variable(previous().getLiteral()) }
         if (match(TokenType.INTEGER_LITERAL)) { return IntegerLiteral(previous().getLiteral().toInt()) }
 
         if (match(TokenType.LEFT_PAREN)) {

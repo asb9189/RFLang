@@ -1,5 +1,7 @@
 package nodes.expressions
 
+import evaluator.Environment
+import evaluator.Value
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
@@ -11,7 +13,7 @@ class StringLiteral (value: String): Node(), Expression {
         this.value = value
     }
 
-    override fun eval(): Pair<Any, ValueType> {
+    override fun eval(env: Environment): Pair<Any, ValueType> {
         return Pair(value, ValueType.STRING)
     }
 

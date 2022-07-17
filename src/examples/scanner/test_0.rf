@@ -1,1 +1,7 @@
-let name = (true != false) != false
+let myVar = "Yaga" + " RF"
+
+myVar = true
+
+while myVar {
+    myVar = false
+}
