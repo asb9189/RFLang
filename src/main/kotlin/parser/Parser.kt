@@ -1,17 +1,13 @@
 package parser
 
 import nodes.*
-import nodes.expressions.BooleanRF
-import nodes.expressions.Identifier
-import nodes.expressions.IntegerRF
-import nodes.expressions.StringRF
-import nodes.expressions.expression.Comparison
-import nodes.expressions.expression.Equality
+import nodes.expressions.*
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
 import nodes.statements.Repeat
 import nodes.statements.VarAssign
 import nodes.statements.VarDec
+import nodes.statements.While
 import tokens.Token
 import tokens.TokenType
 import kotlin.system.exitProcess
@@ -54,7 +50,14 @@ class Parser(tokenStream: List<Token>) {
             TokenType.KEYWORD_WHILE -> return parseWhileStmt()
             TokenType.KEYWORD_FUN -> return parseFunctionDeclarationStmt()
             TokenType.KEYWORD_RETURN -> return parseReturnStmt()
-            TokenType.IDENTIFIER -> return parseVarAssignmentStmt()
+            TokenType.IDENTIFIER -> {
+                peek()?.let {
+                    if (it.getType() == TokenType.LEFT_PAREN) {
+                        return parseFunctionCall()
+                    }
+                }
+                return parseVarAssignmentStmt()
+            }
             else -> {
                 println("Invalid statement")
                 exitProcess(0)
@@ -67,54 +70,14 @@ class Parser(tokenStream: List<Token>) {
         val token = matchAndConsume(TokenType.IDENTIFIER)
         matchAndConsume(TokenType.EQ)
 
-        val value: Expression = when (currentToken.getType()) {
-            TokenType.INTEGER_LITERAL -> {
-                val int = currentToken.getLiteral().toInt()
-                IntegerRF(int).also {
-                    consume()
-                }
-            }
-            TokenType.STRING_LITERAL -> {
-                StringRF(currentToken.getLiteral()).also {
-                    consume()
-                }
-            }
-            TokenType.KEYWORD_TRUE -> {
-                BooleanRF(true).also {
-                    consume()
-                }
-            }
-            TokenType.KEYWORD_FALSE -> {
-                BooleanRF(false).also {
-                    consume()
-                }
-            }
-            TokenType.IDENTIFIER -> {
-                Identifier(currentToken.getLiteral()).also {
-                    consume()
-                }
-            }
-            else -> parseExpr()
-        }
+        val value = parseExpr()
         return VarDec(token.getLiteral(), value)
     }
 
     private fun parseRepeatStmt(): Statement {
         matchAndConsume(TokenType.KEYWORD_REPEAT)
-        val value: Expression = when (currentToken.getType()) {
-            TokenType.INTEGER_LITERAL -> {
-                val int = currentToken.getLiteral().toInt()
-                IntegerRF(int).also {
-                    consume()
-                }
-            }
-            TokenType.IDENTIFIER -> {
-                Identifier(currentToken.getLiteral()).also {
-                    consume()
-                }
-            }
-            else -> parseExpr()
-        }
+        val value = parseExpr()
+
         matchAndConsume(TokenType.LEFT_CURLY_BRACE)
         val stmts = parseBodyStmtList()
         matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
@@ -123,50 +86,32 @@ class Parser(tokenStream: List<Token>) {
     }
 
     private fun parseWhileStmt(): Statement {
-        return VarDec("stub", BooleanRF(true))
+        matchAndConsume(TokenType.KEYWORD_WHILE)
+        val value = parseExpr()
+
+        matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+        val stmts = parseBodyStmtList()
+        matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+        return While(value, stmts)
+    }
+
+    private fun parseFunctionCall(): Statement {
+        return VarDec("stub", BooleanLiteral(true))
     }
 
     private fun parseFunctionDeclarationStmt(): Statement {
-        return VarDec("stub", BooleanRF(true))
+        return VarDec("stub", BooleanLiteral(true))
     }
 
     private fun parseReturnStmt(): Statement {
-        return VarDec("stub", BooleanRF(true))
+        return VarDec("stub", BooleanLiteral(true))
     }
 
     private fun parseVarAssignmentStmt(): Statement {
         val token = matchAndConsume(TokenType.IDENTIFIER)
         matchAndConsume(TokenType.EQ)
 
-        val value: Expression = when (currentToken.getType()) {
-            TokenType.INTEGER_LITERAL -> {
-                val int = currentToken.getLiteral().toInt()
-                IntegerRF(int).also {
-                    consume()
-                }
-            }
-            TokenType.STRING_LITERAL -> {
-                StringRF(currentToken.getLiteral()).also {
-                    consume()
-                }
-            }
-            TokenType.KEYWORD_TRUE -> {
-                BooleanRF(true).also {
-                    consume()
-                }
-            }
-            TokenType.KEYWORD_FALSE -> {
-                BooleanRF(false).also {
-                    consume()
-                }
-            }
-            TokenType.IDENTIFIER -> {
-                Identifier(currentToken.getLiteral()).also {
-                    consume()
-                }
-            }
-            else -> parseExpr()
-        }
+        val value = parseExpr()
 
         return VarAssign(token.getLiteral(), value)
     }
@@ -181,8 +126,13 @@ class Parser(tokenStream: List<Token>) {
         return tokenStream.getOrNull(currentIndex + 1)
     }
 
+    private fun previous(): Token {
+        return tokenStream[currentIndex - 1]
+    }
+
     private fun match(tokenType: TokenType): Boolean {
         if (currentToken.getType() == tokenType) {
+            consume()
             return true
         }
         return false
@@ -206,11 +156,76 @@ class Parser(tokenStream: List<Token>) {
 
     private fun parseEquality(): Expression {
         var expr = parseComparison()
-        return Comparison()
+
+        while (match(TokenType.BANG_EQ) || match(TokenType.EQ_EQ)) {
+            val operator = previous().getType()
+            val right = parseComparison()
+            expr = BinOp(expr, operator, right)
+        }
+        return expr
     }
 
     private fun parseComparison(): Expression {
-        return Comparison()
+        var expr = parseTerm()
+
+        while (match(TokenType.GT) || match(TokenType.GT_EQ) || match(TokenType.LT) || match(TokenType.LT_EQ)) {
+            val operator = previous().getType()
+            val right = parseTerm()
+            expr = BinOp(expr, operator, right)
+        }
+        return expr
+    }
+
+    private fun parseTerm(): Expression {
+        var expr = parseFactor()
+
+        while (match(TokenType.MINUS) || match(TokenType.PLUS)) {
+            val operator = previous().getType()
+            val right = parseFactor()
+            expr = BinOp(expr, operator, right)
+        }
+        return expr
+    }
+
+    private fun parseFactor(): Expression {
+        var expr = parseUnary()
+
+        while (match(TokenType.DIVIDE) || match(TokenType.MULTIPLY)) {
+            val operator = previous().getType()
+            val right = parseUnary()
+            expr = BinOp(expr, operator, right)
+        }
+        return expr
+    }
+
+    private fun parseUnary(): Expression {
+        if (match(TokenType.BANG) || match(TokenType.MINUS)) {
+            val operator = previous().getType()
+            val right = parseUnary()
+            return UnaryOp(operator, right)
+        }
+        return parsePrimary()
+    }
+
+    private fun parsePrimary(): Expression {
+        if (match(TokenType.KEYWORD_TRUE)) { return BooleanLiteral(true) }
+        if (match(TokenType.KEYWORD_FALSE)) { return BooleanLiteral(false) }
+        if (match(TokenType.STRING_LITERAL)) { return StringLiteral(previous().getLiteral()) }
+        if (match(TokenType.IDENTIFIER)) { return StringLiteral(previous().getLiteral()) }
+        if (match(TokenType.INTEGER_LITERAL)) { return IntegerLiteral(previous().getLiteral().toInt()) }
+
+        if (match(TokenType.LEFT_PAREN)) {
+            val expr = parseExpr()
+
+            if (currentToken.getType() != TokenType.RIGHT_PAREN) {
+                println("Expected ')' at the end of expression")
+                exitProcess(0)
+            }
+            consume()
+            return Grouping(expr)
+        }
+        println("Invalid Expression")
+        exitProcess(0)
     }
 
 }

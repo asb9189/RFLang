@@ -1,6 +1,13 @@
-let firstName = "Yaga"
-firstName = "RF"
+let z = 5
 
-repeat 5 {
-    let x = 19
+repeat (2 + 3) * 5 + 17 {
+
+    z = z + 1
+
+}
+
+while true {
+
+    z = 1 + 2 + 3 + (6 * 5)
+
 }

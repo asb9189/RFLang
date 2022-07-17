@@ -3,18 +3,18 @@ package nodes.expressions
 import nodes.interfaces.Expression
 import nodes.root.Node
 
-class BooleanRF (value: Boolean): Node(), Expression {
+class StringLiteral (value: String): Node(), Expression {
 
-    private val value: Boolean
+    private val value: String
     init {
         this.value = value
     }
 
-    override fun eval(): Boolean {
+    override fun eval(): String {
         return value
     }
 
     override fun toString(): String {
-        return this.value.toString()
+        return this.value
     }
 }

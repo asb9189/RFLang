@@ -35,4 +35,3 @@ val KEYWORDS_MAP = hashMapOf<String, TokenType>(
     KEYWORD_TRUE to TokenType.KEYWORD_TRUE,
     KEYWORD_FALSE to TokenType.KEYWORD_FALSE
 )
-

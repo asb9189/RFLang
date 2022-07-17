@@ -3,9 +3,9 @@ package nodes.expressions
 import nodes.interfaces.Expression
 import nodes.root.Node
 
-class Var(literal: StringRF) : Node(), Expression {
+class Var(literal: StringLiteral) : Node(), Expression {
 
-    private val literal: StringRF
+    private val literal: StringLiteral
 
     init {
         this.literal = literal

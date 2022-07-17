@@ -1,9 +1,16 @@
-package nodes.expressions.expression
+package nodes.expressions
 
 import nodes.interfaces.Expression
 import nodes.root.Node
 
-class Unary: Node(), Expression {
+class Grouping(expression: Expression) : Node(), Expression {
+
+    private val expression: Expression
+
+    init {
+        this.expression = expression
+    }
+
     override fun eval(): Any {
         TODO("Not yet implemented")
     }

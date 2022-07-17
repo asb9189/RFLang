@@ -4,25 +4,21 @@ import nodes.interfaces.Expression
 import nodes.root.Node
 import tokens.TokenType
 
+class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
 
-class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Expression {
-
-    private val lhs: Expression
-    private val rhs: Expression
     private val operator: TokenType
+    private val expression: Expression
 
     init {
-        this.lhs = lhs
-        this.rhs = rhs
         this.operator = operator
+        this.expression = expression
     }
 
-    override fun eval() {
+    override fun eval(): Any {
         TODO("Not yet implemented")
     }
 
     override fun toString(): String {
-        return "BinOp"
+        TODO("Not yet implemented")
     }
-
 }

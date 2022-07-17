@@ -3,7 +3,7 @@ package nodes.expressions
 import nodes.interfaces.Expression
 import nodes.root.Node
 
-class IntegerRF (value: Int): Node(), Expression {
+class IntegerLiteral (value: Int): Node(), Expression {
 
     private val value: Int
 
