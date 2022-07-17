@@ -2,6 +2,6 @@ let myVar = "Yaga" + " RF"
 
 myVar = true
 
-while myVar {
+while myVarr {
     myVar = false
 }

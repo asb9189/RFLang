@@ -41,7 +41,7 @@ class Environment {
         varToInt[varName]?.let {
             return symbolTable[it]
         } ?: run {
-            println("unexpected error while creating '$varName'")
+            println("unexpected error while looking up variable '$varName'")
             exitProcess(0)
         }
     }
