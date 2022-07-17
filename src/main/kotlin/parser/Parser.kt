@@ -4,10 +4,7 @@ import nodes.*
 import nodes.expressions.*
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
-import nodes.statements.Repeat
-import nodes.statements.VarAssign
-import nodes.statements.VarDec
-import nodes.statements.While
+import nodes.statements.*
 import tokens.Token
 import tokens.TokenType
 import kotlin.system.exitProcess
@@ -59,7 +56,7 @@ class Parser(tokenStream: List<Token>) {
                 return parseVarAssignmentStmt()
             }
             else -> {
-                println("Invalid statement")
+                println("Invalid statement in parse stmt")
                 exitProcess(0)
             }
         }
@@ -96,7 +93,28 @@ class Parser(tokenStream: List<Token>) {
     }
 
     private fun parseFunctionCall(): Statement {
-        return VarDec("stub", BooleanLiteral(true))
+        val functionName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
+        matchAndConsume(TokenType.LEFT_PAREN)
+
+        if (currentToken.getType() == TokenType.RIGHT_PAREN) {
+            matchAndConsume(TokenType.RIGHT_PAREN)
+            return FuncCall(functionName, emptyList())
+        }
+
+        val arguments = parseArguments()
+        return FuncCall(functionName, arguments)
+    }
+
+    private fun parseArguments(): List<Expression> {
+        var args = emptyList<Expression>()
+        args = args.plus(parseExpression())
+
+        while (currentToken.getType() == TokenType.COMMA) {
+            matchAndConsume(TokenType.COMMA)
+            args = args.plus(parseExpression())
+        }
+        matchAndConsume(TokenType.RIGHT_PAREN)
+        return args
     }
 
     private fun parseFunctionDeclarationStmt(): Statement {

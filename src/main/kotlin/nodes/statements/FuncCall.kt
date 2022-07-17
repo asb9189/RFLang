@@ -15,6 +15,6 @@ class FuncCall(function: String, arguments: List<Expression>): Node(), Statement
     }
 
     override fun toString(): String {
-        return "[FuncDef]"
+        return "[FuncCall]"
     }
 }

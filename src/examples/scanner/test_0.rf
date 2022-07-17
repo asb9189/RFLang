@@ -11,3 +11,7 @@ while true {
     z = 1 + 2 + 3 + (6 * 5)
 
 }
+
+add()
+add(one)
+add(1, 2, 3 + 4, myFavNumber, ((3 + 4)/6))
