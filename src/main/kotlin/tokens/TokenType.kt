@@ -1,9 +1,10 @@
 package tokens
 
+@Suppress("SpellCheckingInspection")
 enum class TokenType {
     KEYWORD_LET,
-    KEYWORD_AND, // BinOp.kt
-    KEYWORD_OR, // BinOp.kt
+    KEYWORD_AND,
+    KEYWORD_OR,
     KEYWORD_FUN,
     KEYWORD_REPEAT,
     KEYWORD_WHILE,
@@ -18,11 +19,17 @@ enum class TokenType {
     LEFT_CURLY_BRACE,
     RIGHT_CURLY_BRACE,
     COMMA,
-    PLUS, // BinOp.kt
-    MINUS, // BinOp.kt
-    MULTIPLY, // BinOp.kt
-    DIVIDE, // BinOp.kt
-    ASSIGN,
-    EQ, // BinOp.kt
+    PLUS,
+    MINUS,
+    MULTIPLY,
+    DIVIDE,
+    BANG,
+    GT,
+    LT,
+    GT_EQ,
+    LT_EQ,
+    BANG_EQ,
+    EQ_EQ,
+    EQ,
     EOF
 }

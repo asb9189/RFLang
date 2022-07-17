@@ -16,8 +16,6 @@ fun main(args: Array<String>) {
     }
 
     val tokens = Scanner(File(filePath).reader()).scan()
-    val program = Parser(tokens).parse()
-
     println("tokens:")
     for (token in tokens) {
         println(token)
@@ -25,6 +23,7 @@ fun main(args: Array<String>) {
 
     println("\n\n\n")
 
+    val program = Parser(tokens).parse()
     println("Statements:")
     println(program.toString())
 

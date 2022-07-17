@@ -33,6 +33,12 @@ class Scanner constructor(streamReader: InputStreamReader) {
                 parseStringLiteral()
             } else if (currentChar == '=') {
                 parseEqOrAssignment()
+            } else if (currentChar == '!') {
+                parseBangOrBangEq()
+            } else if (currentChar == '<') {
+                parseLTOrLTEq()
+            } else if (currentChar == '>') {
+                parseGTOrGTEq()
             } else {
                 when (currentChar) {
                     '(' -> tokenStream = tokenStream.plus(Token(TokenType.LEFT_PAREN, currentChar.toString()))
@@ -118,10 +124,43 @@ class Scanner constructor(streamReader: InputStreamReader) {
         val prevChar = currentChar
         nextChar()
         if (currentChar == '=') {
-            tokenStream = tokenStream.plus(Token(TokenType.EQ, "${prevChar}${currentChar}"))
+            tokenStream = tokenStream.plus(Token(TokenType.EQ_EQ, "${prevChar}${currentChar}"))
             nextChar()
         } else {
-            tokenStream = tokenStream.plus(Token(TokenType.ASSIGN, "$prevChar"))
+            tokenStream = tokenStream.plus(Token(TokenType.EQ, "$prevChar"))
+        }
+    }
+
+    private fun parseBangOrBangEq() {
+        val prevChar = currentChar
+        nextChar()
+        if (currentChar == '=') {
+            tokenStream = tokenStream.plus(Token(TokenType.BANG_EQ, "${prevChar}${currentChar}"))
+            nextChar()
+        } else {
+            tokenStream = tokenStream.plus(Token(TokenType.BANG, "$prevChar"))
+        }
+    }
+
+    private fun parseLTOrLTEq() {
+        val prevChar = currentChar
+        nextChar()
+        if (currentChar == '=') {
+            tokenStream = tokenStream.plus(Token(TokenType.LT_EQ, "${prevChar}${currentChar}"))
+            nextChar()
+        } else {
+            tokenStream = tokenStream.plus(Token(TokenType.LT, "$prevChar"))
+        }
+    }
+
+    private fun parseGTOrGTEq() {
+        val prevChar = currentChar
+        nextChar()
+        if (currentChar == '=') {
+            tokenStream = tokenStream.plus(Token(TokenType.GT_EQ, "${prevChar}${currentChar}"))
+            nextChar()
+        } else {
+            tokenStream = tokenStream.plus(Token(TokenType.GT, "$prevChar"))
         }
     }
 }

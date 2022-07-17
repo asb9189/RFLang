@@ -5,6 +5,8 @@ import nodes.expressions.BooleanRF
 import nodes.expressions.Identifier
 import nodes.expressions.IntegerRF
 import nodes.expressions.StringRF
+import nodes.expressions.expression.Comparison
+import nodes.expressions.expression.Equality
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
 import nodes.statements.Repeat
@@ -63,7 +65,7 @@ class Parser(tokenStream: List<Token>) {
     private fun parseVarDeclarationStmt(): Statement {
         matchAndConsume(TokenType.KEYWORD_LET)
         val token = matchAndConsume(TokenType.IDENTIFIER)
-        matchAndConsume(TokenType.ASSIGN)
+        matchAndConsume(TokenType.EQ)
 
         val value: Expression = when (currentToken.getType()) {
             TokenType.INTEGER_LITERAL -> {
@@ -134,7 +136,7 @@ class Parser(tokenStream: List<Token>) {
 
     private fun parseVarAssignmentStmt(): Statement {
         val token = matchAndConsume(TokenType.IDENTIFIER)
-        matchAndConsume(TokenType.ASSIGN)
+        matchAndConsume(TokenType.EQ)
 
         val value: Expression = when (currentToken.getType()) {
             TokenType.INTEGER_LITERAL -> {
@@ -169,11 +171,6 @@ class Parser(tokenStream: List<Token>) {
         return VarAssign(token.getLiteral(), value)
     }
 
-    private fun parseExpr(): Expression {
-        //stub
-        return StringRF("stub")
-    }
-
     // Helpers
     private fun consume() {
         currentIndex += 1
@@ -182,6 +179,13 @@ class Parser(tokenStream: List<Token>) {
 
     private fun peek(): Token? {
         return tokenStream.getOrNull(currentIndex + 1)
+    }
+
+    private fun match(tokenType: TokenType): Boolean {
+        if (currentToken.getType() == tokenType) {
+            return true
+        }
+        return false
     }
 
     private fun matchAndConsume(tokenType: TokenType): Token {
@@ -194,4 +198,19 @@ class Parser(tokenStream: List<Token>) {
             exitProcess(0)
         }
     }
+
+    // Expression Parsings
+    private fun parseExpr(): Expression {
+        return parseEquality()
+    }
+
+    private fun parseEquality(): Expression {
+        var expr = parseComparison()
+        return Comparison()
+    }
+
+    private fun parseComparison(): Expression {
+        return Comparison()
+    }
+
 }
