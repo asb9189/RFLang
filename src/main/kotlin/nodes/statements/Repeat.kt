@@ -2,6 +2,7 @@ package nodes.statements
 
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
+import nodes.interfaces.StatementType
 import nodes.root.Node
 
 class Repeat(duration: Expression, body: List<Statement>): Node(), Statement {
@@ -12,6 +13,10 @@ class Repeat(duration: Expression, body: List<Statement>): Node(), Statement {
     init {
         this.duration = duration
         this.body = body
+    }
+
+    override fun getType(): StatementType {
+        return StatementType.REPEAT_STMT
     }
 
     override fun toString(): String {

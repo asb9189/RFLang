@@ -1,3 +1,15 @@
 package nodes.interfaces
 
-interface Statement {}
+enum class StatementType {
+    VAR_DEC_STMT,
+    VAR_ASSIGN_STMT,
+    WHILE_STMT,
+    REPEAT_STMT,
+    FUNC_CALL_STMT,
+    FUNC_DEF_STMT,
+    RETURN_STMT
+}
+
+interface Statement {
+    abstract fun getType(): StatementType
+}

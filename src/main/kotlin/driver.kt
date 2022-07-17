@@ -1,3 +1,4 @@
+import evaluator.Evaluator
 import parser.Parser
 import java.io.File
 import scanner.Scanner
@@ -26,6 +27,8 @@ fun main(args: Array<String>) {
     val program = Parser(tokens).parse()
     println("Statements:")
     println(program.toString())
+
+    Evaluator(program).run()
 
 }
 

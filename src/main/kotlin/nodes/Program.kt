@@ -11,6 +11,10 @@ class Program (statements: List<Statement>) : Node() {
         this.statements = statements
     }
 
+    fun getStatements(): List<Statement> {
+        return statements
+    }
+
     override fun toString(): String {
         var result = ""
         for (stmt in statements) {
