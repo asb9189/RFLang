@@ -69,7 +69,19 @@ class Evaluator (program: Program) {
     }
 
     private fun executeRepeatStmt(repeatStmt: Repeat) {
+        val pair = repeatStmt.getCondition().eval(env)
+        val body = repeatStmt.getBody()
 
+        if (pair.second != ValueType.INTEGER) {
+            println("While stmt condition did not resolve to type Boolean")
+            exitProcess(0)
+        }
+
+        repeat (pair.first as Int) {
+            for (stmt in body) {
+                executeStatement(stmt)
+            }
+        }
     }
 
     private fun executeFuncDefStmtStmt(funcDefStmt: FuncDef) {
@@ -87,10 +99,4 @@ class Evaluator (program: Program) {
     private fun executeReturnStmt(returnStmt: Return) {
 
     }
-
-
-
-
-
-
 }
