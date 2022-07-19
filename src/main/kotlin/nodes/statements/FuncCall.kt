@@ -5,18 +5,18 @@ import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
 
-class FuncCall(function: String, arguments: List<Expression>): Node(), Statement {
+class FuncCall(functionName: String, arguments: List<Expression>): Node(), Statement {
 
-    private val function: String
+    private val functionName: String
     private val arguments: List<Expression>
 
     init {
-        this.function = function
+        this.functionName = functionName
         this.arguments = arguments
     }
 
     fun getFunctionName(): String {
-        return function
+        return functionName
     }
 
     fun getArguments(): List<Expression> {

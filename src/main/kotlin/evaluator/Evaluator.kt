@@ -55,7 +55,6 @@ class Evaluator (program: Program) {
             exitProcess(0)
         }
 
-        // TODO implement Variable expression class
         while (pair.first as Boolean) {
             for (stmt in body) {
                 executeStatement(stmt)
@@ -85,15 +84,18 @@ class Evaluator (program: Program) {
     }
 
     private fun executeFuncDefStmtStmt(funcDefStmt: FuncDef) {
-
+        env.declareFunction(
+            funcDefStmt.getFunctionName(),
+            funcDefStmt.getParams(),
+            funcDefStmt.getBody()
+        )
     }
 
     private fun executeFuncCallStmt(funcCallStmt: FuncCall) {
-        if (funcCallStmt.getFunctionName() == "print" && funcCallStmt.getNumberOfArguments() == 1) {
-            val (value, type) = funcCallStmt.getArguments()[0].eval(env)
+        val functionName = funcCallStmt.getFunctionName()
+        val arguments = funcCallStmt.getArguments()
 
-            println(value)
-        }
+        val function = env.getFunction(functionName)
     }
 
     private fun executeReturnStmt(returnStmt: Return) {

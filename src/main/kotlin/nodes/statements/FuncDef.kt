@@ -4,16 +4,28 @@ import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
 
-class FuncDef(name: String, params: List<String>, body: List<Statement>): Node(), Statement {
+class FuncDef(functionName: String, params: List<String>, body: List<Statement>): Node(), Statement {
 
-    private val name: String
+    private val functionName: String
     private val params: List<String>
     private val body: List<Statement>
 
     init {
-        this.name = name
+        this.functionName = functionName
         this.params = params
         this.body = body
+    }
+
+    fun getFunctionName(): String {
+        return functionName
+    }
+
+    fun getParams(): List<String> {
+        return params
+    }
+
+    fun getBody(): List<Statement> {
+        return body
     }
 
     override fun getType(): StatementType {
