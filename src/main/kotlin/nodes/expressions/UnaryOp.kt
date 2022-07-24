@@ -17,8 +17,8 @@ class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
         this.expression = expression
     }
 
-    override fun eval(env: Environment): Pair<Any, ValueType> {
-        val (value, type) = expression.eval(env)
+    override fun eval(): Pair<Any, ValueType> {
+        val (value, type) = expression.eval()
         when (operator) {
             TokenType.BANG -> {
                 when (type) {

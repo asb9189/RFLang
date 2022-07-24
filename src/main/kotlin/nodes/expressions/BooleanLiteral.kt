@@ -12,7 +12,7 @@ class BooleanLiteral (value: Boolean): Node(), Expression {
         this.value = value
     }
 
-    override fun eval(env: Environment): Pair<Any, ValueType> {
+    override fun eval(): Pair<Any, ValueType> {
         return Pair(value, ValueType.BOOLEAN)
     }
 

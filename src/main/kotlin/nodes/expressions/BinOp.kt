@@ -20,9 +20,9 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
         this.operator = operator
     }
 
-    override fun eval(env: Environment): Pair<Any, ValueType> {
-        val (lhs_value, lhs_type) = lhs.eval(env)
-        val (rhs_value, rhs_type) = rhs.eval(env)
+    override fun eval(): Pair<Any, ValueType> {
+        val (lhs_value, lhs_type) = lhs.eval()
+        val (rhs_value, rhs_type) = rhs.eval()
 
         return when (operator) {
             TokenType.EQ_EQ -> {

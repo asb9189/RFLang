@@ -4,20 +4,34 @@ import nodes.Program
 import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.statements.*
+import runtime.Runtime
 import kotlin.system.exitProcess
 
 class Evaluator (program: Program) {
 
     private val program: Program
-    private val env: Environment
 
     init {
         this.program = program
-        this.env = Environment()
     }
 
     fun run() {
+
+        val funcDefStmts = mutableListOf<Statement>()
+        val otherStmts = mutableListOf<Statement>()
+
         for (stmt in program.getStatements()) {
+            when (stmt.getType()) {
+                StatementType.FUNC_DEF_STMT -> funcDefStmts.add(stmt)
+                else -> otherStmts.add(stmt)
+            }
+        }
+
+        for (stmt in funcDefStmts) {
+            executeStatement(stmt)
+        }
+
+        for (stmt in otherStmts) {
             executeStatement(stmt)
         }
     }
@@ -36,18 +50,18 @@ class Evaluator (program: Program) {
 
     private fun executeVarDecStmt(varDec: VarDec) {
         val varName: String = varDec.getVarName()
-        val (value, type) = varDec.getValue().eval(env)
-        env.declareVariable(varName, value, type)
+        val (value, type) = varDec.getValue().eval()
+        EnvironmentManager.declareVariable(varName, value, type)
     }
 
     private fun executeVarAssignStmt(varAssign: VarAssign) {
         val varName: String = varAssign.getVarName()
-        val (value, type) = varAssign.getValue().eval(env)
-        env.updateVariable(varName, value, type)
+        val (value, type) = varAssign.getValue().eval()
+        EnvironmentManager.updateVariable(varName, value, type)
     }
 
     private fun executeWhileStmt(whileStmt: While) {
-        var pair = whileStmt.getCondition().eval(env)
+        var pair = whileStmt.getCondition().eval()
         val body = whileStmt.getBody()
 
         if (pair.second != ValueType.BOOLEAN) {
@@ -59,7 +73,7 @@ class Evaluator (program: Program) {
             for (stmt in body) {
                 executeStatement(stmt)
             }
-            pair = whileStmt.getCondition().eval(env)
+            pair = whileStmt.getCondition().eval()
             if (pair.second != ValueType.BOOLEAN) {
                 println("While stmt condition did not resolve to type Boolean")
                 exitProcess(0)
@@ -68,7 +82,7 @@ class Evaluator (program: Program) {
     }
 
     private fun executeRepeatStmt(repeatStmt: Repeat) {
-        val pair = repeatStmt.getCondition().eval(env)
+        val pair = repeatStmt.getCondition().eval()
         val body = repeatStmt.getBody()
 
         if (pair.second != ValueType.INTEGER) {
@@ -84,7 +98,7 @@ class Evaluator (program: Program) {
     }
 
     private fun executeFuncDefStmtStmt(funcDefStmt: FuncDef) {
-        env.declareFunction(
+        EnvironmentManager.declareFunction(
             funcDefStmt.getFunctionName(),
             funcDefStmt.getParams(),
             funcDefStmt.getBody()
@@ -95,7 +109,38 @@ class Evaluator (program: Program) {
         val functionName = funcCallStmt.getFunctionName()
         val arguments = funcCallStmt.getArguments()
 
-        val function = env.getFunction(functionName)
+        // TODO Remove this
+        if (functionName == "print" && arguments.size == 1) {
+            println(arguments[0].eval())
+            return
+        }
+
+        val function = EnvironmentManager.getFunction(functionName)
+        val functionParams = function.getParams()
+        val functionBody = function.getBody()
+
+        if (arguments.size != functionParams.size) {
+            Runtime.raiseError(
+                "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
+                    " ${arguments.size} argument(s) instead")
+        }
+
+        EnvironmentManager.pushFunctionEnvironment()
+        arguments.forEachIndexed { index, expression ->
+            val (value, type) = expression.eval()
+            EnvironmentManager.declareVariable(
+                functionParams[index],
+                value,
+                type
+            )
+        }
+
+        for (stmt in functionBody) {
+            executeStatement(stmt)
+        }
+
+        EnvironmentManager.popFunctionEnvironment()
+
     }
 
     private fun executeReturnStmt(returnStmt: Return) {

@@ -1,29 +1,38 @@
 package nodes.expressions
 
 import evaluator.Environment
+import evaluator.EnvironmentManager
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
-import kotlin.system.exitProcess
+import runtime.Runtime
+import java.util.UUID
 
 class Variable(varName: String): Node(), Expression {
 
     private val varName: String
+    private val id: UUID
 
     init {
         this.varName = varName
+        this.id = Runtime.generateUUID()
     }
 
-    override fun eval(env: Environment): Pair<Any, ValueType> {
-        env.getVariable(varName)?.let {
+    fun getVarName(): String {
+        return varName
+    }
+
+    fun getID(): UUID {
+        return id
+    }
+
+    override fun eval(): Pair<Any, ValueType> {
+        EnvironmentManager.getVariable(varName).let {
             return Pair(it.getValue(), it.getType())
-        } ?: run {
-            println("Failed to get variable '$varName' in Variable.eval()")
-            exitProcess(0)
         }
     }
 
     override fun toString(): String {
-        return "[Variable] varName=$varName"
+        return "[Variable] varName=$varName UUID=${id}"
     }
 }

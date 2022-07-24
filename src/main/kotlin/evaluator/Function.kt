@@ -14,5 +14,16 @@ class Function(functionName: String, params: List<String>, body: List<Statement>
         this.body = body
     }
 
+    fun getFunctionName(): String {
+        return functionName
+    }
+
+    fun getParams(): List<String> {
+        return params
+    }
+
+    fun getBody(): List<Statement> {
+        return body
+    }
 
 }

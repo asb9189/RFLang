@@ -1,5 +1,6 @@
 import evaluator.Evaluator
 import parser.Parser
+import runtime.Runtime
 import java.io.File
 import scanner.Scanner
 import kotlin.system.exitProcess
