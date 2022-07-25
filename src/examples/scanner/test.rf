@@ -1,19 +1,13 @@
 
-let x = 5
+let x = ((3 > 2) and (5 > 0)) and (3 < 12)
 let y = 7
 let z = 9
 
-print("Values Before Function Call")
-print(x)
-print(y)
-print(z)
+
 
 myFavFunction(x, y, z)
 
-print("Values After Function Call")
-print(x)
-print(y)
-print(z)
+
 
 fun myFavFunction(x, y, z) {
     x = 1

@@ -217,7 +217,8 @@ class Parser(tokenStream: List<Token>) {
     private fun parseComparison(): Expression {
         var expr = parseTerm()
 
-        while (match(TokenType.GT) || match(TokenType.GT_EQ) || match(TokenType.LT) || match(TokenType.LT_EQ)) {
+        while (match(TokenType.GT) || match(TokenType.GT_EQ) || match(TokenType.LT) || match(TokenType.LT_EQ) ||
+            match(TokenType.KEYWORD_AND) || match(TokenType.KEYWORD_OR)) {
             val operator = previous().getType()
             val right = parseTerm()
             expr = BinOp(expr, operator, right)
@@ -256,6 +257,7 @@ class Parser(tokenStream: List<Token>) {
         return parsePrimary()
     }
 
+    // TODO Add Function Calls
     private fun parsePrimary(): Expression {
         if (match(TokenType.KEYWORD_TRUE)) { return BooleanLiteral(true) }
         if (match(TokenType.KEYWORD_FALSE)) { return BooleanLiteral(false) }

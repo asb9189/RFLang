@@ -145,6 +145,22 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                 val result = (lhs_value as Int) / (rhs_value as Int)
                 Pair(result, ValueType.INTEGER)
             }
+            TokenType.KEYWORD_AND -> {
+                if (lhs_type != ValueType.BOOLEAN || rhs_type != ValueType.BOOLEAN) {
+                    println("expected boolean types for AND operation")
+                    exitProcess(0)
+                }
+                val result = (lhs_value as Boolean) && (rhs_value as Boolean)
+                Pair(result, ValueType.BOOLEAN)
+            }
+            TokenType.KEYWORD_OR -> {
+                if (lhs_type != ValueType.BOOLEAN || rhs_type != ValueType.BOOLEAN) {
+                    println("expected boolean types for OR operation")
+                    exitProcess(0)
+                }
+                val result = (lhs_value as Boolean) || (rhs_value as Boolean)
+                Pair(result, ValueType.BOOLEAN)
+            }
 
             else -> {
                 println("invalid BinOp operator")
