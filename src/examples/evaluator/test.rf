@@ -3,11 +3,13 @@ let x = ((3 > 2) and (5 > 0)) and (3 < 12)
 let y = 7
 let z = 9
 
+if (x + 2) {
+    let z = 12
+} else 2 {
 
+}
 
 myFavFunction(x, y, z)
-
-
 
 fun myFavFunction(x, y, z) {
     x = 1

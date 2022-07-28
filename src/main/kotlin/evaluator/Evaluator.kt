@@ -45,6 +45,7 @@ class Evaluator (program: Program) {
             StatementType.RETURN_STMT -> executeReturnStmt(statement as Return)
             StatementType.FUNC_CALL_STMT -> executeFuncCallStmt(statement as FuncCall)
             StatementType.FUNC_DEF_STMT -> executeFuncDefStmtStmt(statement as FuncDef)
+            StatementType.IF_STMT -> executeIfStatement(statement as If)
         }
     }
 
@@ -111,7 +112,7 @@ class Evaluator (program: Program) {
 
         // TODO Remove this
         if (functionName == "print" && arguments.size == 1) {
-            println(arguments[0].eval())
+            println(arguments[0].eval().first)
             return
         }
 
@@ -143,7 +144,38 @@ class Evaluator (program: Program) {
 
     }
 
+    // TODO
     private fun executeReturnStmt(returnStmt: Return) {
+        throw NotImplementedError()
+    }
 
+    private fun executeIfStatement(ifStmt: If) {
+        val (value, type) = ifStmt.getIfCondition().eval()
+        if (type != ValueType.BOOLEAN) {
+            Runtime.raiseError("if <expr> must resolve to type Boolean")
+        }
+
+        if (value as Boolean) {
+            for (stmt in ifStmt.getIfStmts()) {
+                executeStatement(stmt)
+            }
+        } else {
+            for (elif in ifStmt.getElseIfList()) {
+                val (elifVal, elifValType) = elif.getCondition().eval()
+                if (elifValType != ValueType.BOOLEAN) {
+                    Runtime.raiseError("elif <expr> must resolve to type Boolean")
+                }
+
+                if (elifVal as Boolean) {
+                    for (stmt in elif.getStmts()) {
+                        executeStatement(stmt)
+                    }
+                    return
+                }
+            }
+            for (stmt in ifStmt.getElseStmts()) {
+                executeStatement(stmt)
+            }
+        }
     }
 }

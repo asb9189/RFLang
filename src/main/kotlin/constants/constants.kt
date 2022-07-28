@@ -11,20 +11,11 @@ const val KEYWORD_FUN = "fun"
 const val KEYWORD_RETURN = "return"
 const val KEYWORD_TRUE = "true"
 const val KEYWORD_FALSE = "false"
+const val KEYWORD_IF = "if"
+const val KEYWORD_ELIF = "elif"
+const val KEYWORD_ELSE = "else"
 
-val KEYWORDS = listOf(
-    KEYWORD_LET,
-    KEYWORD_AND,
-    KEYWORD_OR,
-    KEYWORD_REPEAT,
-    KEYWORD_WHILE,
-    KEYWORD_FUN,
-    KEYWORD_RETURN,
-    KEYWORD_TRUE,
-    KEYWORD_FALSE
-)
-
-val KEYWORDS_MAP = hashMapOf<String, TokenType>(
+val KEYWORDS_MAP = hashMapOf(
     KEYWORD_LET to TokenType.KEYWORD_LET,
     KEYWORD_AND to TokenType.KEYWORD_AND,
     KEYWORD_OR to TokenType.KEYWORD_OR,
@@ -33,5 +24,8 @@ val KEYWORDS_MAP = hashMapOf<String, TokenType>(
     KEYWORD_FUN to TokenType.KEYWORD_FUN,
     KEYWORD_RETURN to TokenType.KEYWORD_RETURN,
     KEYWORD_TRUE to TokenType.KEYWORD_TRUE,
-    KEYWORD_FALSE to TokenType.KEYWORD_FALSE
+    KEYWORD_FALSE to TokenType.KEYWORD_FALSE,
+    KEYWORD_IF to TokenType.KEYWORD_IF,
+    KEYWORD_ELIF to TokenType.KEYWORD_ELIF,
+    KEYWORD_ELSE to TokenType.KEYWORD_ELSE
 )

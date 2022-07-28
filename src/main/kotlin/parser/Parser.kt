@@ -48,6 +48,7 @@ class Parser(tokenStream: List<Token>) {
             TokenType.KEYWORD_WHILE -> return parseWhileStmt()
             TokenType.KEYWORD_FUN -> return parseFunctionDeclarationStmt()
             TokenType.KEYWORD_RETURN -> return parseReturnStmt()
+            TokenType.KEYWORD_IF -> return parseIfStmt()
             TokenType.IDENTIFIER -> {
                 peek()?.let {
                     if (it.getType() == TokenType.LEFT_PAREN) {
@@ -165,6 +166,52 @@ class Parser(tokenStream: List<Token>) {
         return VarAssign(token.getLiteral(), value)
     }
 
+    private fun parseIfStmt(): Statement {
+        matchAndConsume(TokenType.KEYWORD_IF)
+        val ifCondition = parseExpression()
+        matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+        val ifStmts = parseBodyStmtList()
+        matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+
+        return when (currentToken.getType()) {
+            TokenType.KEYWORD_ELIF -> {
+                val elseIfList = parseElseIfStmts()
+                return if (currentToken.getType() == TokenType.KEYWORD_ELSE) {
+                    matchAndConsume(TokenType.KEYWORD_ELSE)
+                    matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+                    val elseStmts = parseBodyStmtList()
+                    matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+                    If(ifCondition, ifStmts, elseIfList, elseStmts)
+                } else {
+                    If(ifCondition, ifStmts, elseIfList, emptyList())
+                }
+            }
+            TokenType.KEYWORD_ELSE -> {
+                matchAndConsume(TokenType.KEYWORD_ELSE)
+                matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+                val elseStmts = parseBodyStmtList()
+                matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+                If(ifCondition, ifStmts, emptyList(), elseStmts)
+            }
+            else -> {
+                If(ifCondition, ifStmts, emptyList(), emptyList())
+            }
+        }
+    }
+
+    private fun parseElseIfStmts(): List<ElseIf> {
+        var list = emptyList<ElseIf>()
+        while (currentToken.getType() == TokenType.KEYWORD_ELIF) {
+            consume()
+            val condition = parseExpression()
+            matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+            val stmts = parseBodyStmtList()
+            matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+            list = list.plus(ElseIf(condition, stmts))
+        }
+        return list
+    }
+
     // Helpers
     private fun consume() {
         currentIndex += 1
@@ -257,7 +304,7 @@ class Parser(tokenStream: List<Token>) {
         return parsePrimary()
     }
 
-    // TODO Add Function Calls
+    // TODO Add Function Calls here and remove them as standalone statement
     private fun parsePrimary(): Expression {
         if (match(TokenType.KEYWORD_TRUE)) { return BooleanLiteral(true) }
         if (match(TokenType.KEYWORD_FALSE)) { return BooleanLiteral(false) }
