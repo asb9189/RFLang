@@ -25,5 +25,4 @@ class Function(functionName: String, params: List<String>, body: List<Statement>
     fun getBody(): List<Statement> {
         return body
     }
-
 }

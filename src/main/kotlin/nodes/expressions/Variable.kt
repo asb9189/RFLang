@@ -1,6 +1,5 @@
 package nodes.expressions
 
-import evaluator.Environment
 import evaluator.EnvironmentManager
 import evaluator.ValueType
 import nodes.interfaces.Expression

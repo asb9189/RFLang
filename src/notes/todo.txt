@@ -9,11 +9,13 @@
     do the heavy lifting of figuring out how to execute a stdlib vs user defined
     function and ensuring either way we get back an RFLang value type (even if it's null)
 
-- iterator interface for objects
-    - would allow support for a 'for each loop'
-
 - object class
     idea: Abstract Object class that each object overrides.
     Each object will have an enum list of available methods with their
     implementation living inside the class (both stdlib objects and user defined ones)
     - Ex: ArrayList
+
+- iterator interface for objects
+    - would allow support for a 'for each loop'
+
+- fix recursive functions (issue has to do with popping off from functionStack too soon)
