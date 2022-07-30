@@ -3,7 +3,8 @@ package evaluator
 enum class ValueType {
     INTEGER,
     STRING,
-    BOOLEAN
+    BOOLEAN,
+    NULL
 }
 
 class Value(value: Any, type: ValueType) {

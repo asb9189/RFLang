@@ -5,12 +5,10 @@ import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
 
-class Return(expression: Expression): Node(), Statement {
+class Return(private val expression: Expression): Node(), Statement {
 
-    private val expression: Expression
-
-    init {
-        this.expression = expression
+    fun getExpression(): Expression {
+        return expression
     }
 
     override fun getType(): StatementType {

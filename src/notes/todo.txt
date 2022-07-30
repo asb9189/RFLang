@@ -1,0 +1,9 @@
+- Allow return statements to have an empty expression (parsing issue)
+- stdlib
+- iterator interface for objects
+    - for each loop
+- object class
+    idea: Abstract Object class that each object overrides.
+    Each object will have an enum list of available methods with their
+    implementation living inside the class (both stdlib objects and user defined ones)
+    - Ex: ArrayList

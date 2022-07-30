@@ -72,6 +72,10 @@ class EnvironmentManager {
             functionEnvStack.pop()
         }
 
+        fun isFunctionEnvironmentEmpty(): Boolean {
+            return functionEnvStack.isEmpty()
+        }
+
         private fun doesFunctionExist(functionName: String): Boolean {
             functionTable[functionName]?.let {
                 return true

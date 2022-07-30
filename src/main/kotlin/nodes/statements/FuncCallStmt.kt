@@ -5,7 +5,7 @@ import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
 
-class FuncCall(functionName: String, arguments: List<Expression>): Node(), Statement {
+class FuncCallStmt(functionName: String, arguments: List<Expression>): Node(), Statement {
 
     private val functionName: String
     private val arguments: List<Expression>
@@ -21,10 +21,6 @@ class FuncCall(functionName: String, arguments: List<Expression>): Node(), State
 
     fun getArguments(): List<Expression> {
         return arguments
-    }
-
-    fun getNumberOfArguments(): Int {
-        return arguments.size
     }
 
     override fun getType(): StatementType {

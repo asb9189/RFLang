@@ -1,6 +1,5 @@
 import evaluator.Evaluator
 import parser.Parser
-import runtime.Runtime
 import java.io.File
 import scanner.Scanner
 import kotlin.system.exitProcess
@@ -29,7 +28,7 @@ fun main(args: Array<String>) {
     println("Statements:")
     println(program.toString())
 
-    Evaluator(program).run()
+    Evaluator.run(program)
 
 }
 

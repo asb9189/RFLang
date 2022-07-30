@@ -5,12 +5,16 @@ import nodes.expressions.*
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
 import nodes.statements.*
-import runtime.Runtime
 import tokens.Token
 import tokens.TokenType
 import kotlin.system.exitProcess
 
 class Parser(tokenStream: List<Token>) {
+
+    enum class FUNCTION {
+        EXPRESSION,
+        STATEMENT
+    }
 
     private var currentIndex = 0
     private var currentToken: Token
@@ -50,10 +54,8 @@ class Parser(tokenStream: List<Token>) {
             TokenType.KEYWORD_RETURN -> return parseReturnStmt()
             TokenType.KEYWORD_IF -> return parseIfStmt()
             TokenType.IDENTIFIER -> {
-                peek()?.let {
-                    if (it.getType() == TokenType.LEFT_PAREN) {
-                        return parseFunctionCall()
-                    }
+                if (peek()?.getType() == TokenType.LEFT_PAREN) {
+                    return parseFunctionCall(FUNCTION.STATEMENT) as FuncCallStmt
                 }
                 return parseVarAssignmentStmt()
             }
@@ -94,17 +96,24 @@ class Parser(tokenStream: List<Token>) {
         return While(value, stmts)
     }
 
-    private fun parseFunctionCall(): Statement {
+    private fun parseFunctionCall(func: FUNCTION): Any {
         val functionName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
         matchAndConsume(TokenType.LEFT_PAREN)
 
         if (currentToken.getType() == TokenType.RIGHT_PAREN) {
             matchAndConsume(TokenType.RIGHT_PAREN)
-            return FuncCall(functionName, emptyList())
+            return when (func) {
+                FUNCTION.STATEMENT -> FuncCallStmt(functionName, emptyList())
+                FUNCTION.EXPRESSION -> FuncCallExpr(functionName, emptyList())
+            }
         }
 
         val arguments = parseArguments()
-        return FuncCall(functionName, arguments)
+
+        return when (func) {
+            FUNCTION.STATEMENT -> FuncCallStmt(functionName, arguments)
+            FUNCTION.EXPRESSION -> FuncCallExpr(functionName, arguments)
+        }
     }
 
     private fun parseArguments(): List<Expression> {
@@ -304,13 +313,18 @@ class Parser(tokenStream: List<Token>) {
         return parsePrimary()
     }
 
-    // TODO Add Function Calls here and remove them as standalone statement
     private fun parsePrimary(): Expression {
         if (match(TokenType.KEYWORD_TRUE)) { return BooleanLiteral(true) }
         if (match(TokenType.KEYWORD_FALSE)) { return BooleanLiteral(false) }
         if (match(TokenType.STRING_LITERAL)) { return StringLiteral(previous().getLiteral()) }
-        if (match(TokenType.IDENTIFIER)) { return Variable(previous().getLiteral()) }
         if (match(TokenType.INTEGER_LITERAL)) { return IntegerLiteral(previous().getLiteral().toInt()) }
+        if (currentToken.getType() == TokenType.IDENTIFIER) {
+            if (peek()?.getType() == TokenType.LEFT_PAREN) {
+                return parseFunctionCall(FUNCTION.EXPRESSION) as FuncCallExpr
+            }
+            match(TokenType.IDENTIFIER)
+            return Variable(previous().getLiteral())
+        }
 
         if (match(TokenType.LEFT_PAREN)) {
             val expr = parseExpression()

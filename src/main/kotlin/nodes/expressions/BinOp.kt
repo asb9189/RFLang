@@ -1,9 +1,9 @@
 package nodes.expressions
 
-import evaluator.Environment
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
+import runtime.Runtime
 import tokens.TokenType
 import kotlin.system.exitProcess
 
@@ -44,6 +44,9 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                         val equal = (lhs_value as Boolean) == (rhs_value as Boolean)
                         Pair(equal, ValueType.BOOLEAN)
                     }
+                    ValueType.NULL -> {
+                        Runtime.raiseError("null reference in binop expression")
+                    }
                 }
 
             }
@@ -65,6 +68,9 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     ValueType.BOOLEAN -> {
                         val notEqual = (lhs_value as Boolean) != (rhs_value as Boolean)
                         Pair(notEqual, ValueType.BOOLEAN)
+                    }
+                    ValueType.NULL -> {
+                        Runtime.raiseError("null reference in binop expression")
                     }
                 }
             }
