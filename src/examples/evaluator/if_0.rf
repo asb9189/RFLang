@@ -11,7 +11,7 @@ if hi(x) {
 
 fun hi(num) {
     let x = 17
-    return hoe(x) > num
+    return hello(x) > num
 }
 
 fun hello(x) {
