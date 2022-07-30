@@ -6,9 +6,7 @@ display()
 if hi(x) {
     print("if")
 } else {
-
     print("else")
-
 }
 
 fun hi(num) {
@@ -16,10 +14,8 @@ fun hi(num) {
     return hoe(x) > num
 }
 
-fun hoe(x) {
-
+fun hello(x) {
     return x + 1000
-
 }
 
 fun display() {
