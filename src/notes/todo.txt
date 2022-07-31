@@ -19,3 +19,6 @@
     - would allow support for a 'for each loop'
 
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
+
+- remove Pair<value, valueType> and replace with Value object
+    - not sure how I forgot to use it...
