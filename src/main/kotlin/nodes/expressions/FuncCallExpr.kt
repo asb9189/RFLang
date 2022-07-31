@@ -1,8 +1,6 @@
 package nodes.expressions
 
-import evaluator.EnvironmentManager
-import evaluator.Evaluator
-import evaluator.ValueType
+import evaluator.*
 import nodes.interfaces.Expression
 import nodes.interfaces.StatementType
 import nodes.root.Node
@@ -25,38 +23,54 @@ class FuncCallExpr(private val functionName: String, private val arguments: List
 
     override fun eval(): Pair<Any, ValueType> {
 
-        val function = EnvironmentManager.getFunction(functionName)
-        val functionParams = function.getParams()
-        val functionBody = function.getBody()
+        var function = EnvironmentManager.getFunction(functionName)
+        when (function.getFunctionType()) {
+            FunctionType.USER_DEFINED -> {
+                function = function as UserDefinedFunction
+                val functionParams = function.getParams()
+                val functionBody = function.getBody()
 
-        if (arguments.size != functionParams.size) {
-            Runtime.raiseError(
-                "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
-                        " ${arguments.size} argument(s) instead")
-        }
+                if (arguments.size != functionParams.size) {
+                    Runtime.raiseError(
+                        "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
+                                " ${arguments.size} argument(s) instead")
+                }
 
-        EnvironmentManager.pushFunctionEnvironment()
-        arguments.forEachIndexed { index, expression ->
-            val (value, type) = expression.eval()
-            EnvironmentManager.declareVariable(
-                functionParams[index],
-                value,
-                type
-            )
-        }
+                EnvironmentManager.pushFunctionEnvironment()
+                arguments.forEachIndexed { index, expression ->
+                    val (value, type) = expression.eval()
+                    EnvironmentManager.declareVariable(
+                        functionParams[index],
+                        value,
+                        type
+                    )
+                }
 
-        for (stmt in functionBody) {
-            if (stmt.getType() == StatementType.RETURN_STMT) {
-                val (rvalue, rtype) = Evaluator.executeReturnStmt(stmt as Return)
+                for (stmt in functionBody) {
+                    if (stmt.getType() == StatementType.RETURN_STMT) {
+                        val (rvalue, rtype) = Evaluator.executeReturnStmt(stmt as Return)
+
+                        EnvironmentManager.popFunctionEnvironment()
+                        return Pair(rvalue, rtype)
+                    }
+                    Evaluator.executeStatement(stmt)
+                }
 
                 EnvironmentManager.popFunctionEnvironment()
-                return Pair(rvalue, rtype)
+                return Pair(-1, ValueType.NULL)
             }
-            Evaluator.executeStatement(stmt)
+            FunctionType.STANDARD_LIB -> {
+                function = function as StandardLibFunction
+                val functionParams = function.getParams()
+                if (arguments.size != functionParams.size) {
+                    Runtime.raiseError(
+                        "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
+                                " ${arguments.size} argument(s) instead")
+                }
+                val value = function.run(arguments)
+                return Pair(value.getValue(), value.getType())
+            }
         }
-
-        EnvironmentManager.popFunctionEnvironment()
-        return Pair(-1, ValueType.NULL)
     }
 
     override fun toString(): String {

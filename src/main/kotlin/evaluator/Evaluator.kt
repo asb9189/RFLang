@@ -112,34 +112,40 @@ class Evaluator {
                 return
             }
 
-            val function = EnvironmentManager.getFunction(functionName)
-            val functionParams = function.getParams()
-            val functionBody = function.getBody()
+            var function = EnvironmentManager.getFunction(functionName)
+            when (function.getFunctionType()) {
+                FunctionType.USER_DEFINED -> {
+                    function = function as UserDefinedFunction
+                    val functionParams = function.getParams()
+                    val functionBody = function.getBody()
 
-            if (arguments.size != functionParams.size) {
-                Runtime.raiseError(
-                    "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
-                            " ${arguments.size} argument(s) instead")
-            }
+                    if (arguments.size != functionParams.size) {
+                        Runtime.raiseError(
+                            "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
+                                    " ${arguments.size} argument(s) instead")
+                    }
 
-            EnvironmentManager.pushFunctionEnvironment()
-            arguments.forEachIndexed { index, expression ->
-                val (value, type) = expression.eval()
-                EnvironmentManager.declareVariable(
-                    functionParams[index],
-                    value,
-                    type
-                )
-            }
+                    EnvironmentManager.pushFunctionEnvironment()
+                    arguments.forEachIndexed { index, expression ->
+                        val (value, type) = expression.eval()
+                        EnvironmentManager.declareVariable(
+                            functionParams[index],
+                            value,
+                            type
+                        )
+                    }
 
-            for (stmt in functionBody) {
-                if (stmt.getType() == StatementType.RETURN_STMT) {
+                    for (stmt in functionBody) {
+                        if (stmt.getType() == StatementType.RETURN_STMT) {
+                            EnvironmentManager.popFunctionEnvironment()
+                            return
+                        }
+                        executeStatement(stmt)
+                    }
                     EnvironmentManager.popFunctionEnvironment()
-                    return
                 }
-                executeStatement(stmt)
+                FunctionType.STANDARD_LIB -> {}
             }
-            EnvironmentManager.popFunctionEnvironment()
         }
 
         fun executeReturnStmt(returnStmt: Return): Pair<Any, ValueType> {

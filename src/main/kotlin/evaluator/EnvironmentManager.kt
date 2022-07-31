@@ -2,6 +2,7 @@ package evaluator
 
 import nodes.interfaces.Statement
 import runtime.Runtime
+import standard_lib.StandardLibBuilder
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -11,6 +12,13 @@ class EnvironmentManager {
         private val mainEnv: Environment = Environment()
         private val functionEnvStack: Stack<Environment> = Stack()
         private val functionTable: HashMap<String, Function> = HashMap()
+
+        init {
+            val standardLibFunctions = StandardLibBuilder.buildStandardLib()
+            for (func in standardLibFunctions) {
+                functionTable[func.getFunctionName()] = func
+            }
+        }
 
         fun declareVariable(symbol: String, value: Any, type: ValueType) {
             if (functionEnvStack.empty()) {
@@ -46,7 +54,7 @@ class EnvironmentManager {
 
         fun declareFunction(functionName: String, params: List<String>, body: List<Statement>) {
             if (doesFunctionExist(functionName).not()) {
-                functionTable[functionName] = Function(functionName, params, body)
+                functionTable[functionName] = UserDefinedFunction(functionName, params, body)
             } else {
                 Runtime.raiseError("Failed to declare new function")
             }

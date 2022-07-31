@@ -1,28 +1,15 @@
 package evaluator
 
-import nodes.interfaces.Statement
+enum class FunctionType {
+    USER_DEFINED,
+    STANDARD_LIB
+}
 
-class Function(functionName: String, params: List<String>, body: List<Statement>) {
+interface Function {
 
-    private val functionName: String
-    private val params: List<String>
-    private val body: List<Statement>
+    fun getFunctionName(): String
 
-    init {
-        this.functionName = functionName
-        this.params = params
-        this.body = body
-    }
+    fun getParams(): List<String>
 
-    fun getFunctionName(): String {
-        return functionName
-    }
-
-    fun getParams(): List<String> {
-        return params
-    }
-
-    fun getBody(): List<Statement> {
-        return body
-    }
+    fun getFunctionType(): FunctionType
 }

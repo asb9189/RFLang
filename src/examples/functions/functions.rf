@@ -1,0 +1,18 @@
+
+let question = "What is your name?: "
+let input = input(question)
+print(input)
+
+if hello(10) >= 20 {
+
+    print("true!")
+
+}
+
+
+fun hello(x) {
+
+    print("inside function")
+    return 10 + x
+
+}
