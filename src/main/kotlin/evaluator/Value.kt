@@ -4,6 +4,7 @@ enum class ValueType {
     INTEGER,
     STRING,
     BOOLEAN,
+    OBJECT,
     NULL
 }
 

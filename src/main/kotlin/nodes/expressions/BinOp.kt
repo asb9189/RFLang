@@ -5,6 +5,7 @@ import nodes.interfaces.Expression
 import nodes.root.Node
 import runtime.Runtime
 import tokens.TokenType
+import java.nio.channels.NotYetConnectedException
 import kotlin.system.exitProcess
 
 
@@ -47,6 +48,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     ValueType.NULL -> {
                         Runtime.raiseError("null reference in binop expression")
                     }
+                    ValueType.OBJECT -> throw NotImplementedError("See BinOp")
                 }
 
             }
@@ -72,6 +74,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     ValueType.NULL -> {
                         Runtime.raiseError("null reference in binop expression")
                     }
+                    ValueType.OBJECT -> throw NotImplementedError("See BinOp")
                 }
             }
             TokenType.LT -> {

@@ -1,9 +1,8 @@
 
 let question = "What is your name?: "
 let input = input(question)
-print(input)
 
-if hello(10) >= 20 {
+if input == "Yaga RF" {
 
     print("true!")
 

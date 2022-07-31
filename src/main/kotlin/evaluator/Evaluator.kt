@@ -106,12 +106,6 @@ class Evaluator {
             val functionName = funcCallStmt.getFunctionName()
             val arguments = funcCallStmt.getArguments()
 
-            // TODO Remove this
-            if (functionName == "print" && arguments.size == 1) {
-                println(arguments[0].eval().first)
-                return
-            }
-
             var function = EnvironmentManager.getFunction(functionName)
             when (function.getFunctionType()) {
                 FunctionType.USER_DEFINED -> {
@@ -144,7 +138,16 @@ class Evaluator {
                     }
                     EnvironmentManager.popFunctionEnvironment()
                 }
-                FunctionType.STANDARD_LIB -> {}
+                FunctionType.STANDARD_LIB -> {
+                    function = function as StandardLibFunction
+                    val functionParams = function.getParams()
+                    if (arguments.size != functionParams.size) {
+                        Runtime.raiseError(
+                            "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
+                                    " ${arguments.size} argument(s) instead")
+                    }
+                    function.run(arguments)
+                }
             }
         }
 

@@ -15,6 +15,13 @@
     implementation living inside the class (both stdlib objects and user defined ones)
     - Ex: ArrayList
 
+    - Building an ArrayList ex:
+        "let myList = List[]"
+            or
+        "let myList = List[1, 2, 3]"
+
+    - method detection would be: <IDENTIFIER>.<IDENTIFIER>(<PARAMS>)
+
 - iterator interface for objects
     - would allow support for a 'for each loop'
 

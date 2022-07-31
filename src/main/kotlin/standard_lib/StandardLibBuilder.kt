@@ -12,9 +12,19 @@ class StandardLibBuilder {
 
         fun buildStandardLib(): List<Function> {
 
-            var list = emptyList<Function>()
+            var standardLibList = emptyList<Function>()
 
-            // input("Enter your name")
+            //print("...")
+            val print = StandardLibFunction("print", listOf("message")) { params ->
+                val (p1, p1Type) = params[0].eval()
+                if (p1Type != ValueType.STRING) {
+                    Runtime.raiseError("Function 'input' expects arguments: [message: String]")
+                }
+                println(p1 as String)
+                Value(-1, ValueType.NULL)
+            }
+
+            // input("...")
             val input = StandardLibFunction("input", listOf("message")) { params ->
                 val (p1, p1Type) = params[0].eval()
                 if (p1Type != ValueType.STRING) {
@@ -30,8 +40,9 @@ class StandardLibBuilder {
                 }
             }
 
-            list = list.plus(input)
-            return list
+            standardLibList = standardLibList.plus(print)
+            standardLibList = standardLibList.plus(input)
+            return standardLibList
         }
     }
 }

@@ -45,6 +45,8 @@ class Scanner constructor(streamReader: InputStreamReader) {
                     ')' -> tokenStream = tokenStream.plus(Token(TokenType.RIGHT_PAREN, currentChar.toString()))
                     '{' -> tokenStream = tokenStream.plus(Token(TokenType.LEFT_CURLY_BRACE, currentChar.toString()))
                     '}' -> tokenStream = tokenStream.plus(Token(TokenType.RIGHT_CURLY_BRACE, currentChar.toString()))
+                    '[' -> tokenStream = tokenStream.plus(Token(TokenType.LEFT_BRACKET, currentChar.toString()))
+                    ']' -> tokenStream = tokenStream.plus(Token(TokenType.RIGHT_BRACKET, currentChar.toString()))
                     ',' -> tokenStream = tokenStream.plus(Token(TokenType.COMMA, currentChar.toString()))
                     '+' -> tokenStream = tokenStream.plus(Token(TokenType.PLUS, currentChar.toString()))
                     '-' -> tokenStream = tokenStream.plus(Token(TokenType.MINUS, currentChar.toString()))

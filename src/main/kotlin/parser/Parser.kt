@@ -96,6 +96,19 @@ class Parser(tokenStream: List<Token>) {
         return While(value, stmts)
     }
 
+    private fun parseConstructorCall(): Expression {
+        val constructorName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
+        matchAndConsume(TokenType.LEFT_BRACKET)
+
+        if (currentToken.getType() == TokenType.RIGHT_BRACKET) {
+            matchAndConsume(TokenType.RIGHT_BRACKET)
+            return ConstructorCallExpr(constructorName, emptyList())
+        }
+
+        val arguments = parseArguments()
+        return ConstructorCallExpr(constructorName, arguments)
+    }
+
     private fun parseFunctionCall(func: FUNCTION): Any {
         val functionName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
         matchAndConsume(TokenType.LEFT_PAREN)
@@ -321,6 +334,8 @@ class Parser(tokenStream: List<Token>) {
         if (currentToken.getType() == TokenType.IDENTIFIER) {
             if (peek()?.getType() == TokenType.LEFT_PAREN) {
                 return parseFunctionCall(FUNCTION.EXPRESSION) as FuncCallExpr
+            } else if (peek()?.getType() == TokenType.LEFT_BRACKET) {
+                return parseConstructorCall() as ConstructorCallExpr
             }
             match(TokenType.IDENTIFIER)
             return Variable(previous().getLiteral())
