@@ -3,8 +3,9 @@ package evaluator
 import nodes.interfaces.Statement
 import runtime.Runtime
 import standard_lib.StandardLibBuilder
-import java.util.*
+import standard_lib.objects.Object
 import kotlin.collections.HashMap
+import java.util.*
 
 class EnvironmentManager {
     companion object {
@@ -14,7 +15,7 @@ class EnvironmentManager {
         private val functionTable: HashMap<String, Function> = HashMap()
 
         init {
-            val standardLibFunctions = StandardLibBuilder.buildStandardLib()
+            val standardLibFunctions = StandardLibBuilder.buildStandardLibFunctions()
             for (func in standardLibFunctions) {
                 functionTable[func.getFunctionName()] = func
             }

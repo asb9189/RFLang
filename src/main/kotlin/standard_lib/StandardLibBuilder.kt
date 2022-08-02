@@ -3,6 +3,7 @@ package standard_lib
 import evaluator.*
 import evaluator.Function
 import runtime.Runtime
+import standard_lib.objects.Object
 
 class StandardLibBuilder {
 
@@ -10,17 +11,21 @@ class StandardLibBuilder {
 
     companion object {
 
-        fun buildStandardLib(): List<Function> {
+        fun buildStandardLibFunctions(): List<Function> {
 
             var standardLibList = emptyList<Function>()
 
             //print("...")
             val print = StandardLibFunction("print", listOf("message")) { params ->
                 val (p1, p1Type) = params[0].eval()
-                if (p1Type != ValueType.STRING) {
-                    Runtime.raiseError("Function 'input' expects arguments: [message: String]")
+
+                when (p1Type) {
+                    ValueType.INTEGER -> println(p1 as Int)
+                    ValueType.BOOLEAN -> println(p1 as Boolean)
+                    ValueType.STRING -> println(p1 as String)
+                    ValueType.OBJECT -> println(p1 as Object)
+                    ValueType.NULL -> Runtime.raiseError("Function 'print' cannot print type NULL")
                 }
-                println(p1 as String)
                 Value(-1, ValueType.NULL)
             }
 

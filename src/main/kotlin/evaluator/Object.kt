@@ -1,3 +1,0 @@
-package evaluator
-
-interface Object {}

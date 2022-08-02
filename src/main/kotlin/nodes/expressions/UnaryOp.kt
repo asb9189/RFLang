@@ -1,6 +1,5 @@
 package nodes.expressions
 
-import evaluator.Environment
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
@@ -62,6 +61,6 @@ class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
     }
 
     override fun toString(): String {
-        TODO("Not yet implemented")
+        return "[UnaryOp] operator='$operator'"
     }
 }
