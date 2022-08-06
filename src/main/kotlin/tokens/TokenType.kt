@@ -24,6 +24,7 @@ enum class TokenType {
     LEFT_BRACKET,
     RIGHT_BRACKET,
     COMMA,
+    PERIOD,
     PLUS,
     MINUS,
     MULTIPLY,

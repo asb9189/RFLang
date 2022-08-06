@@ -1,4 +1,13 @@
-let myList = List[]
-let x = 5
 
-print(myList)
+let secret = "Hello"
+let guesses = List[]
+let guess = ""
+let numGuesses = 0
+
+while numGuesses < 3 {
+
+    guess = input("Enter a letter: ")
+    print(guess)
+    numGuesses = numGuesses + 1
+
+}

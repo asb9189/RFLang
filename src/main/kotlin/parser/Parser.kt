@@ -16,6 +16,11 @@ class Parser(tokenStream: List<Token>) {
         STATEMENT
     }
 
+    enum class METHOD {
+        EXPRESSION,
+        STATEMENT
+    }
+
     private var currentIndex = 0
     private var currentToken: Token
     private val tokenStream: List<Token>
@@ -56,6 +61,8 @@ class Parser(tokenStream: List<Token>) {
             TokenType.IDENTIFIER -> {
                 if (peek()?.getType() == TokenType.LEFT_PAREN) {
                     return parseFunctionCall(FUNCTION.STATEMENT) as FuncCallStmt
+                } else if (peek()?.getType() == TokenType.PERIOD) {
+                    return parseMethodCall(METHOD.STATEMENT) as MethodCallStmt
                 }
                 return parseVarAssignmentStmt()
             }
@@ -107,6 +114,30 @@ class Parser(tokenStream: List<Token>) {
 
         val arguments = parseArguments()
         return ConstructorCallExpr(constructorName, arguments)
+    }
+
+    // TODO add support for chained method calls ( ex: myList.add(5).remove(5) )
+    private fun parseMethodCall(method: METHOD): Any {
+        val objectName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
+        matchAndConsume(TokenType.PERIOD)
+
+        val methodName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
+        matchAndConsume(TokenType.LEFT_PAREN)
+
+        if (currentToken.getType() == TokenType.RIGHT_PAREN) {
+            matchAndConsume(TokenType.RIGHT_PAREN)
+
+            return when (method) {
+                METHOD.STATEMENT -> MethodCallStmt(objectName, methodName, emptyList())
+                METHOD.EXPRESSION -> MethodCallExpr(objectName, methodName, emptyList())
+            }
+        }
+
+        val arguments = parseArguments()
+        return when (method) {
+            METHOD.STATEMENT -> MethodCallStmt(objectName, methodName, arguments)
+            METHOD.EXPRESSION -> MethodCallExpr(objectName, methodName, arguments)
+        }
     }
 
     private fun parseFunctionCall(func: FUNCTION): Any {
@@ -336,6 +367,8 @@ class Parser(tokenStream: List<Token>) {
                 return parseFunctionCall(FUNCTION.EXPRESSION) as FuncCallExpr
             } else if (peek()?.getType() == TokenType.LEFT_BRACKET) {
                 return parseConstructorCall() as ConstructorCallExpr
+            } else if (peek()?.getType() == TokenType.PERIOD) {
+                return parseMethodCall(METHOD.EXPRESSION) as MethodCallExpr
             }
             match(TokenType.IDENTIFIER)
             return Variable(previous().getLiteral())

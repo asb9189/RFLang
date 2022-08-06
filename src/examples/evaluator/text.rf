@@ -1,0 +1,27 @@
+
+
+fun getInput() {
+    return input("enter something")
+}
+
+
+if false {
+print("hi1")
+
+} elif false {
+print("hi2")
+
+}elif 3 > 5 {
+    print("hi3")
+} else {
+    print("ffffff")
+}
+
+
+add(2, 3)
+
+if true and (false or true) {
+
+    print(";)")
+}
+

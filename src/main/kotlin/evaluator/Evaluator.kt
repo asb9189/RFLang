@@ -5,6 +5,9 @@ import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.statements.*
 import runtime.Runtime
+import standard_lib.objects.ListRF
+import standard_lib.objects.Object
+import standard_lib.objects.TYPE
 import kotlin.system.exitProcess
 
 class Evaluator {
@@ -41,6 +44,7 @@ class Evaluator {
                 StatementType.RETURN_STMT -> executeReturnStmt(statement as Return)
                 StatementType.FUNC_CALL_STMT -> executeFuncCallStmt(statement as FuncCallStmt)
                 StatementType.FUNC_DEF_STMT -> executeFuncDefStmtStmt(statement as FuncDef)
+                StatementType.METHOD_CALL_STMT -> executeMethodCallStmt(statement as MethodCallStmt)
                 StatementType.IF_STMT -> executeIfStatement(statement as If)
             }
         }
@@ -90,6 +94,32 @@ class Evaluator {
             repeat (pair.first as Int) {
                 for (stmt in body) {
                     executeStatement(stmt)
+                }
+            }
+        }
+
+        private fun executeMethodCallStmt(methodCallStmt: MethodCallStmt) {
+            var value = EnvironmentManager.getVariable(methodCallStmt.getObjectName())
+            val arguments = methodCallStmt.getArguments()
+
+            if (value.getType() != ValueType.OBJECT) {
+                Runtime.raiseError("${value.getType()} does not support method calls")
+            }
+
+            var obj = value.getValue() as Object
+            when (obj.type()) {
+                TYPE.LIST -> {
+                    obj = obj as ListRF
+                    when (methodCallStmt.getMethodName()) {
+                        "add" -> {
+                            if (arguments.size != 1) {
+                                Runtime.raiseError("add expects a single argument")
+                            }
+                            val v = arguments[0].eval()
+                            obj.add(Value(v.first, v.second))
+                        }
+                        else -> Runtime.raiseError("List does not have method '${methodCallStmt.getMethodName()}'")
+                    }
                 }
             }
         }

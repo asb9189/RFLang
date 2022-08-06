@@ -6,7 +6,7 @@ import runtime.Runtime
 import standard_lib.interfaces.iterable
 import kotlin.collections.List
 
-class ListRF(): Object(), iterable {
+class ListRF: Object(), iterable {
 
     private var list: List<Any> = emptyList()
     private var type: ValueType = ValueType.NULL
@@ -23,6 +23,8 @@ class ListRF(): Object(), iterable {
         }
         list = list.plus(value.getValue())
     }
+
+
 
     fun getType(): ValueType {
         return type

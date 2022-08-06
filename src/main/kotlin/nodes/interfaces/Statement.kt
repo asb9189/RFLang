@@ -7,6 +7,7 @@ enum class StatementType {
     REPEAT_STMT,
     FUNC_CALL_STMT,
     FUNC_DEF_STMT,
+    METHOD_CALL_STMT,
     RETURN_STMT,
     IF_STMT
 }
