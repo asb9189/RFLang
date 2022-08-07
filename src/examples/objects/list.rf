@@ -1,13 +1,18 @@
 
-let secret = "Hello"
-let guesses = List[]
-let guess = ""
-let numGuesses = 0
+let userInputs = List[]
+let maxInputs = 5
+let numInputs = 0
+let input = ""
 
-while numGuesses < 3 {
-
-    guess = input("Enter a letter: ")
-    print(guess)
-    numGuesses = numGuesses + 1
-
+while numInputs < maxInputs {
+    input = input("Enter something: ")
+    userInputs.add(input)
+    numInputs = numInputs + 1
 }
+
+print("User entered")
+print(userInputs)
+
+print("After removing all 'a's")
+userInputs.removeAll("a")
+print(userInputs)

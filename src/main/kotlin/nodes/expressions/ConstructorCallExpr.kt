@@ -1,5 +1,6 @@
 package nodes.expressions
 
+import evaluator.EnvironmentManager
 import standard_lib.objects.ListRF
 import evaluator.ValueType
 import nodes.interfaces.Expression
@@ -13,10 +14,8 @@ class ConstructorCallExpr(private val constructorName: String, private val expre
     }
 
     override fun eval(): Pair<Any, ValueType> {
-        if (constructorName == "List") {
-            return Pair(ListRF(), ValueType.OBJECT)
-        }
-        Runtime.raiseError("Constructor '$constructorName' does not exist!")
+        val value = EnvironmentManager.createObject(constructorName)
+        return Pair(value.getValue(), value.getType())
     }
 
     override fun toString(): String {

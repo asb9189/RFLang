@@ -7,7 +7,7 @@ import nodes.statements.*
 import runtime.Runtime
 import standard_lib.objects.ListRF
 import standard_lib.objects.Object
-import standard_lib.objects.TYPE
+import standard_lib.objects.ObjectType
 import kotlin.system.exitProcess
 
 class Evaluator {
@@ -108,17 +108,30 @@ class Evaluator {
 
             var obj = value.getValue() as Object
             when (obj.type()) {
-                TYPE.LIST -> {
-                    obj = obj as ListRF
-                    when (methodCallStmt.getMethodName()) {
-                        "add" -> {
-                            if (arguments.size != 1) {
-                                Runtime.raiseError("add expects a single argument")
+                ObjectType.USER_DEFINED -> Runtime.raiseError("User defined objects not yet implemented")
+                ObjectType.STANDARD_LIB -> {
+                    when (obj.name()) {
+                        "List" -> {
+                            obj = obj as ListRF
+                            when (methodCallStmt.getMethodName()) {
+                                "add" -> {
+                                    if (arguments.size != 1) {
+                                        Runtime.raiseError("add expects a single argument")
+                                    }
+                                    val v = arguments[0].eval()
+                                    obj.add(Value(v.first, v.second))
+                                }
+                                "remove" -> {
+                                    val v = arguments[0].eval()
+                                    obj.remove(Value(v.first, v.second))
+                                }
+                                "removeAll" -> {
+                                    val v = arguments[0].eval()
+                                    obj.removeAll(Value(v.first, v.second))
+                                }
+                                else -> Runtime.raiseError("List does not have method '${methodCallStmt.getMethodName()}'")
                             }
-                            val v = arguments[0].eval()
-                            obj.add(Value(v.first, v.second))
                         }
-                        else -> Runtime.raiseError("List does not have method '${methodCallStmt.getMethodName()}'")
                     }
                 }
             }

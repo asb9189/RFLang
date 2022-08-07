@@ -1,9 +1,11 @@
 package evaluator
 
+import nodes.interfaces.Expression
 import nodes.interfaces.Statement
 import runtime.Runtime
 import standard_lib.StandardLibBuilder
-import standard_lib.objects.Object
+import standard_lib.objects.ListRF
+import standard_lib.objects.ObjectType
 import kotlin.collections.HashMap
 import java.util.*
 
@@ -13,12 +15,17 @@ class EnvironmentManager {
         private val mainEnv: Environment = Environment()
         private val functionEnvStack: Stack<Environment> = Stack()
         private val functionTable: HashMap<String, Function> = HashMap()
+        private val objectTable: HashMap<String, ObjectType> = HashMap()
+
+        private const val OBJECT_LIST = "List"
 
         init {
             val standardLibFunctions = StandardLibBuilder.buildStandardLibFunctions()
             for (func in standardLibFunctions) {
                 functionTable[func.getFunctionName()] = func
             }
+
+            objectTable[OBJECT_LIST] = ObjectType.STANDARD_LIB
         }
 
         fun declareVariable(symbol: String, value: Any, type: ValueType) {
@@ -73,6 +80,30 @@ class EnvironmentManager {
             }
         }
 
+        fun createObject(objectName: String): Value {
+            if (doesObjectExist(objectName)) {
+                objectTable[objectName]?.let {
+                    return createObjectHelper(objectName, it)
+                } ?: run {
+                    Runtime.raiseError("Object '$objectName' is not defined")
+                }
+            } else {
+                Runtime.raiseError("Object '$objectName' is not defined")
+            }
+        }
+
+        private fun createObjectHelper(objectName: String, objectType: ObjectType): Value {
+            return when (objectType) {
+                ObjectType.USER_DEFINED -> Runtime.raiseError("User defined objects are not yet supported")
+                ObjectType.STANDARD_LIB -> {
+                    when (objectName) {
+                        OBJECT_LIST -> Value(ListRF(), ValueType.OBJECT)
+                        else -> Runtime.raiseError("Internal error while creating object")
+                    }
+                }
+            }
+        }
+
         fun pushFunctionEnvironment() {
             functionEnvStack.push(Environment())
         }
@@ -87,6 +118,12 @@ class EnvironmentManager {
 
         private fun doesFunctionExist(functionName: String): Boolean {
             functionTable[functionName]?.let {
+                return true
+            } ?: return false
+        }
+
+        private fun doesObjectExist(objectName: String): Boolean {
+            objectTable[objectName]?.let {
                 return true
             } ?: return false
         }
