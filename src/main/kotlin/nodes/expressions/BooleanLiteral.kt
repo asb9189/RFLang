@@ -1,6 +1,7 @@
 package nodes.expressions
 
 import evaluator.Environment
+import evaluator.Value
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
@@ -12,8 +13,8 @@ class BooleanLiteral (value: Boolean): Node(), Expression {
         this.value = value
     }
 
-    override fun eval(): Pair<Any, ValueType> {
-        return Pair(value, ValueType.BOOLEAN)
+    override fun eval(): Value {
+        return Value(value, ValueType.BOOLEAN)
     }
 
     override fun toString(): String {

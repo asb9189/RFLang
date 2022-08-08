@@ -17,16 +17,16 @@ fun main(args: Array<String>) {
     }
 
     val tokens = Scanner(File(filePath).reader()).scan()
-    println("tokens:")
-    for (token in tokens) {
-        println(token)
-    }
+//    println("tokens:")
+//    for (token in tokens) {
+//        println(token)
+//    }
 
-    println("\n\n\n")
+//    println("\n\n\n")
 
     val program = Parser(tokens).parse()
-    println("Statements:")
-    println(program.toString())
+//    println("Statements:")
+//    println(program.toString())
 
     Evaluator.run(program)
 

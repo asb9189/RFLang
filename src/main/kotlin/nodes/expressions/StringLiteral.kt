@@ -13,8 +13,8 @@ class StringLiteral (value: String): Node(), Expression {
         this.value = value
     }
 
-    override fun eval(): Pair<Any, ValueType> {
-        return Pair(value, ValueType.STRING)
+    override fun eval(): Value {
+        return Value(value, ValueType.STRING)
     }
 
     override fun toString(): String {

@@ -1,5 +1,6 @@
 package nodes.expressions
 
+import evaluator.Value
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
@@ -21,9 +22,13 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
         this.operator = operator
     }
 
-    override fun eval(): Pair<Any, ValueType> {
-        val (lhs_value, lhs_type) = lhs.eval()
-        val (rhs_value, rhs_type) = rhs.eval()
+    override fun eval(): Value {
+        val lhsValue = lhs.eval()
+        val rhsValue = rhs.eval()
+        val lhs_value = lhsValue.getValue()
+        val rhs_value = rhsValue.getValue()
+        val lhs_type = lhsValue.getType()
+        val rhs_type = rhsValue.getType()
 
         return when (operator) {
             TokenType.EQ_EQ -> {
@@ -35,15 +40,15 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                 return when (lhs_type) {
                     ValueType.INTEGER -> {
                         val equal = (lhs_value as Int) == (rhs_value as Int)
-                        Pair(equal, ValueType.BOOLEAN)
+                        return Value(equal, ValueType.BOOLEAN)
                     }
                     ValueType.STRING -> {
                         val equal = (lhs_value as String) == (rhs_value as String)
-                        Pair(equal, ValueType.BOOLEAN)
+                        return Value(equal, ValueType.BOOLEAN)
                     }
                     ValueType.BOOLEAN -> {
                         val equal = (lhs_value as Boolean) == (rhs_value as Boolean)
-                        Pair(equal, ValueType.BOOLEAN)
+                        return Value(equal, ValueType.BOOLEAN)
                     }
                     ValueType.NULL -> {
                         Runtime.raiseError("null reference in binop expression")
@@ -61,15 +66,15 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                 return when (lhs_type) {
                     ValueType.INTEGER -> {
                         val notEqual = (lhs_value as Int) != (rhs_value as Int)
-                        Pair(notEqual, ValueType.BOOLEAN)
+                        return Value(notEqual, ValueType.BOOLEAN)
                     }
                     ValueType.STRING -> {
                         val notEqual = (lhs_value as String) != (rhs_value as String)
-                        Pair(notEqual, ValueType.BOOLEAN)
+                        return Value(notEqual, ValueType.BOOLEAN)
                     }
                     ValueType.BOOLEAN -> {
                         val notEqual = (lhs_value as Boolean) != (rhs_value as Boolean)
-                        Pair(notEqual, ValueType.BOOLEAN)
+                        return Value(notEqual, ValueType.BOOLEAN)
                     }
                     ValueType.NULL -> {
                         Runtime.raiseError("null reference in binop expression")
@@ -83,7 +88,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Int) < (rhs_value as Int)
-                Pair(result, ValueType.BOOLEAN)
+                return Value(result, ValueType.BOOLEAN)
             }
             TokenType.LT_EQ -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
@@ -91,7 +96,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Int) <= (rhs_value as Int)
-                Pair(result, ValueType.BOOLEAN)
+                return Value(result, ValueType.BOOLEAN)
             }
             TokenType.GT -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
@@ -99,7 +104,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Int) > (rhs_value as Int)
-                Pair(result, ValueType.BOOLEAN)
+                return Value(result, ValueType.BOOLEAN)
             }
             TokenType.GT_EQ -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
@@ -107,7 +112,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Int) >= (rhs_value as Int)
-                Pair(result, ValueType.BOOLEAN)
+                return Value(result, ValueType.BOOLEAN)
             }
             TokenType.PLUS -> {
                 if (lhs_type != rhs_type) {
@@ -118,11 +123,11 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                 when (lhs_type) {
                     ValueType.INTEGER -> {
                         val result = (lhs_value as Int) + (rhs_value as Int)
-                        Pair(result, ValueType.INTEGER)
+                        return Value(result, ValueType.INTEGER)
                     }
                     ValueType.STRING -> {
                         val result = (lhs_value as String) + (rhs_value as String)
-                        Pair(result, ValueType.STRING)
+                        return Value(result, ValueType.STRING)
                     }
                     else -> {
                         println("addition can only occur on integers and strings")
@@ -136,7 +141,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Int) - (rhs_value as Int)
-                Pair(result, ValueType.INTEGER)
+                return Value(result, ValueType.INTEGER)
             }
             TokenType.MULTIPLY -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
@@ -144,7 +149,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Int) * (rhs_value as Int)
-                Pair(result, ValueType.INTEGER)
+                return Value(result, ValueType.INTEGER)
             }
             TokenType.DIVIDE -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
@@ -152,7 +157,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Int) / (rhs_value as Int)
-                Pair(result, ValueType.INTEGER)
+                return Value(result, ValueType.INTEGER)
             }
             TokenType.KEYWORD_AND -> {
                 if (lhs_type != ValueType.BOOLEAN || rhs_type != ValueType.BOOLEAN) {
@@ -160,7 +165,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Boolean) && (rhs_value as Boolean)
-                Pair(result, ValueType.BOOLEAN)
+                return Value(result, ValueType.BOOLEAN)
             }
             TokenType.KEYWORD_OR -> {
                 if (lhs_type != ValueType.BOOLEAN || rhs_type != ValueType.BOOLEAN) {
@@ -168,7 +173,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
                 val result = (lhs_value as Boolean) || (rhs_value as Boolean)
-                Pair(result, ValueType.BOOLEAN)
+                return Value(result, ValueType.BOOLEAN)
             }
 
             else -> {

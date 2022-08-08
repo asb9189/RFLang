@@ -1,6 +1,7 @@
 package nodes.expressions
 
 import evaluator.EnvironmentManager
+import evaluator.Value
 import standard_lib.objects.ListRF
 import evaluator.ValueType
 import nodes.interfaces.Expression
@@ -13,9 +14,9 @@ class ConstructorCallExpr(private val constructorName: String, private val expre
         return constructorName
     }
 
-    override fun eval(): Pair<Any, ValueType> {
+    override fun eval(): Value {
         val value = EnvironmentManager.createObject(constructorName)
-        return Pair(value.getValue(), value.getType())
+        return Value(value.getValue(), value.getType())
     }
 
     override fun toString(): String {

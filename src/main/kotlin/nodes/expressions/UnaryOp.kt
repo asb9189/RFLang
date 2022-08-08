@@ -1,5 +1,6 @@
 package nodes.expressions
 
+import evaluator.Value
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
@@ -16,11 +17,11 @@ class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
         this.expression = expression
     }
 
-    override fun eval(): Pair<Any, ValueType> {
-        val (value, type) = expression.eval()
+    override fun eval(): Value {
+        val value = expression.eval()
         when (operator) {
             TokenType.BANG -> {
-                when (type) {
+                when (value.getType()) {
                     ValueType.INTEGER -> {
                         println("invalid unary operation")
                         exitProcess(0)
@@ -30,16 +31,16 @@ class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
                         exitProcess(0)
                     }
                     ValueType.BOOLEAN -> {
-                        if (value == true) {
-                            return Pair(false, type)
+                        if (value.getValue() == true) {
+                            return Value(false, ValueType.BOOLEAN)
                         }
                     }
                 }
             }
             TokenType.MINUS -> {
-                when (type) {
+                when (value.getType()) {
                     ValueType.INTEGER -> {
-                        return Pair( (value as Int) * -1, type)
+                        return Value( (value.getValue() as Int) * -1, ValueType.INTEGER)
                     }
                     ValueType.STRING -> {
                         println("invalid unary operation")

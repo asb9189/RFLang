@@ -1,7 +1,7 @@
 package nodes.interfaces
 
-import evaluator.ValueType
+import evaluator.Value
 
 interface Expression {
-    fun eval(): Pair<Any, ValueType>
+    fun eval(): Value
 }

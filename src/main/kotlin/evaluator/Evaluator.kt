@@ -51,31 +51,31 @@ class Evaluator {
 
         private fun executeVarDecStmt(varDec: VarDec) {
             val varName: String = varDec.getVarName()
-            val (value, type) = varDec.getValue().eval()
-            EnvironmentManager.declareVariable(varName, value, type)
+            val value = varDec.getValue().eval()
+            EnvironmentManager.declareVariable(varName, value.getValue(), value.getType())
         }
 
         private fun executeVarAssignStmt(varAssign: VarAssign) {
             val varName: String = varAssign.getVarName()
-            val (value, type) = varAssign.getValue().eval()
-            EnvironmentManager.updateVariable(varName, value, type)
+            val value = varAssign.getValue().eval()
+            EnvironmentManager.updateVariable(varName, value.getValue(), value.getType())
         }
 
         private fun executeWhileStmt(whileStmt: While) {
-            var pair = whileStmt.getCondition().eval()
+            var value = whileStmt.getCondition().eval()
             val body = whileStmt.getBody()
 
-            if (pair.second != ValueType.BOOLEAN) {
+            if (value.getType() != ValueType.BOOLEAN) {
                 println("While stmt condition did not resolve to type Boolean")
                 exitProcess(0)
             }
 
-            while (pair.first as Boolean) {
+            while (value.getValue() as Boolean) {
                 for (stmt in body) {
                     executeStatement(stmt)
                 }
-                pair = whileStmt.getCondition().eval()
-                if (pair.second != ValueType.BOOLEAN) {
+                value = whileStmt.getCondition().eval()
+                if (value.getType() != ValueType.BOOLEAN) {
                     println("While stmt condition did not resolve to type Boolean")
                     exitProcess(0)
                 }
@@ -83,15 +83,15 @@ class Evaluator {
         }
 
         private fun executeRepeatStmt(repeatStmt: Repeat) {
-            val pair = repeatStmt.getCondition().eval()
+            val value = repeatStmt.getCondition().eval()
             val body = repeatStmt.getBody()
 
-            if (pair.second != ValueType.INTEGER) {
+            if (value.getType() != ValueType.INTEGER) {
                 println("While stmt condition did not resolve to type Boolean")
                 exitProcess(0)
             }
 
-            repeat (pair.first as Int) {
+            repeat (value.getValue() as Int) {
                 for (stmt in body) {
                     executeStatement(stmt)
                 }
@@ -118,16 +118,13 @@ class Evaluator {
                                     if (arguments.size != 1) {
                                         Runtime.raiseError("add expects a single argument")
                                     }
-                                    val v = arguments[0].eval()
-                                    obj.add(Value(v.first, v.second))
+                                    obj.add(arguments[0].eval())
                                 }
                                 "remove" -> {
-                                    val v = arguments[0].eval()
-                                    obj.remove(Value(v.first, v.second))
+                                    obj.remove(arguments[0].eval())
                                 }
                                 "removeAll" -> {
-                                    val v = arguments[0].eval()
-                                    obj.removeAll(Value(v.first, v.second))
+                                    obj.removeAll(arguments[0].eval())
                                 }
                                 else -> Runtime.raiseError("List does not have method '${methodCallStmt.getMethodName()}'")
                             }
@@ -164,11 +161,11 @@ class Evaluator {
 
                     EnvironmentManager.pushFunctionEnvironment()
                     arguments.forEachIndexed { index, expression ->
-                        val (value, type) = expression.eval()
+                        val value = expression.eval()
                         EnvironmentManager.declareVariable(
                             functionParams[index],
-                            value,
-                            type
+                            value.getValue(),
+                            value.getType()
                         )
                     }
 
@@ -194,7 +191,7 @@ class Evaluator {
             }
         }
 
-        fun executeReturnStmt(returnStmt: Return): Pair<Any, ValueType> {
+        fun executeReturnStmt(returnStmt: Return): Value {
             if (EnvironmentManager.isFunctionEnvironmentEmpty()) {
                 exitProcess(0)
             }
@@ -202,23 +199,23 @@ class Evaluator {
         }
 
         private fun executeIfStatement(ifStmt: If) {
-            val (value, type) = ifStmt.getIfCondition().eval()
-            if (type != ValueType.BOOLEAN) {
+            val value = ifStmt.getIfCondition().eval()
+            if (value.getType() != ValueType.BOOLEAN) {
                 Runtime.raiseError("if <expr> must resolve to type Boolean")
             }
 
-            if (value as Boolean) {
+            if (value.getValue() as Boolean) {
                 for (stmt in ifStmt.getIfStmts()) {
                     executeStatement(stmt)
                 }
             } else {
                 for (elif in ifStmt.getElseIfList()) {
-                    val (elifVal, elifValType) = elif.getCondition().eval()
-                    if (elifValType != ValueType.BOOLEAN) {
+                    val elifValue = elif.getCondition().eval()
+                    if (elifValue.getType() != ValueType.BOOLEAN) {
                         Runtime.raiseError("elif <expr> must resolve to type Boolean")
                     }
 
-                    if (elifVal as Boolean) {
+                    if (elifValue.getValue() as Boolean) {
                         for (stmt in elif.getStmts()) {
                             executeStatement(stmt)
                         }

@@ -21,7 +21,7 @@ class FuncCallExpr(private val functionName: String, private val arguments: List
         return arguments.size
     }
 
-    override fun eval(): Pair<Any, ValueType> {
+    override fun eval(): Value {
 
         var function = EnvironmentManager.getFunction(functionName)
         when (function.getFunctionType()) {
@@ -38,26 +38,26 @@ class FuncCallExpr(private val functionName: String, private val arguments: List
 
                 EnvironmentManager.pushFunctionEnvironment()
                 arguments.forEachIndexed { index, expression ->
-                    val (value, type) = expression.eval()
+                    val value = expression.eval()
                     EnvironmentManager.declareVariable(
                         functionParams[index],
-                        value,
-                        type
+                        value.getValue(),
+                        value.getType()
                     )
                 }
 
                 for (stmt in functionBody) {
                     if (stmt.getType() == StatementType.RETURN_STMT) {
-                        val (rvalue, rtype) = Evaluator.executeReturnStmt(stmt as Return)
+                        val value = Evaluator.executeReturnStmt(stmt as Return)
 
                         EnvironmentManager.popFunctionEnvironment()
-                        return Pair(rvalue, rtype)
+                        return value
                     }
                     Evaluator.executeStatement(stmt)
                 }
 
                 EnvironmentManager.popFunctionEnvironment()
-                return Pair(-1, ValueType.NULL)
+                return Value(-1, ValueType.NULL)
             }
             FunctionType.STANDARD_LIB -> {
                 function = function as StandardLibFunction
@@ -68,7 +68,7 @@ class FuncCallExpr(private val functionName: String, private val arguments: List
                                 " ${arguments.size} argument(s) instead")
                 }
                 val value = function.run(arguments)
-                return Pair(value.getValue(), value.getType())
+                return Value(value.getValue(), value.getType())
             }
         }
     }

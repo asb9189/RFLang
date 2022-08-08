@@ -1,6 +1,7 @@
 package nodes.expressions
 
 import evaluator.EnvironmentManager
+import evaluator.Value
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
@@ -25,9 +26,9 @@ class Variable(varName: String): Node(), Expression {
         return id
     }
 
-    override fun eval(): Pair<Any, ValueType> {
+    override fun eval(): Value {
         EnvironmentManager.getVariable(varName).let {
-            return Pair(it.getValue(), it.getType())
+            return it
         }
     }
 

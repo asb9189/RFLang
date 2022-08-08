@@ -30,7 +30,7 @@ class MethodCallExpr(
         return arguments.size
     }
 
-    override fun eval(): Pair<Any, ValueType> {
+    override fun eval(): Value {
         var value = EnvironmentManager.getVariable(objectName)
 
         if (value.getType() != ValueType.OBJECT) {
@@ -49,32 +49,22 @@ class MethodCallExpr(
                                 if (arguments.size != 1) {
                                     Runtime.raiseError("add expects a single argument")
                                 }
-                                val v = arguments[0].eval()
-                                val pair = obj.add(Value(v.first, v.second))
-                                return Pair(pair.getValue(), pair.getType())
+                                return obj.add(arguments[0].eval())
                             }
                             "remove" -> {
-                                val v = arguments[0].eval()
-                                val pair = obj.remove(Value(v.first, v.second))
-                                return Pair(pair.getValue(), pair.getType())
+                                return obj.remove(arguments[0].eval())
                             }
                             "removeAll" -> {
-                                val v = arguments[0].eval()
-                                val pair = obj.removeAll(Value(v.first, v.second))
-                                return Pair(pair.getValue(), pair.getType())
+                                return obj.removeAll(arguments[0].eval())
                             }
                             "length" -> {
-                                val pair = obj.length()
-                                return Pair(pair.getValue(), pair.getType())
+                                return obj.length()
                             }
                             "isEmpty" -> {
-                                val pair = obj.isEmpty()
-                                return Pair(pair.getValue(), pair.getType())
+                                return obj.isEmpty()
                             }
                             "contains" -> {
-                                val v = arguments[0].eval()
-                                val pair = obj.contains(Value(v.first, v.second))
-                                return Pair(pair.getValue(), pair.getType())
+                                return obj.contains(arguments[0].eval())
                             }
                             else -> Runtime.raiseError("List does not have method '${methodName}'")
                         }
