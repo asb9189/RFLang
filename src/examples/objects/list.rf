@@ -1,3 +1,9 @@
+let secret = List[]
+secret.add("h")
+secret.add("e")
+secret.add("l")
+secret.add("l")
+secret.add("o")
 
 let userInputs = List[]
 let maxInputs = 5
@@ -6,13 +12,20 @@ let input = ""
 
 while numInputs < maxInputs {
     input = input("Enter something: ")
-    userInputs.add(input)
-    numInputs = numInputs + 1
+
+    if userInputs.contains(input) {
+        print("You already guessed that letter. Try again!")
+    } else {
+        secret.removeAll(input)
+        userInputs.add(input)
+        numInputs = numInputs + 1
+    }
 }
 
-print("User entered")
-print(userInputs)
-
-print("After removing all 'a's")
-userInputs.removeAll("a")
-print(userInputs)
+if secret.length() == 0 {
+    print("You win!")
+} else {
+    print("You lose :(")
+    print("Characters left over: ")
+    print(secret)
+}

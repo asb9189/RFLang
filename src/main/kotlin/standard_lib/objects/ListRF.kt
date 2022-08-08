@@ -10,7 +10,7 @@ class ListRF: Object(), iterable {
     private var list: MutableList<Any> = mutableListOf()
     private var type: ValueType = ValueType.NULL
 
-    fun add(value: Value) {
+    fun add(value: Value): Value {
         if (type == ValueType.NULL) {
             type = value.getType()
         }
@@ -21,26 +21,43 @@ class ListRF: Object(), iterable {
             Runtime.raiseError("Cannot add type ${ValueType.NULL} to List")
         }
         list.add(value.getValue())
+        return Value(-1, ValueType.NULL)
     }
 
-    fun remove(value: Value) {
+    fun remove(value: Value): Value {
         if (list.isEmpty().not()) {
             if (value.getType() != type) {
-                Runtime.raiseError("Cannot remove ${value.getType()} from List of type ${type}")
+                Runtime.raiseError("Cannot remove ${value.getType()} from List of type $type")
             }
             list.remove(value.getValue())
         }
+        return Value(-1, ValueType.NULL)
     }
 
-    fun removeAll(value: Value) {
+    fun removeAll(value: Value): Value {
         if (list.isEmpty().not()) {
             if (value.getType() != type) {
-                Runtime.raiseError("Cannot remove ${value.getType()} from List of type ${type}")
+                Runtime.raiseError("Cannot remove ${value.getType()} from List of type $type")
             }
             list.removeIf {
                 value.getValue() == it
             }
         }
+        return Value(-1, ValueType.NULL)
+    }
+
+    fun contains(value: Value): Value {
+        if (list.isEmpty().not()) {
+            if (value.getType() != type) {
+                Runtime.raiseError("Cannot check for type ${value.getType()} from List of type $type")
+            }
+            return Value(list.contains(value.getValue()), ValueType.BOOLEAN)
+        }
+        return Value(false, ValueType.BOOLEAN)
+    }
+
+    fun length(): Value {
+        return Value(list.size, ValueType.INTEGER)
     }
 
     fun isEmpty(): Value {
