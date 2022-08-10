@@ -1,6 +1,3 @@
-- remove Pair<value, valueType> and replace with Value object
-    - not sure how I forgot to use it...
-
 - Allow return statements to have an empty expression (parsing issue)
     - idea: Only use return if you want to return a value, otherwise use a 'break'
     statement. Otherwise, parsing would get messy unless I wanted to add a semicolon.
