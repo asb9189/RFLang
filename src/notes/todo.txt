@@ -2,20 +2,37 @@
     - idea: Only use return if you want to return a value, otherwise use a 'break'
     statement. Otherwise, parsing would get messy unless I wanted to add a semicolon.
 
-- object class
-    idea: Abstract Object class that each object overrides.
-    Each object will have an enum list of available methods with their
-    implementation living inside the class (both stdlib objects and user defined ones)
-    - Ex: ArrayList
+- Add 'exit' statement to end the program instantly
 
-    - Building an ArrayList ex:
-        "let myList = List[]"
-            or
-        "let myList = List[1, 2, 3]"
-
-    - method detection would be: <IDENTIFIER>.<IDENTIFIER>(<PARAMS>)
+- move function calls and method calls into a single function
+    inside the evaluator class
 
 - iterator interface for objects
     - would allow support for a 'for each loop'
 
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
+
+optional stuff:
+
+- figure out how to deal with variable creation / reuse
+    ex:
+
+        let input = ""
+        while True {
+
+            input = input("...")
+
+        }
+
+    but it would be better if we could do
+
+    while True {
+
+        input = input("...")
+
+    }
+
+    // should input exist down here?
+
+    ideas: maybe 'let' will map to constant global vars and "var" map to variables that can be redeclared
+        and cease to exist after the current scope ends

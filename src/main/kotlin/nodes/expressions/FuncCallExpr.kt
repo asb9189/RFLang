@@ -52,6 +52,9 @@ class FuncCallExpr(private val functionName: String, private val arguments: List
 
                         EnvironmentManager.popFunctionEnvironment()
                         return value
+                    } else if (stmt.getType() == StatementType.BREAK_STMT) {
+                        EnvironmentManager.popFunctionEnvironment()
+                        return Value(-1, ValueType.NULL)
                     }
                     Evaluator.executeStatement(stmt)
                 }

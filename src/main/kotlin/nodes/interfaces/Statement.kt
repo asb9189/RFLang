@@ -9,9 +9,10 @@ enum class StatementType {
     FUNC_DEF_STMT,
     METHOD_CALL_STMT,
     RETURN_STMT,
+    BREAK_STMT,
     IF_STMT
 }
 
 interface Statement {
-    abstract fun getType(): StatementType
+    fun getType(): StatementType
 }

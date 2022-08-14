@@ -14,6 +14,7 @@ enum class TokenType {
     KEYWORD_IF,
     KEYWORD_ELIF,
     KEYWORD_ELSE,
+    KEYWORD_BREAK,
     IDENTIFIER,
     INTEGER_LITERAL,
     STRING_LITERAL,

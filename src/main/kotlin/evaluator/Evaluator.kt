@@ -42,6 +42,7 @@ class Evaluator {
                 StatementType.WHILE_STMT -> executeWhileStmt(statement as While)
                 StatementType.REPEAT_STMT -> executeRepeatStmt(statement as Repeat)
                 StatementType.RETURN_STMT -> executeReturnStmt(statement as Return)
+                StatementType.BREAK_STMT -> executeBreakStmt()
                 StatementType.FUNC_CALL_STMT -> executeFuncCallStmt(statement as FuncCallStmt)
                 StatementType.FUNC_DEF_STMT -> executeFuncDefStmtStmt(statement as FuncDef)
                 StatementType.METHOD_CALL_STMT -> executeMethodCallStmt(statement as MethodCallStmt)
@@ -170,7 +171,7 @@ class Evaluator {
                     }
 
                     for (stmt in functionBody) {
-                        if (stmt.getType() == StatementType.RETURN_STMT) {
+                        if (stmt.getType() == StatementType.RETURN_STMT || stmt.getType() == StatementType.BREAK_STMT) {
                             EnvironmentManager.popFunctionEnvironment()
                             return
                         }
@@ -188,6 +189,12 @@ class Evaluator {
                     }
                     function.run(arguments)
                 }
+            }
+        }
+
+        private fun executeBreakStmt() {
+            if (EnvironmentManager.isFunctionEnvironmentEmpty()) {
+                Runtime.raiseError("Cannot 'break' from main scope")
             }
         }
 

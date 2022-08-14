@@ -14,6 +14,7 @@ const val KEYWORD_FALSE = "false"
 const val KEYWORD_IF = "if"
 const val KEYWORD_ELIF = "elif"
 const val KEYWORD_ELSE = "else"
+const val KEYWORD_BREAK = "break"
 
 val KEYWORDS_MAP = hashMapOf(
     KEYWORD_LET to TokenType.KEYWORD_LET,
@@ -27,5 +28,6 @@ val KEYWORDS_MAP = hashMapOf(
     KEYWORD_FALSE to TokenType.KEYWORD_FALSE,
     KEYWORD_IF to TokenType.KEYWORD_IF,
     KEYWORD_ELIF to TokenType.KEYWORD_ELIF,
-    KEYWORD_ELSE to TokenType.KEYWORD_ELSE
+    KEYWORD_ELSE to TokenType.KEYWORD_ELSE,
+    KEYWORD_BREAK to TokenType.KEYWORD_BREAK
 )
