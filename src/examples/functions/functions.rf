@@ -2,6 +2,8 @@
 let question = "What is your name?: "
 let input = input(question)
 
+hello(5)
+
 if input == "Yaga RF" {
 
     print("true!")

@@ -1,19 +1,14 @@
-package nodes.statements
+package nodes.expression_and_statement
 
+import evaluator.*
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
+import nodes.statements.Return
+import runtime.Runtime
 
-class FuncCallStmt(functionName: String, arguments: List<Expression>): Node(), Statement {
-
-    private val functionName: String
-    private val arguments: List<Expression>
-
-    init {
-        this.functionName = functionName
-        this.arguments = arguments
-    }
+class FuncCall(private val functionName: String, private val arguments: List<Expression>): Node(), Expression, Statement {
 
     fun getFunctionName(): String {
         return functionName
@@ -21,6 +16,10 @@ class FuncCallStmt(functionName: String, arguments: List<Expression>): Node(), S
 
     fun getArguments(): List<Expression> {
         return arguments
+    }
+
+    override fun eval(): Value {
+        return Evaluator.executeFuncCall(this)
     }
 
     override fun getType(): StatementType {

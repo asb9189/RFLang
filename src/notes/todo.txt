@@ -4,8 +4,14 @@
 
 - Add 'exit' statement to end the program instantly
 
+- Remove the '-1' from  'return Value(-1. ValueType.NULL)' instances. It should never be an issue
+    because the type is NULL, but it would be preferable to not pass around a hardcoded integer value
+
 - move function calls and method calls into a single function
     inside the evaluator class
+
+    idea: Make funccall and methodcall a single node that implements both interfaces
+    and the eval function should just call a public function inside the evaluator
 
 - iterator interface for objects
     - would allow support for a 'for each loop'

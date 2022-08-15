@@ -1,6 +1,8 @@
 package parser
 
 import nodes.*
+import nodes.expression_and_statement.FuncCall
+import nodes.expression_and_statement.MethodCall
 import nodes.expressions.*
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
@@ -61,9 +63,9 @@ class Parser(tokenStream: List<Token>) {
             TokenType.KEYWORD_IF -> return parseIfStmt()
             TokenType.IDENTIFIER -> {
                 if (peek()?.getType() == TokenType.LEFT_PAREN) {
-                    return parseFunctionCall(FUNCTION.STATEMENT) as FuncCallStmt
+                    return parseFunctionCall(FUNCTION.STATEMENT) as FuncCall
                 } else if (peek()?.getType() == TokenType.PERIOD) {
-                    return parseMethodCall(METHOD.STATEMENT) as MethodCallStmt
+                    return parseMethodCall(METHOD.STATEMENT) as MethodCall
                 }
                 return parseVarAssignmentStmt()
             }
@@ -128,17 +130,13 @@ class Parser(tokenStream: List<Token>) {
         if (currentToken.getType() == TokenType.RIGHT_PAREN) {
             matchAndConsume(TokenType.RIGHT_PAREN)
 
-            return when (method) {
-                METHOD.STATEMENT -> MethodCallStmt(objectName, methodName, emptyList())
-                METHOD.EXPRESSION -> MethodCallExpr(objectName, methodName, emptyList())
-            }
+            return MethodCall(objectName, methodName, emptyList())
+
         }
 
         val arguments = parseArguments()
-        return when (method) {
-            METHOD.STATEMENT -> MethodCallStmt(objectName, methodName, arguments)
-            METHOD.EXPRESSION -> MethodCallExpr(objectName, methodName, arguments)
-        }
+        return MethodCall(objectName, methodName, arguments)
+
     }
 
     private fun parseFunctionCall(func: FUNCTION): Any {
@@ -147,18 +145,12 @@ class Parser(tokenStream: List<Token>) {
 
         if (currentToken.getType() == TokenType.RIGHT_PAREN) {
             matchAndConsume(TokenType.RIGHT_PAREN)
-            return when (func) {
-                FUNCTION.STATEMENT -> FuncCallStmt(functionName, emptyList())
-                FUNCTION.EXPRESSION -> FuncCallExpr(functionName, emptyList())
-            }
+            return FuncCall(functionName, emptyList())
         }
 
         val arguments = parseArguments()
 
-        return when (func) {
-            FUNCTION.STATEMENT -> FuncCallStmt(functionName, arguments)
-            FUNCTION.EXPRESSION -> FuncCallExpr(functionName, arguments)
-        }
+        return FuncCall(functionName, arguments)
     }
 
     private fun parseArguments(): List<Expression> {
@@ -370,11 +362,11 @@ class Parser(tokenStream: List<Token>) {
         if (match(TokenType.INTEGER_LITERAL)) { return IntegerLiteral(previous().getLiteral().toInt()) }
         if (currentToken.getType() == TokenType.IDENTIFIER) {
             if (peek()?.getType() == TokenType.LEFT_PAREN) {
-                return parseFunctionCall(FUNCTION.EXPRESSION) as FuncCallExpr
+                return parseFunctionCall(FUNCTION.EXPRESSION) as FuncCall
             } else if (peek()?.getType() == TokenType.LEFT_BRACKET) {
                 return parseConstructorCall() as ConstructorCallExpr
             } else if (peek()?.getType() == TokenType.PERIOD) {
-                return parseMethodCall(METHOD.EXPRESSION) as MethodCallExpr
+                return parseMethodCall(METHOD.EXPRESSION) as MethodCall
             }
             match(TokenType.IDENTIFIER)
             return Variable(previous().getLiteral())

@@ -1,6 +1,8 @@
 package evaluator
 
 import nodes.Program
+import nodes.expression_and_statement.FuncCall
+import nodes.expression_and_statement.MethodCall
 import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.statements.*
@@ -8,6 +10,7 @@ import runtime.Runtime
 import standard_lib.objects.ListRF
 import standard_lib.objects.Object
 import standard_lib.objects.ObjectType
+import java.lang.reflect.Method
 import kotlin.system.exitProcess
 
 class Evaluator {
@@ -43,9 +46,9 @@ class Evaluator {
                 StatementType.REPEAT_STMT -> executeRepeatStmt(statement as Repeat)
                 StatementType.RETURN_STMT -> executeReturnStmt(statement as Return)
                 StatementType.BREAK_STMT -> executeBreakStmt()
-                StatementType.FUNC_CALL_STMT -> executeFuncCallStmt(statement as FuncCallStmt)
+                StatementType.FUNC_CALL_STMT -> executeFuncCall(statement as FuncCall)
                 StatementType.FUNC_DEF_STMT -> executeFuncDefStmtStmt(statement as FuncDef)
-                StatementType.METHOD_CALL_STMT -> executeMethodCallStmt(statement as MethodCallStmt)
+                StatementType.METHOD_CALL_STMT -> executeMethodCall(statement as MethodCall)
                 StatementType.IF_STMT -> executeIfStatement(statement as If)
             }
         }
@@ -99,9 +102,9 @@ class Evaluator {
             }
         }
 
-        private fun executeMethodCallStmt(methodCallStmt: MethodCallStmt) {
-            var value = EnvironmentManager.getVariable(methodCallStmt.getObjectName())
-            val arguments = methodCallStmt.getArguments()
+        fun executeMethodCall(methodCall: MethodCall): Value {
+            var value = EnvironmentManager.getVariable(methodCall.getObjectName())
+            val arguments = methodCall.getArguments()
 
             if (value.getType() != ValueType.OBJECT) {
                 Runtime.raiseError("${value.getType()} does not support method calls")
@@ -114,22 +117,32 @@ class Evaluator {
                     when (obj.name()) {
                         "List" -> {
                             obj = obj as ListRF
-                            when (methodCallStmt.getMethodName()) {
+                            when (methodCall.getMethodName()) {
                                 "add" -> {
                                     if (arguments.size != 1) {
                                         Runtime.raiseError("add expects a single argument")
                                     }
-                                    obj.add(arguments[0].eval())
+                                    return obj.add(arguments[0].eval())
                                 }
                                 "remove" -> {
-                                    obj.remove(arguments[0].eval())
+                                    return obj.remove(arguments[0].eval())
                                 }
                                 "removeAll" -> {
-                                    obj.removeAll(arguments[0].eval())
+                                    return obj.removeAll(arguments[0].eval())
                                 }
-                                else -> Runtime.raiseError("List does not have method '${methodCallStmt.getMethodName()}'")
+                                "length" -> {
+                                    return obj.length()
+                                }
+                                "isEmpty" -> {
+                                    return obj.isEmpty()
+                                }
+                                "contains" -> {
+                                    return obj.contains(arguments[0].eval())
+                                }
+                                else -> Runtime.raiseError("List does not have method '${methodCall.getMethodName()}'")
                             }
                         }
+                        else -> Runtime.raiseError("'${obj.name()}' does not exist")
                     }
                 }
             }
@@ -143,9 +156,9 @@ class Evaluator {
             )
         }
 
-        private fun executeFuncCallStmt(funcCallStmt: FuncCallStmt) {
-            val functionName = funcCallStmt.getFunctionName()
-            val arguments = funcCallStmt.getArguments()
+        fun executeFuncCall(funcCall: FuncCall): Value {
+            val functionName = funcCall.getFunctionName()
+            val arguments = funcCall.getArguments()
 
             var function = EnvironmentManager.getFunction(functionName)
             when (function.getFunctionType()) {
@@ -171,14 +184,17 @@ class Evaluator {
                     }
 
                     for (stmt in functionBody) {
-                        if (stmt.getType() == StatementType.RETURN_STMT || stmt.getType() == StatementType.BREAK_STMT) {
+                        if (stmt.getType() == StatementType.RETURN_STMT) {
+                            val value = executeReturnStmt(stmt as Return)
                             EnvironmentManager.popFunctionEnvironment()
-                            return
+                            return value
                         }
                         executeStatement(stmt)
                     }
                     EnvironmentManager.popFunctionEnvironment()
+                    return Value(-1, ValueType.NULL)
                 }
+
                 FunctionType.STANDARD_LIB -> {
                     function = function as StandardLibFunction
                     val functionParams = function.getParams()
@@ -187,7 +203,7 @@ class Evaluator {
                             "Function '$functionName' expected ${functionParams.size} argument(s) but received" +
                                     " ${arguments.size} argument(s) instead")
                     }
-                    function.run(arguments)
+                    return function.run(arguments)
                 }
             }
         }
