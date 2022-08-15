@@ -1,6 +1,7 @@
 package evaluator
 
 import nodes.Program
+import nodes.expression_and_statement.ConstructorCall
 import nodes.expression_and_statement.FuncCall
 import nodes.expression_and_statement.MethodCall
 import nodes.interfaces.Statement
@@ -50,6 +51,7 @@ class Evaluator {
                 StatementType.FUNC_DEF_STMT -> executeFuncDefStmtStmt(statement as FuncDef)
                 StatementType.METHOD_CALL_STMT -> executeMethodCall(statement as MethodCall)
                 StatementType.IF_STMT -> executeIfStatement(statement as If)
+                StatementType.CONSTRUCTOR_CALL_STMT -> executeConstructorCall(statement as ConstructorCall)
             }
         }
 
@@ -100,6 +102,11 @@ class Evaluator {
                     executeStatement(stmt)
                 }
             }
+        }
+
+        fun executeConstructorCall(constructorCall: ConstructorCall): Value {
+            val value = EnvironmentManager.createObject(constructorCall.getConstructorName())
+            return Value(value.getValue(), value.getType())
         }
 
         fun executeMethodCall(methodCall: MethodCall): Value {

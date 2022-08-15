@@ -8,6 +8,7 @@ enum class StatementType {
     FUNC_CALL_STMT,
     FUNC_DEF_STMT,
     METHOD_CALL_STMT,
+    CONSTRUCTOR_CALL_STMT,
     RETURN_STMT,
     BREAK_STMT,
     IF_STMT

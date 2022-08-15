@@ -1,4 +1,4 @@
-let secret = List[]
+let secret = List["h", "e", "l", "l", "o"]
 secret.add("h")
 secret.add("e")
 secret.add("l")

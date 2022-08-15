@@ -1,6 +1,7 @@
 package parser
 
 import nodes.*
+import nodes.expression_and_statement.ConstructorCall
 import nodes.expression_and_statement.FuncCall
 import nodes.expression_and_statement.MethodCall
 import nodes.expressions.*
@@ -112,11 +113,11 @@ class Parser(tokenStream: List<Token>) {
 
         if (currentToken.getType() == TokenType.RIGHT_BRACKET) {
             matchAndConsume(TokenType.RIGHT_BRACKET)
-            return ConstructorCallExpr(constructorName, emptyList())
+            return ConstructorCall(constructorName, emptyList())
         }
 
         val arguments = parseArguments()
-        return ConstructorCallExpr(constructorName, arguments)
+        return ConstructorCall(constructorName, arguments)
     }
 
     // TODO add support for chained method calls ( ex: myList.add(5).remove(5) )
@@ -364,7 +365,7 @@ class Parser(tokenStream: List<Token>) {
             if (peek()?.getType() == TokenType.LEFT_PAREN) {
                 return parseFunctionCall(FUNCTION.EXPRESSION) as FuncCall
             } else if (peek()?.getType() == TokenType.LEFT_BRACKET) {
-                return parseConstructorCall() as ConstructorCallExpr
+                return parseConstructorCall() as ConstructorCall
             } else if (peek()?.getType() == TokenType.PERIOD) {
                 return parseMethodCall(METHOD.EXPRESSION) as MethodCall
             }
