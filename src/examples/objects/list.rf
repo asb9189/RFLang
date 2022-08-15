@@ -1,4 +1,13 @@
-let secret = List["s", "e", "c", "r", "e", "t"]
+
+
+let secret = List[
+    "lists",
+    "just",
+    "got",
+    "so",
+    "much",
+    "easier"
+]
 
 let userInputs = List[]
 let maxInputs = 5
