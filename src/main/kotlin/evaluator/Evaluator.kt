@@ -106,6 +106,13 @@ class Evaluator {
 
         fun executeConstructorCall(constructorCall: ConstructorCall): Value {
             val value = EnvironmentManager.createObject(constructorCall.getConstructorName())
+
+            if ((value.getValue() as Object).name() == "List") {
+                val list = value.getValue() as ListRF
+                for (expr in constructorCall.getExpressions()) {
+                    list.add(expr.eval())
+                }
+            }
             return Value(value.getValue(), value.getType())
         }
 

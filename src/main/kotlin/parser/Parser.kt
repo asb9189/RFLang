@@ -116,7 +116,7 @@ class Parser(tokenStream: List<Token>) {
             return ConstructorCall(constructorName, emptyList())
         }
 
-        val arguments = parseArguments()
+        val arguments = parseArguments(TokenType.RIGHT_BRACKET)
         return ConstructorCall(constructorName, arguments)
     }
 
@@ -135,7 +135,7 @@ class Parser(tokenStream: List<Token>) {
 
         }
 
-        val arguments = parseArguments()
+        val arguments = parseArguments(TokenType.RIGHT_PAREN)
         return MethodCall(objectName, methodName, arguments)
 
     }
@@ -149,12 +149,11 @@ class Parser(tokenStream: List<Token>) {
             return FuncCall(functionName, emptyList())
         }
 
-        val arguments = parseArguments()
-
+        val arguments = parseArguments(TokenType.RIGHT_PAREN)
         return FuncCall(functionName, arguments)
     }
 
-    private fun parseArguments(): List<Expression> {
+    private fun parseArguments(terminatingToken: TokenType): List<Expression> {
         var args = emptyList<Expression>()
         args = args.plus(parseExpression())
 
@@ -162,7 +161,7 @@ class Parser(tokenStream: List<Token>) {
             matchAndConsume(TokenType.COMMA)
             args = args.plus(parseExpression())
         }
-        matchAndConsume(TokenType.RIGHT_PAREN)
+        matchAndConsume(terminatingToken)
         return args
     }
 

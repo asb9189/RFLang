@@ -1,20 +1,20 @@
 package nodes.expression_and_statement
 
-import evaluator.EnvironmentManager
 import evaluator.Evaluator
 import evaluator.Value
-import standard_lib.objects.ListRF
-import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
-import runtime.Runtime
 
 class ConstructorCall(private val constructorName: String, private val expressions: List<Expression>): Node(), Expression, Statement {
 
     fun getConstructorName(): String {
         return constructorName
+    }
+
+    fun getExpressions(): List<Expression> {
+        return expressions
     }
 
     override fun eval(): Value {

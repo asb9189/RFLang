@@ -1,9 +1,4 @@
-let secret = List["h", "e", "l", "l", "o"]
-secret.add("h")
-secret.add("e")
-secret.add("l")
-secret.add("l")
-secret.add("o")
+let secret = List["s", "e", "c", "r", "e", "t"]
 
 let userInputs = List[]
 let maxInputs = 5
