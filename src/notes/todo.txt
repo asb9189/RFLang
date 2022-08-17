@@ -12,6 +12,12 @@
 
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
 
+- clean up method calls on standard lib objects
+
+- implemented chained method calls
+
+- allow method calls directly after object construction
+
 optional stuff:
 
 - figure out how to deal with variable creation / reuse

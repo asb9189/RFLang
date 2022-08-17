@@ -30,14 +30,14 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
         val lhs_type = lhsValue.getType()
         val rhs_type = rhsValue.getType()
 
-        return when (operator) {
+        when (operator) {
             TokenType.EQ_EQ -> {
                 if (lhs_type != rhs_type) {
                     println("types must be equal in EQ EQ BinOp")
                     exitProcess(0)
                 }
 
-                return when (lhs_type) {
+                when (lhs_type) {
                     ValueType.INTEGER -> {
                         val equal = (lhs_value as Int) == (rhs_value as Int)
                         return Value(equal, ValueType.BOOLEAN)
@@ -53,7 +53,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     ValueType.NULL -> {
                         Runtime.raiseError("null reference in binop expression")
                     }
-                    ValueType.OBJECT -> throw NotImplementedError("See BinOp")
+                    ValueType.OBJECT -> throw NotImplementedError("EQ_EQ for Objects")
                 }
 
             }
@@ -63,7 +63,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     exitProcess(0)
                 }
 
-                return when (lhs_type) {
+                when (lhs_type) {
                     ValueType.INTEGER -> {
                         val notEqual = (lhs_value as Int) != (rhs_value as Int)
                         return Value(notEqual, ValueType.BOOLEAN)
@@ -79,7 +79,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                     ValueType.NULL -> {
                         Runtime.raiseError("null reference in binop expression")
                     }
-                    ValueType.OBJECT -> throw NotImplementedError("See BinOp")
+                    ValueType.OBJECT -> throw NotImplementedError("BANG_EQ for Objects")
                 }
             }
             TokenType.LT -> {
@@ -115,19 +115,33 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                 return Value(result, ValueType.BOOLEAN)
             }
             TokenType.PLUS -> {
-                if (lhs_type != rhs_type) {
-                    println("types must be equal for addition")
-                    exitProcess(0)
-                }
-
-                when (lhs_type) {
+                return when (lhs_type) {
                     ValueType.INTEGER -> {
-                        val result = (lhs_value as Int) + (rhs_value as Int)
-                        return Value(result, ValueType.INTEGER)
+                        when (rhs_type) {
+                            ValueType.INTEGER -> {
+                                val result = (lhs_value as Int) + (rhs_value as Int)
+                                return Value(result, ValueType.INTEGER)
+                            }
+                            ValueType.STRING -> {
+                                val result = (rhs_value as String).plus(lhs_value as Int)
+                                return Value(result, ValueType.STRING)
+                            }
+                            else -> Runtime.raiseError("cannot add $lhs_type with $rhs_type")
+                        }
+
                     }
                     ValueType.STRING -> {
-                        val result = (lhs_value as String) + (rhs_value as String)
-                        return Value(result, ValueType.STRING)
+                        when (rhs_type) {
+                            ValueType.INTEGER -> {
+                                val result = (lhs_value as String).plus(rhs_value as Int)
+                                return Value(result, ValueType.STRING)
+                            }
+                            ValueType.STRING -> {
+                                val result = (lhs_value as String).plus(rhs_value as String)
+                                return Value(result, ValueType.STRING)
+                            }
+                            else -> Runtime.raiseError("cannot add $lhs_type with $rhs_type")
+                        }
                     }
                     else -> {
                         println("addition can only occur on integers and strings")
@@ -175,7 +189,6 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                 val result = (lhs_value as Boolean) || (rhs_value as Boolean)
                 return Value(result, ValueType.BOOLEAN)
             }
-
             else -> {
                 println("invalid BinOp operator")
                 exitProcess(0)
