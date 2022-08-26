@@ -56,7 +56,12 @@ class EnvironmentManager {
             if (functionEnvStack.empty()) {
                 mainEnv.updateVariable(symbol, Value(value, type))
             } else {
-                functionEnvStack.peek().updateVariable(symbol, Value(value, type))
+                val (result, isSuccess) = functionEnvStack.peek().getVariable(symbol)
+                if (isSuccess) {
+                    functionEnvStack.peek().updateVariable(symbol, Value(value, type))
+                } else {
+                    mainEnv.updateVariable(symbol, Value(value, type))
+                }
             }
         }
 

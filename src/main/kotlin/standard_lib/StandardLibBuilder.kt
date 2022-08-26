@@ -4,6 +4,7 @@ import evaluator.*
 import evaluator.Function
 import runtime.Runtime
 import standard_lib.objects.Object
+import kotlin.system.exitProcess
 
 class StandardLibBuilder {
 
@@ -45,8 +46,13 @@ class StandardLibBuilder {
                 }
             }
 
+            val exit = StandardLibFunction("exit", listOf()) {
+                exitProcess(0)
+            }
+
             standardLibList = standardLibList.plus(print)
             standardLibList = standardLibList.plus(input)
+            standardLibList = standardLibList.plus(exit)
             return standardLibList
         }
     }

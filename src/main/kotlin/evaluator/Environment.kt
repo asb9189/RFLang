@@ -27,7 +27,7 @@ class Environment {
         if (doesVariableExist(symbol)) {
             symbolTable[symbol] = value
         } else {
-            Runtime.raiseError("Failed to update variable")
+            Runtime.raiseError("Failed to update variable '$symbol'")
         }
     }
 

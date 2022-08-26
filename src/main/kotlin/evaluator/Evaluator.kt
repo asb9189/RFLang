@@ -64,33 +64,40 @@ class Evaluator {
         private fun executeForInStmt(forIn: ForIn) {
 
             val value = forIn.getExpression().eval()
-            if (value.getType() != ValueType.OBJECT) {
-                Runtime.raiseError("Expression must resolve to type List in For In")
-            }
 
-            var obj = value.getValue() as Object
-            if (obj.name() != "List") {
-                Runtime.raiseError("Expression must resolve to type List in For In")
-            }
-
-            obj = obj as ListRF
-
-            if (obj.isEmptyKotlin()) {
-                return
-            }
-
-            val list = obj.getListKotlin()
-
-            EnvironmentManager.pushFunctionEnvironment()
-            EnvironmentManager.declareVariable(forIn.getLocalVar(), list[0], obj.getType())
-
-            for (element in list) {
-                EnvironmentManager.updateVariable(forIn.getLocalVar(), element, obj.getType())
-                for (stmt in forIn.getStmts()) {
-                    executeStatement(stmt)
+            when (value.getType()) {
+                ValueType.STRING -> {
+                    EnvironmentManager.pushFunctionEnvironment()
+                    EnvironmentManager.declareVariable(forIn.getLocalVar(), "", ValueType.STRING)
+                    for (char in value.getValue() as String) {
+                        EnvironmentManager.updateVariable(forIn.getLocalVar(), char.toString(), ValueType.STRING)
+                        for (stmt in forIn.getStmts()) {
+                            executeStatement(stmt)
+                        }
+                    }
+                    EnvironmentManager.popFunctionEnvironment()
                 }
+                ValueType.OBJECT -> {
+                    var obj = value.getValue() as Object
+                    if (obj.name() != "List") {
+                        Runtime.raiseError("Expression must resolve to type List in For In")
+                    }
+                    obj = obj as ListRF
+                    if (obj.isEmptyKotlin()) { return }
+                    val list = obj.getListKotlin()
+
+                    EnvironmentManager.pushFunctionEnvironment()
+                    EnvironmentManager.declareVariable(forIn.getLocalVar(), list[0], obj.getType())
+                    for (element in list) {
+                        EnvironmentManager.updateVariable(forIn.getLocalVar(), element, obj.getType())
+                        for (stmt in forIn.getStmts()) {
+                            executeStatement(stmt)
+                        }
+                    }
+                    EnvironmentManager.popFunctionEnvironment()
+                }
+                else -> Runtime.raiseError("For In only works on Strings and Iterable Objects")
             }
-            EnvironmentManager.popFunctionEnvironment()
         }
 
         private fun executeVarAssignStmt(varAssign: VarAssign) {
