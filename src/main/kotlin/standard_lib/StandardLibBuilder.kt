@@ -27,7 +27,7 @@ class StandardLibBuilder {
                     ValueType.OBJECT -> println(value.getValue() as Object)
                     ValueType.NULL -> Runtime.raiseError("Function 'print' cannot print type NULL")
                 }
-                Value(-1, ValueType.NULL)
+                Value(Value.Companion.NULL(), ValueType.NULL)
             }
 
             // input("...")

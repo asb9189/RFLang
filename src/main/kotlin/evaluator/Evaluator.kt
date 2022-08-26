@@ -245,7 +245,7 @@ class Evaluator {
                         executeStatement(stmt)
                     }
                     EnvironmentManager.popFunctionEnvironment()
-                    return Value(-1, ValueType.NULL)
+                    return Value(Value.Companion.NULL(), ValueType.NULL)
                 }
 
                 FunctionType.STANDARD_LIB -> {

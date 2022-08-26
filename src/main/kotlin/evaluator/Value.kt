@@ -10,6 +10,10 @@ enum class ValueType {
 
 class Value(value: Any, type: ValueType) {
 
+    companion object {
+        class NULL
+    }
+
     private val value: Any
     private val type: ValueType
 

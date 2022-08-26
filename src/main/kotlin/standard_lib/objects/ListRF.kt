@@ -21,7 +21,7 @@ class ListRF: Object(), iterable {
             Runtime.raiseError("Cannot add type ${ValueType.NULL} to List")
         }
         list.add(value.getValue())
-        return Value(-1, ValueType.NULL)
+        return Value(Value.Companion.NULL(), ValueType.NULL)
     }
 
     fun remove(value: Value): Value {
@@ -31,7 +31,7 @@ class ListRF: Object(), iterable {
             }
             list.remove(value.getValue())
         }
-        return Value(-1, ValueType.NULL)
+        return Value(Value.Companion.NULL(), ValueType.NULL)
     }
 
     fun removeAll(value: Value): Value {
@@ -43,7 +43,7 @@ class ListRF: Object(), iterable {
                 value.getValue() == it
             }
         }
-        return Value(-1, ValueType.NULL)
+        return Value(Value.Companion.NULL(), ValueType.NULL)
     }
 
     fun contains(value: Value): Value {
