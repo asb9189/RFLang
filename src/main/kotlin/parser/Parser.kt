@@ -10,22 +10,14 @@ import nodes.interfaces.Statement
 import nodes.statements.*
 import tokens.Token
 import tokens.TokenType
+import runtime.Runtime
 import kotlin.system.exitProcess
 
 class Parser(tokenStream: List<Token>) {
 
-    enum class FUNCTION {
-        EXPRESSION,
-        STATEMENT
-    }
-
-    enum class METHOD {
-        EXPRESSION,
-        STATEMENT
-    }
-
     private var currentIndex = 0
     private var currentToken: Token
+    private var parsingFunctionDefinition = false
     private val tokenStream: List<Token>
 
     init {
@@ -58,15 +50,20 @@ class Parser(tokenStream: List<Token>) {
             TokenType.KEYWORD_LET -> return parseVarDeclarationStmt()
             TokenType.KEYWORD_REPEAT -> return parseRepeatStmt()
             TokenType.KEYWORD_WHILE -> return parseWhileStmt()
-            TokenType.KEYWORD_FUN -> return parseFunctionDeclarationStmt()
+            TokenType.KEYWORD_FUN -> {
+                if (parsingFunctionDefinition) {
+                    Runtime.raiseError("Cannot declare nested functions")
+                }
+                return parseFunctionDeclarationStmt()
+            }
             TokenType.KEYWORD_RETURN -> return parseReturnStmt()
             TokenType.KEYWORD_BREAK -> return parseBreakStmt()
             TokenType.KEYWORD_IF -> return parseIfStmt()
             TokenType.IDENTIFIER -> {
                 if (peek()?.getType() == TokenType.LEFT_PAREN) {
-                    return parseFunctionCall(FUNCTION.STATEMENT) as FuncCall
+                    return parseFunctionCall() as FuncCall
                 } else if (peek()?.getType() == TokenType.PERIOD) {
-                    return parseMethodCall(METHOD.STATEMENT) as MethodCall
+                    return parseMethodCall() as MethodCall
                 }
                 return parseVarAssignmentStmt()
             }
@@ -121,7 +118,7 @@ class Parser(tokenStream: List<Token>) {
     }
 
     // TODO add support for chained method calls ( ex: myList.add(5).remove(5) )
-    private fun parseMethodCall(method: METHOD): Any {
+    private fun parseMethodCall(): Any {
         val objectName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
         matchAndConsume(TokenType.PERIOD)
 
@@ -140,7 +137,7 @@ class Parser(tokenStream: List<Token>) {
 
     }
 
-    private fun parseFunctionCall(func: FUNCTION): Any {
+    private fun parseFunctionCall(): Any {
         val functionName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
         matchAndConsume(TokenType.LEFT_PAREN)
 
@@ -166,6 +163,7 @@ class Parser(tokenStream: List<Token>) {
     }
 
     private fun parseFunctionDeclarationStmt(): Statement {
+        parsingFunctionDefinition = true
         matchAndConsume(TokenType.KEYWORD_FUN).getLiteral()
         val functionName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
         matchAndConsume(TokenType.LEFT_PAREN)
@@ -176,6 +174,7 @@ class Parser(tokenStream: List<Token>) {
 
             val stmts = parseBodyStmtList()
             matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+            parsingFunctionDefinition = false
             return FuncDef(functionName, emptyList(), stmts)
         }
 
@@ -184,6 +183,7 @@ class Parser(tokenStream: List<Token>) {
         matchAndConsume(TokenType.LEFT_CURLY_BRACE)
         val stmts = parseBodyStmtList()
         matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+        parsingFunctionDefinition = false
         return FuncDef(functionName, params, stmts)
     }
 
@@ -362,11 +362,11 @@ class Parser(tokenStream: List<Token>) {
         if (match(TokenType.INTEGER_LITERAL)) { return IntegerLiteral(previous().getLiteral().toInt()) }
         if (currentToken.getType() == TokenType.IDENTIFIER) {
             if (peek()?.getType() == TokenType.LEFT_PAREN) {
-                return parseFunctionCall(FUNCTION.EXPRESSION) as FuncCall
+                return parseFunctionCall() as FuncCall
             } else if (peek()?.getType() == TokenType.LEFT_BRACKET) {
                 return parseConstructorCall() as ConstructorCall
             } else if (peek()?.getType() == TokenType.PERIOD) {
-                return parseMethodCall(METHOD.EXPRESSION) as MethodCall
+                return parseMethodCall() as MethodCall
             }
             match(TokenType.IDENTIFIER)
             return Variable(previous().getLiteral())

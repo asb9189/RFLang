@@ -230,7 +230,7 @@ class Evaluator {
 
         fun executeReturnStmt(returnStmt: Return): Value {
             if (EnvironmentManager.isFunctionEnvironmentEmpty()) {
-                exitProcess(0)
+                Runtime.raiseError("Cannot return from outside function body")
             }
             return returnStmt.getExpression().eval()
         }
