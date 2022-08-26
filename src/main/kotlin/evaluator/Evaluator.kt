@@ -11,7 +11,6 @@ import runtime.Runtime
 import standard_lib.objects.ListRF
 import standard_lib.objects.Object
 import standard_lib.objects.ObjectType
-import java.lang.reflect.Method
 import kotlin.system.exitProcess
 
 class Evaluator {
@@ -52,6 +51,7 @@ class Evaluator {
                 StatementType.METHOD_CALL_STMT -> executeMethodCall(statement as MethodCall)
                 StatementType.IF_STMT -> executeIfStatement(statement as If)
                 StatementType.CONSTRUCTOR_CALL_STMT -> executeConstructorCall(statement as ConstructorCall)
+                StatementType.FOR_IN_STMT -> executeForInStmt(statement as ForIn)
             }
         }
 
@@ -59,6 +59,38 @@ class Evaluator {
             val varName: String = varDec.getVarName()
             val value = varDec.getValue().eval()
             EnvironmentManager.declareVariable(varName, value.getValue(), value.getType())
+        }
+
+        private fun executeForInStmt(forIn: ForIn) {
+
+            val value = forIn.getExpression().eval()
+            if (value.getType() != ValueType.OBJECT) {
+                Runtime.raiseError("Expression must resolve to type List in For In")
+            }
+
+            var obj = value.getValue() as Object
+            if (obj.name() != "List") {
+                Runtime.raiseError("Expression must resolve to type List in For In")
+            }
+
+            obj = obj as ListRF
+
+            if (obj.isEmptyKotlin()) {
+                return
+            }
+
+            val list = obj.getListKotlin()
+
+            EnvironmentManager.pushFunctionEnvironment()
+            EnvironmentManager.declareVariable(forIn.getLocalVar(), list[0], obj.getType())
+
+            for (element in list) {
+                EnvironmentManager.updateVariable(forIn.getLocalVar(), element, obj.getType())
+                for (stmt in forIn.getStmts()) {
+                    executeStatement(stmt)
+                }
+            }
+            EnvironmentManager.popFunctionEnvironment()
         }
 
         private fun executeVarAssignStmt(varAssign: VarAssign) {

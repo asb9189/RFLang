@@ -11,6 +11,7 @@ import nodes.statements.*
 import tokens.Token
 import tokens.TokenType
 import runtime.Runtime
+import javax.swing.plaf.nimbus.State
 import kotlin.system.exitProcess
 
 class Parser(tokenStream: List<Token>) {
@@ -56,6 +57,7 @@ class Parser(tokenStream: List<Token>) {
                 }
                 return parseFunctionDeclarationStmt()
             }
+            TokenType.KEYWORD_FOR -> return parseForInStmt()
             TokenType.KEYWORD_RETURN -> return parseReturnStmt()
             TokenType.KEYWORD_BREAK -> return parseBreakStmt()
             TokenType.KEYWORD_IF -> return parseIfStmt()
@@ -81,6 +83,21 @@ class Parser(tokenStream: List<Token>) {
 
         val value = parseExpression()
         return VarDec(token.getLiteral(), value)
+    }
+
+    private fun parseForInStmt(): Statement {
+        matchAndConsume(TokenType.KEYWORD_FOR)
+        val localVar = matchAndConsume(TokenType.IDENTIFIER)
+
+        matchAndConsume(TokenType.KEYWORD_IN)
+        val expr = parseExpression()
+
+        matchAndConsume(TokenType.LEFT_CURLY_BRACE)
+        val stmts = parseBodyStmtList()
+        matchAndConsume(TokenType.RIGHT_CURLY_BRACE)
+
+        return ForIn(localVar.getLiteral(), expr, stmts)
+
     }
 
     private fun parseRepeatStmt(): Statement {

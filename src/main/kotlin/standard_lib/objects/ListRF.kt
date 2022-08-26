@@ -76,6 +76,14 @@ class ListRF: Object(), iterable {
         return ObjectType.STANDARD_LIB
     }
 
+    fun isEmptyKotlin(): Boolean {
+        return list.isEmpty()
+    }
+
+    fun getListKotlin(): MutableList<Any> {
+        return list
+    }
+
     override fun toString(): String {
 
         if (list.isEmpty()) {
