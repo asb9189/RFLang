@@ -2,11 +2,6 @@
     - idea: Only use return if you want to return a value, otherwise use a 'break'
     statement. Otherwise, parsing would get messy unless I wanted to add a semicolon.
 
-- Add 'exit' statement to end the program instantly
-
-- Remove the '-1' from  'return Value(-1. ValueType.NULL)' instances. It should never be an issue
-    because the type is NULL, but it would be preferable to not pass around a hardcoded integer value
-
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
 
 - clean up method calls on standard lib objects
