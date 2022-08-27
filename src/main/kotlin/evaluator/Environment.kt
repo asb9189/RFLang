@@ -16,11 +16,7 @@ class Environment {
     }
 
     fun declareVariable(symbol: String, value: Value) {
-        if (doesVariableExist(symbol).not()) {
-            symbolTable[symbol] = value
-        } else {
-            Runtime.raiseError("Failed to declare variable")
-        }
+        symbolTable[symbol] = value
     }
 
     fun updateVariable(symbol: String, value: Value) {
