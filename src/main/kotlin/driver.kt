@@ -1,42 +1,20 @@
 import evaluator.Evaluator
 import parser.Parser
-import java.io.File
 import scanner.Scanner
-import kotlin.system.exitProcess
+import utils.Utils
+
+const val ONE_ARGUMENT = 1
 
 fun main(args: Array<String>) {
-    if (args.size != 1) {
-        displayUsage()
-        exitProcess(0)
+
+    when (args.size) {
+        ONE_ARGUMENT -> {
+            val file = Utils.getFile(args[0])
+            val tokens = Scanner(file.reader()).scan()
+            val program = Parser(tokens).parse()
+            Evaluator.run(program)
+        }
+        else -> Utils.displayUsage()
     }
-
-    val filePath = args[0]
-    if (!isValidFilePath(filePath)) {
-        println("File '${filePath}' does not exist")
-        exitProcess(0)
-    }
-
-    val tokens = Scanner(File(filePath).reader()).scan()
-//    println("tokens:")
-//    for (token in tokens) {
-//        println(token)
-//    }
-
-//    println("\n\n\n")
-
-    val program = Parser(tokens).parse()
-//    println("Statements:")
-//    println(program.toString())
-
-    Evaluator.run(program)
-
 }
 
-private fun isValidFilePath(filePath: String): Boolean {
-    val file = File(filePath)
-    return file.exists() && file.isFile
-}
-
-private fun displayUsage() {
-    println("Usage: RFLang myfile.rf")
-}
