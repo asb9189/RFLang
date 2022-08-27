@@ -7,9 +7,6 @@
 - Remove the '-1' from  'return Value(-1. ValueType.NULL)' instances. It should never be an issue
     because the type is NULL, but it would be preferable to not pass around a hardcoded integer value
 
-- iterator interface for objects
-    - would allow support for a 'for each loop'
-
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
 
 - clean up method calls on standard lib objects
@@ -17,28 +14,3 @@
 - implemented chained method calls
 
 - allow method calls directly after object construction
-
-optional stuff:
-
-- figure out how to deal with variable creation / reuse
-    ex:
-
-        let input = ""
-        while True {
-
-            input = input("...")
-
-        }
-
-    but it would be better if we could do
-
-    while True {
-
-        input = input("...")
-
-    }
-
-    // should input exist down here?
-
-    ideas: maybe 'let' will map to constant global vars and "var" map to variables that can be redeclared
-        and cease to exist after the current scope ends
