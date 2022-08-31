@@ -1,0 +1,13 @@
+
+
+1. Build Artifacts
+2. Located .jar inside out/artifacts/RFLang_jar/RFLang.jar
+3. Add .jar location to $PATH
+4. Execute with 'java -cp RFLang.jar DriverKt'
+
+
+Edit path env: ~/.zshrc
+
+- Install .jar file somewhere standard
+- Write bash script to run (4) java CLI command to execute it and put this dir into the $PATH
+- make alias so user can do "rflang" and not "rflang.sh"

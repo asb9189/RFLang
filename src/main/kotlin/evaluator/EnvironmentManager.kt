@@ -1,6 +1,5 @@
 package evaluator
 
-import nodes.interfaces.Expression
 import nodes.interfaces.Statement
 import runtime.Runtime
 import standard_lib.StandardLibBuilder
@@ -56,7 +55,7 @@ class EnvironmentManager {
             if (functionEnvStack.empty()) {
                 mainEnv.updateVariable(symbol, Value(value, type))
             } else {
-                val (result, isSuccess) = functionEnvStack.peek().getVariable(symbol)
+                val (_, isSuccess) = functionEnvStack.peek().getVariable(symbol)
                 if (isSuccess) {
                     functionEnvStack.peek().updateVariable(symbol, Value(value, type))
                 } else {
