@@ -1,3 +1,6 @@
+
+- Add single line and multiline comments
+
 - Allow return statements to have an empty expression (parsing issue)
     - idea: Only use return if you want to return a value, otherwise use a 'break'
     statement. Otherwise, parsing would get messy unless I wanted to add a semicolon.
