@@ -2,6 +2,7 @@ package scanner
 
 import tokens.Token
 import tokens.TokenType
+import runtime.Runtime
 import java.io.InputStreamReader
 import kotlin.system.exitProcess
 
@@ -29,7 +30,11 @@ class Scanner constructor(streamReader: InputStreamReader) {
                 parseDigitStream()
             } else if (currentChar.isWhitespace()) {
                 skipWhitespace()
-            } else if (currentChar == '"') {
+            } else if (currentChar == '@') {
+                nextChar()
+                parseComment()
+            }
+            else if (currentChar == '"') {
                 parseStringLiteral()
             } else if (currentChar == '=') {
                 parseEqOrAssignment()
@@ -71,6 +76,18 @@ class Scanner constructor(streamReader: InputStreamReader) {
     private fun nextChar() {
         currentCharValue = streamReader.read()
         currentChar = currentCharValue.toChar()
+    }
+
+    private fun parseComment() {
+        while (currentCharValue != EOF && currentChar != '@') {
+            nextChar()
+        }
+
+        //non-terminated comment
+        if (currentCharValue == EOF) {
+            Runtime.raiseError("unterminated comment")
+        }
+        nextChar()
     }
 
     private fun parseCharStream() {
