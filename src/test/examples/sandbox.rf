@@ -1,0 +1,32 @@
+
+@ Constructors for stdlib objects
+let myList = List[
+    List[1, 2, 3],
+    List[4, 5, 6],
+    List[7, 8, 9]
+]
+
+@ 2D Arrays!
+myList.add(List[10, 11, 12])
+
+for item in myList {
+    print(item)
+}
+
+@--
+
+Multiline comments are so sick
+
+--@
+
+@ func is a useless function!
+fun func() {
+    let cnt = 0
+    repeat 100 {
+        print("Help, I am stuck on iteration " + cnt)
+        cnt = cnt + 1
+    }
+}
+
+@ Call func() with no arguments
+func()

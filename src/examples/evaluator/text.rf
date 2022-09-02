@@ -1,27 +1,47 @@
 
+let gameWon = true
+let secret = List[]
+let guesses = List[]
+let secretWord = input("Enter your secret word: ")
 
-fun getInput() {
-    return input("enter something")
+let numGuesses = 0
+let maxGuesses = 5
+
+for char in secretWord {
+    secret.add(char)
 }
 
+while numGuesses < maxGuesses {
+    let guess = input("Guess a letter: ")
+    if guesses.contains(guess) {
+        print("Oops! You already guessed that letter, try again.")
+    } else {
+        guesses.add(guess)
 
-if false {
-print("hi1")
+        let progress = ""
+        for char in secret {
+            if guesses.contains(char) {
+                progress = progress + char
+            } else {
+                progress = progress + "_"
+            }
+        }
 
-} elif false {
-print("hi2")
+        for char in progress {
+            if char == "_" {
+                gameWon = false
+            }
+        }
 
-}elif 3 > 5 {
-    print("hi3")
-} else {
-    print("ffffff")
+        if gameWon {
+            print("You win!")
+            exit()
+        } else {
+            print(progress)
+            gameWon = true
+        }
+        numGuesses = numGuesses + 1
+    }
 }
 
-
-add(2, 3)
-
-if true and (false or true) {
-
-    print(";)")
-}
-
+print("You lose :(")

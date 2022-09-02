@@ -31,7 +31,6 @@ class Scanner constructor(streamReader: InputStreamReader) {
             } else if (currentChar.isWhitespace()) {
                 skipWhitespace()
             } else if (currentChar == '@') {
-                nextChar()
                 parseComment()
             }
             else if (currentChar == '"') {
@@ -59,9 +58,7 @@ class Scanner constructor(streamReader: InputStreamReader) {
                     '/' -> tokenStream = tokenStream.plus(Token(TokenType.DIVIDE, currentChar.toString()))
                     '.' -> tokenStream = tokenStream.plus(Token(TokenType.PERIOD, currentChar.toString()))
                     else -> {
-                        //TODO Support better error handling
-                        println("illegal character: '$currentChar'")
-                        exitProcess(0)
+                        Runtime.raiseError("illegal character: '$currentChar'")
                     }
                 }
                 nextChar()
@@ -79,15 +76,50 @@ class Scanner constructor(streamReader: InputStreamReader) {
     }
 
     private fun parseComment() {
-        while (currentCharValue != EOF && currentChar != '@') {
+        nextChar() // consume '@'
+
+        if (currentChar == '-') {
+            nextChar()
+            if (currentChar == '-') {
+                nextChar()
+                // assume multi-line comment
+                while (true) {
+                    while (currentCharValue != EOF && currentChar != '-') {
+                        nextChar()
+                    }
+
+                    // found first '-' of '--@'
+                    if (currentChar == '-') {
+                        nextChar()
+                        if (currentChar == '-') {
+                            nextChar()
+                            if (currentChar == '@') {
+                                nextChar()
+                                return
+                            }
+                        }
+                    } else {
+                        Runtime.raiseError("Unterminated multi-line comment")
+                    }
+                }
+            } else {
+                parseSingleLineComment()
+            }
+        } else {
+            parseSingleLineComment()
+        }
+    }
+
+    private fun parseSingleLineComment() {
+        while (currentCharValue != EOF && currentChar != '\n') {
             nextChar()
         }
 
-        //non-terminated comment
-        if (currentCharValue == EOF) {
-            Runtime.raiseError("unterminated comment")
+        if (currentChar == '\n') {
+            nextChar()
+        } else {
+            Runtime.raiseError("Unterminated single line comment")
         }
-        nextChar()
     }
 
     private fun parseCharStream() {
