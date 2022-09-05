@@ -146,30 +146,59 @@ class Evaluator {
         fun executeConstructorCall(constructorCall: ConstructorCall): Value {
             val value = EnvironmentManager.createObject(constructorCall.getConstructorName())
 
+            // Special case
             if ((value.getValue() as Object).name() == "List") {
                 val list = value.getValue() as ListRF
                 for (expr in constructorCall.getExpressions()) {
                     list.add(expr.eval())
                 }
             }
+
+            if (constructorCall.hasChainedMethodCalls()) {
+                return executeChainedMethodCall(value, constructorCall.getChainedMethodCalls())
+            }
+
             return Value(value.getValue(), value.getType())
         }
 
         fun executeMethodCall(methodCall: MethodCall): Value {
-            var value = EnvironmentManager.getVariable(methodCall.getObjectName())
+            val value = EnvironmentManager.getVariable(methodCall.getObjectName())
             val arguments = methodCall.getArguments()
 
             if (value.getType() != ValueType.OBJECT) {
                 Runtime.raiseError("${value.getType()} does not support method calls")
             }
 
-            var obj = value.getValue() as Object
+            val obj = value.getValue() as Object
             when (obj.type()) {
                 ObjectType.USER_DEFINED -> Runtime.raiseError("User defined objects not yet implemented")
                 ObjectType.STANDARD_LIB -> {
-                    return obj.callMethod(methodCall.getMethodName(), arguments)
+                    return if (methodCall.isChainedMethodCall()) {
+                        val firstCall = obj.callMethod(methodCall.getMethodName(), arguments)
+                        executeChainedMethodCall(firstCall, methodCall.getChainedMethodCalls())
+                    } else {
+                        obj.callMethod(methodCall.getMethodName(), arguments)
+                    }
                 }
             }
+        }
+
+        private fun executeChainedMethodCall(value: Value, remainingMethodCalls: List<MethodCall>): Value {
+            var lastValue = value
+            remainingMethodCalls.forEachIndexed { index, methodCall ->
+                when (lastValue.getType()) {
+                    ValueType.OBJECT -> {
+                        lastValue = (lastValue.getValue() as Object)
+                            .callMethod(methodCall.getMethodName(), methodCall.getArguments())
+
+                        if (index == remainingMethodCalls.size - 1) {
+                            return lastValue
+                        }
+                    }
+                    else -> Runtime.raiseError("Cannot call method on non-object type")
+                }
+            }
+            return Value(Value.Companion.NULL(), ValueType.NULL)
         }
 
         private fun executeFuncDefStmtStmt(funcDefStmt: FuncDef) {

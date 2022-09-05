@@ -7,7 +7,11 @@ import nodes.interfaces.Statement
 import nodes.interfaces.StatementType
 import nodes.root.Node
 
-class ConstructorCall(private val constructorName: String, private val expressions: List<Expression>): Node(), Expression, Statement {
+class ConstructorCall(
+    private val constructorName: String,
+    private val expressions: List<Expression>,
+    private val chainedMethodCalls: List<MethodCall>
+): Node(), Expression, Statement {
 
     fun getConstructorName(): String {
         return constructorName
@@ -15,6 +19,14 @@ class ConstructorCall(private val constructorName: String, private val expressio
 
     fun getExpressions(): List<Expression> {
         return expressions
+    }
+
+    fun hasChainedMethodCalls(): Boolean {
+        return chainedMethodCalls.isNotEmpty()
+    }
+
+    fun getChainedMethodCalls(): List<MethodCall> {
+        return chainedMethodCalls
     }
 
     override fun eval(): Value {

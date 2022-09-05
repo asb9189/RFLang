@@ -13,7 +13,8 @@ import standard_lib.objects.ObjectType
 class MethodCall(
     private val objectName: String,
     private val methodName: String,
-    private val arguments: List<Expression>
+    private val arguments: List<Expression>,
+    private val chainedMethodCalls: List<MethodCall>
 ): Node(), Expression, Statement {
 
     fun getObjectName(): String {
@@ -26,6 +27,14 @@ class MethodCall(
 
     fun getArguments(): List<Expression> {
         return arguments
+    }
+
+    fun isChainedMethodCall(): Boolean {
+        return chainedMethodCalls.isNotEmpty()
+    }
+
+    fun getChainedMethodCalls(): List<MethodCall> {
+        return chainedMethodCalls
     }
 
     override fun eval(): Value {

@@ -12,9 +12,10 @@ class ListRF: StandardLibObject(), iterable {
         ADD("add"),
         REMOVE("remove"),
         REMOVE_ALL("removeAll"),
-        LENGTH("Length"),
+        LENGTH("length"),
         IS_EMPTY("isEmpty"),
-        CONTAINS("contains")
+        CONTAINS("contains"),
+        COPY("copy")
     }
 
     private var list: MutableList<Any> = mutableListOf()
@@ -30,8 +31,9 @@ class ListRF: StandardLibObject(), iterable {
         } else if (value.getType() == ValueType.NULL) {
             Runtime.raiseError("Cannot add type ${ValueType.NULL} to List")
         }
+
         list.add(value.getValue())
-        return Value(Value.Companion.NULL(), ValueType.NULL)
+        return Value(this, ValueType.OBJECT)
     }
 
     fun remove(value: Value): Value {
@@ -72,6 +74,14 @@ class ListRF: StandardLibObject(), iterable {
 
     fun isEmpty(): Value {
         return Value(list.isEmpty(), ValueType.BOOLEAN)
+    }
+
+    fun copy(): Value {
+        val listRF = ListRF()
+        for (element in list) {
+            listRF.add(Value(element, this.getType()))
+        }
+        return Value(listRF, ValueType.OBJECT)
     }
 
     fun getType(): ValueType {
@@ -116,6 +126,9 @@ class ListRF: StandardLibObject(), iterable {
             }
             METHODS.CONTAINS.literal -> {
                 return this.contains(arguments[0].eval())
+            }
+            METHODS.COPY.literal -> {
+                return this.copy()
             }
             else -> Runtime.raiseError("List does not have method '${methodName}'")
         }

@@ -127,15 +127,24 @@ class Parser(tokenStream: List<Token>) {
 
         if (currentToken.getType() == TokenType.RIGHT_BRACKET) {
             matchAndConsume(TokenType.RIGHT_BRACKET)
-            return ConstructorCall(constructorName, emptyList())
+
+            if (currentToken.getType() == TokenType.PERIOD) {
+                val methodCalls = parseChainedMethodCall(constructorName)
+                return ConstructorCall(constructorName, emptyList(), methodCalls)
+            }
+            return ConstructorCall(constructorName, emptyList(), emptyList())
         }
 
         val arguments = parseArguments(TokenType.RIGHT_BRACKET)
-        return ConstructorCall(constructorName, arguments)
+        if (currentToken.getType() == TokenType.PERIOD) {
+            val methodCalls = parseChainedMethodCall(constructorName)
+            return ConstructorCall(constructorName, arguments, methodCalls)
+        }
+
+        return ConstructorCall(constructorName, arguments, emptyList())
     }
 
-    // TODO add support for chained method calls ( ex: myList.add(5).remove(5) )
-    private fun parseMethodCall(): Any {
+    private fun parseMethodCall(): MethodCall {
         val objectName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
         matchAndConsume(TokenType.PERIOD)
 
@@ -144,14 +153,40 @@ class Parser(tokenStream: List<Token>) {
 
         if (currentToken.getType() == TokenType.RIGHT_PAREN) {
             matchAndConsume(TokenType.RIGHT_PAREN)
+            if (currentToken.getType() == TokenType.PERIOD) {
+                val methodCalls = parseChainedMethodCall(objectName)
+                return MethodCall(objectName, methodName, emptyList(), methodCalls)
+            }
 
-            return MethodCall(objectName, methodName, emptyList())
+            return MethodCall(objectName, methodName, emptyList(), emptyList())
 
         }
 
         val arguments = parseArguments(TokenType.RIGHT_PAREN)
-        return MethodCall(objectName, methodName, arguments)
+        if (currentToken.getType() == TokenType.PERIOD) {
+            val methodCalls = parseChainedMethodCall(objectName)
+            return MethodCall(objectName, methodName, arguments, methodCalls)
+        }
 
+        return MethodCall(objectName, methodName, arguments, emptyList())
+    }
+
+    private fun parseChainedMethodCall(objectName: String): List<MethodCall> {
+        val methodCalls = mutableListOf<MethodCall>()
+        while (currentToken.getType() == TokenType.PERIOD) {
+            matchAndConsume(TokenType.PERIOD)
+            val methodName = matchAndConsume(TokenType.IDENTIFIER).getLiteral()
+            matchAndConsume(TokenType.LEFT_PAREN)
+
+            if (currentToken.getType() == TokenType.RIGHT_PAREN) {
+                matchAndConsume(TokenType.RIGHT_PAREN)
+                methodCalls.add(MethodCall(objectName, methodName, emptyList(), emptyList()))
+            } else {
+                val arguments = parseArguments(TokenType.RIGHT_PAREN)
+                methodCalls.add(MethodCall(objectName, methodName, arguments, emptyList()))
+            }
+        }
+        return methodCalls
     }
 
     private fun parseFunctionCall(): Any {

@@ -1,4 +1,8 @@
 
+print (
+    List[1, 2].add(3).add(4).add(5).length()
+)
+
 @ Constructors for stdlib objects
 let myList = List[
     List[1, 2, 3],
