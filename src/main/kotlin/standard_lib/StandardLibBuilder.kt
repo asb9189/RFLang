@@ -4,13 +4,25 @@ import evaluator.*
 import evaluator.Function
 import runtime.Runtime
 import standard_lib.objects.Object
+import standard_lib.objects.ObjectType
 import kotlin.system.exitProcess
 
 class StandardLibBuilder {
 
-
-
     companion object {
+
+        private val stdlibObjects = listOf(
+            "List"
+        )
+
+        fun buildStandardLibObjects(): HashMap<String, ObjectType> {
+            val map = HashMap<String, ObjectType>()
+            stdlibObjects.forEach { item ->
+                map[item] = ObjectType.STANDARD_LIB
+            }
+
+            return map
+        }
 
         fun buildStandardLibFunctions(): List<Function> {
 

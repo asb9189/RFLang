@@ -167,36 +167,7 @@ class Evaluator {
             when (obj.type()) {
                 ObjectType.USER_DEFINED -> Runtime.raiseError("User defined objects not yet implemented")
                 ObjectType.STANDARD_LIB -> {
-                    when (obj.name()) {
-                        "List" -> {
-                            obj = obj as ListRF
-                            when (methodCall.getMethodName()) {
-                                "add" -> {
-                                    if (arguments.size != 1) {
-                                        Runtime.raiseError("add expects a single argument")
-                                    }
-                                    return obj.add(arguments[0].eval())
-                                }
-                                "remove" -> {
-                                    return obj.remove(arguments[0].eval())
-                                }
-                                "removeAll" -> {
-                                    return obj.removeAll(arguments[0].eval())
-                                }
-                                "length" -> {
-                                    return obj.length()
-                                }
-                                "isEmpty" -> {
-                                    return obj.isEmpty()
-                                }
-                                "contains" -> {
-                                    return obj.contains(arguments[0].eval())
-                                }
-                                else -> Runtime.raiseError("List does not have method '${methodCall.getMethodName()}'")
-                            }
-                        }
-                        else -> Runtime.raiseError("'${obj.name()}' does not exist")
-                    }
+                    return obj.callMethod(methodCall.getMethodName(), arguments)
                 }
             }
         }

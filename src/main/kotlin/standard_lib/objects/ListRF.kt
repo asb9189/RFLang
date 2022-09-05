@@ -2,10 +2,20 @@ package standard_lib.objects
 
 import evaluator.Value
 import evaluator.ValueType
+import nodes.interfaces.Expression
 import runtime.Runtime
 import standard_lib.interfaces.iterable
 
-class ListRF: Object(), iterable {
+class ListRF: StandardLibObject(), iterable {
+
+    enum class METHODS(val literal: String) {
+        ADD("add"),
+        REMOVE("remove"),
+        REMOVE_ALL("removeAll"),
+        LENGTH("Length"),
+        IS_EMPTY("isEmpty"),
+        CONTAINS("contains")
+    }
 
     private var list: MutableList<Any> = mutableListOf()
     private var type: ValueType = ValueType.NULL
@@ -82,6 +92,33 @@ class ListRF: Object(), iterable {
 
     fun getListKotlin(): MutableList<Any> {
         return list
+    }
+
+    override fun callMethod(methodName: String, arguments: List<Expression>): Value {
+        when (methodName) {
+            METHODS.ADD.literal -> {
+                if (arguments.size != 1) {
+                    Runtime.raiseError("add expects a single argument")
+                }
+                return this.add(arguments[0].eval())
+            }
+            METHODS.REMOVE.literal -> {
+                return this.remove(arguments[0].eval())
+            }
+            METHODS.REMOVE_ALL.literal -> {
+                return this.removeAll(arguments[0].eval())
+            }
+            METHODS.LENGTH.literal -> {
+                return this.length()
+            }
+            METHODS.IS_EMPTY.literal -> {
+                return this.isEmpty()
+            }
+            METHODS.CONTAINS.literal -> {
+                return this.contains(arguments[0].eval())
+            }
+            else -> Runtime.raiseError("List does not have method '${methodName}'")
+        }
     }
 
     override fun toString(): String {

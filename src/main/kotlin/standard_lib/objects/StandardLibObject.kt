@@ -1,10 +1,8 @@
 package standard_lib.objects
 
+import evaluator.Value
+import nodes.interfaces.Expression
+
 abstract class StandardLibObject: Object() {
-
-    override fun type(): ObjectType {
-        return ObjectType.STANDARD_LIB
-    }
-
-    abstract override fun toString(): String
+    abstract override fun callMethod(methodName: String, arguments: List<Expression>): Value
 }

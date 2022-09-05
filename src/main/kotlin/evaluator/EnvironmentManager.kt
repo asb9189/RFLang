@@ -10,21 +10,21 @@ import java.util.*
 
 class EnvironmentManager {
     companion object {
+        
+        enum class StandardLibObjectLiterals(val literal: String) {
+            LIST("List")
+        }
 
         private val mainEnv: Environment = Environment()
         private val functionEnvStack: Stack<Environment> = Stack()
         private val functionTable: HashMap<String, Function> = HashMap()
-        private val objectTable: HashMap<String, ObjectType> = HashMap()
-
-        private const val OBJECT_LIST = "List"
+        private var objectTable: HashMap<String, ObjectType> = StandardLibBuilder.buildStandardLibObjects()
 
         init {
             val standardLibFunctions = StandardLibBuilder.buildStandardLibFunctions()
             for (func in standardLibFunctions) {
                 functionTable[func.getFunctionName()] = func
             }
-
-            objectTable[OBJECT_LIST] = ObjectType.STANDARD_LIB
         }
 
         fun declareVariable(symbol: String, value: Any, type: ValueType) {
@@ -101,7 +101,7 @@ class EnvironmentManager {
                 ObjectType.USER_DEFINED -> Runtime.raiseError("User defined objects are not yet supported")
                 ObjectType.STANDARD_LIB -> {
                     when (objectName) {
-                        OBJECT_LIST -> Value(ListRF(), ValueType.OBJECT)
+                        StandardLibObjectLiterals.LIST.literal -> Value(ListRF(), ValueType.OBJECT)
                         else -> Runtime.raiseError("Internal error while creating object")
                     }
                 }
