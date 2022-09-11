@@ -1,6 +1,4 @@
 
-- Allow return statements to have an empty expression (parsing issue)
-    - idea: Only use return if you want to return a value, otherwise use a 'break'
-    statement. Otherwise, parsing would get messy unless I wanted to add a semicolon.
+- 'return', and 'end' statements inside functions need to work regardless of their depth (i.e nested in other loops)
 
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
