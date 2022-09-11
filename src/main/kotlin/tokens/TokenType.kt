@@ -17,6 +17,7 @@ enum class TokenType {
     KEYWORD_BREAK,
     KEYWORD_FOR,
     KEYWORD_IN,
+    KEYWORD_END,
     IDENTIFIER,
     INTEGER_LITERAL,
     STRING_LITERAL,

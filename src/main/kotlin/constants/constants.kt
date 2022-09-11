@@ -17,8 +17,9 @@ const val KEYWORD_ELSE = "else"
 const val KEYWORD_BREAK = "break"
 const val KEYWORD_FOR = "for"
 const val KEYWORD_IN = "in"
+const val KEYWORD_END = "end"
 
-val KEYWORDS_MAP = hashMapOf(
+val KEYWORDS_MAP = hashMapOf (
     KEYWORD_LET to TokenType.KEYWORD_LET,
     KEYWORD_AND to TokenType.KEYWORD_AND,
     KEYWORD_OR to TokenType.KEYWORD_OR,
@@ -33,5 +34,6 @@ val KEYWORDS_MAP = hashMapOf(
     KEYWORD_ELSE to TokenType.KEYWORD_ELSE,
     KEYWORD_BREAK to TokenType.KEYWORD_BREAK,
     KEYWORD_FOR to TokenType.KEYWORD_FOR,
-    KEYWORD_IN to TokenType.KEYWORD_IN
+    KEYWORD_IN to TokenType.KEYWORD_IN,
+    KEYWORD_END to TokenType.KEYWORD_END
 )

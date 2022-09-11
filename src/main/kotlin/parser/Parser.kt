@@ -60,6 +60,7 @@ class Parser(tokenStream: List<Token>) {
             TokenType.KEYWORD_FOR -> return parseForInStmt()
             TokenType.KEYWORD_RETURN -> return parseReturnStmt()
             TokenType.KEYWORD_BREAK -> return parseBreakStmt()
+            TokenType.KEYWORD_END -> return parseEndStmt()
             TokenType.KEYWORD_IF -> return parseIfStmt()
             TokenType.IDENTIFIER -> {
                 if (peek()?.getType() == TokenType.LEFT_PAREN) {
@@ -253,6 +254,11 @@ class Parser(tokenStream: List<Token>) {
     private fun parseBreakStmt(): Statement {
         matchAndConsume(TokenType.KEYWORD_BREAK)
         return Break()
+    }
+
+    private fun parseEndStmt(): Statement {
+        matchAndConsume(TokenType.KEYWORD_END)
+        return End()
     }
 
     private fun parseReturnStmt(): Statement {

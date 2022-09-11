@@ -27,7 +27,7 @@ Multiline comments are so sick
 fun func() {
     let cnt = 0
     repeat 100 {
-        print("Help, I am stuck on iteration " + cnt)
+        print("Iteration " + cnt)
         cnt = cnt + 1
     }
 }

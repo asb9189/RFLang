@@ -38,20 +38,20 @@ class Evaluator {
             }
         }
 
-        fun executeStatement(statement: Statement) {
+        private fun executeStatement(statement: Statement) {
             when (statement.getType()) {
                 StatementType.VAR_DEC_STMT -> executeVarDecStmt(statement as VarDec)
                 StatementType.VAR_ASSIGN_STMT -> executeVarAssignStmt(statement as VarAssign)
                 StatementType.WHILE_STMT -> executeWhileStmt(statement as While)
                 StatementType.REPEAT_STMT -> executeRepeatStmt(statement as Repeat)
                 StatementType.RETURN_STMT -> executeReturnStmt(statement as Return)
-                StatementType.BREAK_STMT -> executeBreakStmt()
                 StatementType.FUNC_CALL_STMT -> executeFuncCall(statement as FuncCall)
                 StatementType.FUNC_DEF_STMT -> executeFuncDefStmtStmt(statement as FuncDef)
                 StatementType.METHOD_CALL_STMT -> executeMethodCall(statement as MethodCall)
                 StatementType.IF_STMT -> executeIfStatement(statement as If)
                 StatementType.CONSTRUCTOR_CALL_STMT -> executeConstructorCall(statement as ConstructorCall)
-                StatementType.FOR_IN_STMT -> executeForInStmt(statement as ForIn)
+                StatementType.FOR_IN_STMT -> executeForInStmt(statement as ForIn) // break
+                StatementType.BREAK_STMT -> {}
             }
         }
 
@@ -82,6 +82,7 @@ class Evaluator {
                     if (obj.name() != "List") {
                         Runtime.raiseError("Expression must resolve to type List in For In")
                     }
+
                     obj = obj as ListRF
                     if (obj.isEmptyKotlin()) { return }
                     val list = obj.getListKotlin()
@@ -91,7 +92,13 @@ class Evaluator {
                     for (element in list) {
                         EnvironmentManager.updateVariable(forIn.getLocalVar(), element, obj.getType())
                         for (stmt in forIn.getStmts()) {
-                            executeStatement(stmt)
+                            when (stmt.getType()) {
+                                StatementType.BREAK_STMT -> {
+                                    EnvironmentManager.popFunctionEnvironment()
+                                    return
+                                }
+                                else -> executeStatement(stmt)
+                            }
                         }
                     }
                     EnvironmentManager.popFunctionEnvironment()
@@ -115,9 +122,12 @@ class Evaluator {
                 exitProcess(0)
             }
 
-            while (value.getValue() as Boolean) {
+            outer@ while (value.getValue() as Boolean) {
                 for (stmt in body) {
-                    executeStatement(stmt)
+                    when (stmt.getType()) {
+                        StatementType.BREAK_STMT -> break@outer
+                        else -> executeStatement(stmt)
+                    }
                 }
                 value = whileStmt.getCondition().eval()
                 if (value.getType() != ValueType.BOOLEAN) {
@@ -136,9 +146,14 @@ class Evaluator {
                 exitProcess(0)
             }
 
-            repeat (value.getValue() as Int) {
-                for (stmt in body) {
-                    executeStatement(stmt)
+            run repeatBlock@ {
+                repeat (value.getValue() as Int) {
+                    for (stmt in body) {
+                        when (stmt.getType()) {
+                            StatementType.BREAK_STMT -> return@repeatBlock
+                            else -> executeStatement(stmt)
+                        }
+                    }
                 }
             }
         }
@@ -241,6 +256,9 @@ class Evaluator {
                             val value = executeReturnStmt(stmt as Return)
                             EnvironmentManager.popFunctionEnvironment()
                             return value
+                        } else if (stmt.getType() == StatementType.END_STMT) {
+                            EnvironmentManager.popFunctionEnvironment()
+                            return Value(Value.Companion.NULL(), ValueType.NULL)
                         }
                         executeStatement(stmt)
                     }
@@ -261,13 +279,7 @@ class Evaluator {
             }
         }
 
-        private fun executeBreakStmt() {
-            if (EnvironmentManager.isFunctionEnvironmentEmpty()) {
-                Runtime.raiseError("Cannot 'break' from main scope")
-            }
-        }
-
-        fun executeReturnStmt(returnStmt: Return): Value {
+        private fun executeReturnStmt(returnStmt: Return): Value {
             if (EnvironmentManager.isFunctionEnvironmentEmpty()) {
                 Runtime.raiseError("Cannot return from outside function body")
             }

@@ -11,6 +11,7 @@ enum class StatementType {
     CONSTRUCTOR_CALL_STMT,
     RETURN_STMT,
     BREAK_STMT,
+    END_STMT,
     IF_STMT,
     FOR_IN_STMT
 }
