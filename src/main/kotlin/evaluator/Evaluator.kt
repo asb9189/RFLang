@@ -50,8 +50,8 @@ class Evaluator {
                 StatementType.METHOD_CALL_STMT -> executeMethodCall(statement as MethodCall)
                 StatementType.IF_STMT -> executeIfStatement(statement as If)
                 StatementType.CONSTRUCTOR_CALL_STMT -> executeConstructorCall(statement as ConstructorCall)
-                StatementType.FOR_IN_STMT -> executeForInStmt(statement as ForIn) // break
-                StatementType.BREAK_STMT -> {}
+                StatementType.FOR_IN_STMT -> executeForInStmt(statement as ForIn)
+                else -> {}
             }
         }
 
@@ -61,7 +61,7 @@ class Evaluator {
             EnvironmentManager.declareVariable(varName, value.getValue(), value.getType())
         }
 
-        private fun executeForInStmt(forIn: ForIn) {
+        private fun executeForInStmt(forIn: ForIn): Pair<Value, Boolean> {
 
             val value = forIn.getExpression().eval()
 
@@ -84,7 +84,7 @@ class Evaluator {
                     }
 
                     obj = obj as ListRF
-                    if (obj.isEmptyKotlin()) { return }
+                    if (obj.isEmptyKotlin()) { return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false) }
                     val list = obj.getListKotlin()
 
                     EnvironmentManager.pushFunctionEnvironment()
@@ -95,8 +95,25 @@ class Evaluator {
                             when (stmt.getType()) {
                                 StatementType.BREAK_STMT -> {
                                     EnvironmentManager.popFunctionEnvironment()
-                                    return
+                                    return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false)
                                 }
+                                StatementType.IF_STMT -> {
+                                    val (v, b) = executeIfStatement(stmt as If)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.WHILE_STMT -> {
+                                    val (v, b) = executeWhileStmt(stmt as While)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.REPEAT_STMT -> {
+                                    val (v, b) = executeRepeatStmt(stmt as Repeat)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.FOR_IN_STMT -> {
+                                    val (v, b) = executeForInStmt(stmt as ForIn)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.RETURN_STMT -> return Pair(executeReturnStmt(stmt as Return), true)
                                 else -> executeStatement(stmt)
                             }
                         }
@@ -105,6 +122,7 @@ class Evaluator {
                 }
                 else -> Runtime.raiseError("For In only works on Strings and Iterable Objects")
             }
+            return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false)
         }
 
         private fun executeVarAssignStmt(varAssign: VarAssign) {
@@ -113,7 +131,7 @@ class Evaluator {
             EnvironmentManager.updateVariable(varName, value.getValue(), value.getType())
         }
 
-        private fun executeWhileStmt(whileStmt: While) {
+        private fun executeWhileStmt(whileStmt: While): Pair<Value, Boolean> {
             var value = whileStmt.getCondition().eval()
             val body = whileStmt.getBody()
 
@@ -126,6 +144,23 @@ class Evaluator {
                 for (stmt in body) {
                     when (stmt.getType()) {
                         StatementType.BREAK_STMT -> break@outer
+                        StatementType.IF_STMT -> {
+                            val (v, b) = executeIfStatement(stmt as If)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.WHILE_STMT -> {
+                            val (v, b) = executeWhileStmt(stmt as While)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.REPEAT_STMT -> {
+                            val (v, b) = executeRepeatStmt(stmt as Repeat)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.FOR_IN_STMT -> {
+                            val (v, b) = executeForInStmt(stmt as ForIn)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.RETURN_STMT -> return Pair(executeReturnStmt(stmt as Return), true)
                         else -> executeStatement(stmt)
                     }
                 }
@@ -135,9 +170,10 @@ class Evaluator {
                     exitProcess(0)
                 }
             }
+            return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false)
         }
 
-        private fun executeRepeatStmt(repeatStmt: Repeat) {
+        private fun executeRepeatStmt(repeatStmt: Repeat): Pair<Value, Boolean> {
             val value = repeatStmt.getCondition().eval()
             val body = repeatStmt.getBody()
 
@@ -151,11 +187,29 @@ class Evaluator {
                     for (stmt in body) {
                         when (stmt.getType()) {
                             StatementType.BREAK_STMT -> return@repeatBlock
+                            StatementType.IF_STMT -> {
+                                val (v, b) = executeIfStatement(stmt as If)
+                                if (b) return Pair(v, b)
+                            }
+                            StatementType.WHILE_STMT -> {
+                                val (v, b) = executeWhileStmt(stmt as While)
+                                if (b) return Pair(v, b)
+                            }
+                            StatementType.REPEAT_STMT -> {
+                                val (v, b) = executeRepeatStmt(stmt as Repeat)
+                                if (b) return Pair(v, b)
+                            }
+                            StatementType.FOR_IN_STMT -> {
+                                val (v, b) = executeForInStmt(stmt as ForIn)
+                                if (b) return Pair(v, b)
+                            }
+                            StatementType.RETURN_STMT -> return Pair(executeReturnStmt(stmt as Return), true)
                             else -> executeStatement(stmt)
                         }
                     }
                 }
             }
+            return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false)
         }
 
         fun executeConstructorCall(constructorCall: ConstructorCall): Value {
@@ -252,15 +306,30 @@ class Evaluator {
                     }
 
                     for (stmt in functionBody) {
-                        if (stmt.getType() == StatementType.RETURN_STMT) {
-                            val value = executeReturnStmt(stmt as Return)
-                            EnvironmentManager.popFunctionEnvironment()
-                            return value
-                        } else if (stmt.getType() == StatementType.END_STMT) {
-                            EnvironmentManager.popFunctionEnvironment()
-                            return Value(Value.Companion.NULL(), ValueType.NULL)
+                        when (stmt.getType()) {
+                            StatementType.IF_STMT -> {
+                                val (v, b) = executeIfStatement(stmt as If)
+                                if (b) return v
+                            }
+                            StatementType.WHILE_STMT -> {
+                                val (v, b) = executeWhileStmt(stmt as While)
+                                if (b) return v
+                            }
+                            StatementType.REPEAT_STMT -> {
+                                val (v, b) = executeRepeatStmt(stmt as Repeat)
+                                if (b) return v
+                            }
+                            StatementType.FOR_IN_STMT -> {
+                                val (v, b) = executeForInStmt(stmt as ForIn)
+                                if (b) return v
+                            }
+                            StatementType.RETURN_STMT -> return executeReturnStmt(stmt as Return)
+                            StatementType.END_STMT -> {
+                                EnvironmentManager.popFunctionEnvironment()
+                                return Value(Value.Companion.NULL(), ValueType.NULL)
+                            }
+                            else -> executeStatement(stmt)
                         }
-                        executeStatement(stmt)
                     }
                     EnvironmentManager.popFunctionEnvironment()
                     return Value(Value.Companion.NULL(), ValueType.NULL)
@@ -283,10 +352,11 @@ class Evaluator {
             if (EnvironmentManager.isFunctionEnvironmentEmpty()) {
                 Runtime.raiseError("Cannot return from outside function body")
             }
+            EnvironmentManager.popFunctionEnvironment()
             return returnStmt.getExpression().eval()
         }
 
-        private fun executeIfStatement(ifStmt: If) {
+        private fun executeIfStatement(ifStmt: If): Pair<Value, Boolean> {
             val value = ifStmt.getIfCondition().eval()
             if (value.getType() != ValueType.BOOLEAN) {
                 Runtime.raiseError("if <expr> must resolve to type Boolean")
@@ -294,7 +364,26 @@ class Evaluator {
 
             if (value.getValue() as Boolean) {
                 for (stmt in ifStmt.getIfStmts()) {
-                    executeStatement(stmt)
+                    when (stmt.getType()) {
+                        StatementType.IF_STMT -> {
+                            val (v, b) = executeIfStatement(stmt as If)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.WHILE_STMT -> {
+                            val (v, b) = executeWhileStmt(stmt as While)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.REPEAT_STMT -> {
+                            val (v, b) = executeRepeatStmt(stmt as Repeat)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.FOR_IN_STMT -> {
+                            val (v, b) = executeForInStmt(stmt as ForIn)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.RETURN_STMT -> return Pair(executeReturnStmt(stmt as Return), true)
+                        else -> executeStatement(stmt)
+                    }
                 }
             } else {
                 for (elif in ifStmt.getElseIfList()) {
@@ -305,15 +394,54 @@ class Evaluator {
 
                     if (elifValue.getValue() as Boolean) {
                         for (stmt in elif.getStmts()) {
-                            executeStatement(stmt)
+                            when (stmt.getType()) {
+                                StatementType.IF_STMT -> {
+                                    val (v, b) = executeIfStatement(stmt as If)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.WHILE_STMT -> {
+                                    val (v, b) = executeWhileStmt(stmt as While)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.REPEAT_STMT -> {
+                                    val (v, b) = executeRepeatStmt(stmt as Repeat)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.FOR_IN_STMT -> {
+                                    val (v, b) = executeForInStmt(stmt as ForIn)
+                                    if (b) return Pair(v, b)
+                                }
+                                StatementType.RETURN_STMT -> return Pair(executeReturnStmt(stmt as Return), true)
+                                else -> executeStatement(stmt)
+                            }
                         }
-                        return
+                        return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false)
                     }
                 }
                 for (stmt in ifStmt.getElseStmts()) {
-                    executeStatement(stmt)
+                    when (stmt.getType()) {
+                        StatementType.IF_STMT -> {
+                            val (v, b) = executeIfStatement(stmt as If)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.WHILE_STMT -> {
+                            val (v, b) = executeWhileStmt(stmt as While)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.REPEAT_STMT -> {
+                            val (v, b) = executeRepeatStmt(stmt as Repeat)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.FOR_IN_STMT -> {
+                            val (v, b) = executeForInStmt(stmt as ForIn)
+                            if (b) return Pair(v, b)
+                        }
+                        StatementType.RETURN_STMT -> return Pair(executeReturnStmt(stmt as Return), true)
+                        else -> executeStatement(stmt)
+                    }
                 }
             }
+            return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false)
         }
     }
 }
