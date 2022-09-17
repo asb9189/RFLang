@@ -1,0 +1,16 @@
+@--
+    Multi
+    Line
+    Comments
+    Are
+    Awesome
+--@
+
+@ Calling add(1, 2, 3)
+print(add(1, 2, 3))
+
+@ Defining a function that adds three numbers
+fun add(x, y, z) {
+    return x + y + z
+}
+

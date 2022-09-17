@@ -1,4 +1,10 @@
 
-- 'return', and 'end' statements inside functions need to work regardless of their depth (i.e nested in other loops)
+- write unit tests testing all features of RFLang using the new testing framework
 
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
+
+- nested multiline comments don't work
+
+- add more functions to standard lib
+
+- create README with documentation hosted on GitHub pages

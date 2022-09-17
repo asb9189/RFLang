@@ -1,7 +1,0 @@
-
-print(add(1, 2, 3))
-
-@ Function that adds numbers @
-fun add(x, y, z) {
-    return x + y + z
-}

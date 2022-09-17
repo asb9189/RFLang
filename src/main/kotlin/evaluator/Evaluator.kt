@@ -352,8 +352,10 @@ class Evaluator {
             if (EnvironmentManager.isFunctionEnvironmentEmpty()) {
                 Runtime.raiseError("Cannot return from outside function body")
             }
+
+            val returnValue = returnStmt.getExpression().eval()
             EnvironmentManager.popFunctionEnvironment()
-            return returnStmt.getExpression().eval()
+            return returnValue
         }
 
         private fun executeIfStatement(ifStmt: If): Pair<Value, Boolean> {

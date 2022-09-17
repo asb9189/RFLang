@@ -1,4 +1,6 @@
 
+
+
 print (
     List[1, 2].add(3).add(4).add(5).length()
 )
@@ -16,12 +18,6 @@ myList.add(List[10, 11, 12])
 for item in myList {
     print(item)
 }
-
-@--
-
-Multiline comments are so sick
-
---@
 
 @ func is a useless function!
 fun func() {
