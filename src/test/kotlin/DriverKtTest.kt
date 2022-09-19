@@ -59,7 +59,7 @@ internal class DriverKtTest {
         fun restoreStreams() {
             System.setOut(originalOut)
             System.setErr(originalErr)
-            outContent.reset()
+
         }
 
         @JvmStatic // Run as '@Before'
@@ -71,8 +71,8 @@ internal class DriverKtTest {
 
     @Test
     fun runAllTests() {
-        setUpStreams()
         for (test in tests) {
+            setUpStreams()
             val testName = test.first
             val testProgramFile = test.second
             val testProgramSolutionFile = test.third
@@ -82,10 +82,12 @@ internal class DriverKtTest {
             val program = Parser(tokens).parse()
             Evaluator.run(program)
 
+
             val out = outContent.toString()
             val expected = File(testProgramSolutionFile).readText()
 
             assertEquals(expected, out, message = "Running test '$testName'")
+            outContent.reset()
             restoreStreams()
         }
     }

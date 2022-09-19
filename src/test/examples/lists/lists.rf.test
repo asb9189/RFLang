@@ -1,0 +1,8 @@
+@ Constructors for stdlib objects
+let myList = List [
+    1, 2, 3, 4, 5
+]
+
+for num in myList {
+    print(num)
+}
