@@ -62,9 +62,24 @@ class StandardLibBuilder {
                 exitProcess(0)
             }
 
+            // abs(...)
+            val abs = StandardLibFunction("abs", listOf("message")) { params ->
+                val value = params[0].eval()
+                if (value.getType() != ValueType.INTEGER) {
+                    Runtime.raiseError("Function 'input' expects arguments: [message: String]")
+                }
+
+                val num = value.getValue() as Int
+                if (num < 0) {
+                    return@StandardLibFunction Value((num * -1), ValueType.INTEGER)
+                }
+                return@StandardLibFunction Value(num, ValueType.INTEGER)
+            }
+
             standardLibList = standardLibList.plus(print)
             standardLibList = standardLibList.plus(input)
             standardLibList = standardLibList.plus(exit)
+            standardLibList = standardLibList.plus(abs)
             return standardLibList
         }
     }
