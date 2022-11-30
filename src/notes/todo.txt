@@ -3,7 +3,23 @@
 
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
 
+- JUnit issue occurs when .test file cannot be parsed. In this case a sys.exit(...) call is made
+    terminating the JUnit runtime. Instead, replace sys exit with RFException and handle
+    thrown exceptions inside DriverKtTest ( .parse(...) )
+
 - nested multiline comments don't work
+
+    The following snippet will fail to parse ...
+
+        @--
+
+        print (
+            List[1, 2].add(3).add(4).add(5).length()
+        )
+        @--
+        --@
+
+        --@
 
 - add more functions to standard lib
 
