@@ -49,7 +49,12 @@ internal class DriverKtTest {
                 }
 
                 if (files.size != 2) { exitProcess(-1) }
-                testFiles[pair.first] = Pair(files[0], files[1])
+
+                if (files[0].endsWith("test")) {
+                    testFiles[pair.first] = Pair(files[0], files[1])
+                } else {
+                    testFiles[pair.first] = Pair(files[1], files[0])
+                }
             }
 
             return testFiles
