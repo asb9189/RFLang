@@ -2,14 +2,13 @@ import evaluator.Evaluator
 import org.junit.BeforeClass
 import org.junit.Test
 import parser.Parser
+import runtime.Runtime
 import scanner.Scanner
 import utils.Utils
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.PrintStream
-import kotlin.system.exitProcess
 import kotlin.test.assertEquals
-
 
 internal class DriverKtTest {
 
@@ -48,7 +47,7 @@ internal class DriverKtTest {
                     files.add(it.path)
                 }
 
-                if (files.size != 2) { exitProcess(-1) }
+                if (files.size != 2) { Runtime.raiseError("Failed to find test files") }
 
                 if (files[0].endsWith("test")) {
                     testFiles[pair.first] = Pair(files[0], files[1])

@@ -4,8 +4,8 @@ import evaluator.Value
 import evaluator.ValueType
 import nodes.interfaces.Expression
 import nodes.root.Node
+import runtime.Runtime
 import tokens.TokenType
-import kotlin.system.exitProcess
 
 class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
 
@@ -23,12 +23,10 @@ class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
             TokenType.BANG -> {
                 when (value.getType()) {
                     ValueType.INTEGER -> {
-                        println("invalid unary operation")
-                        exitProcess(0)
+                        Runtime.raiseError("invalid unary operation")
                     }
                     ValueType.STRING -> {
-                        println("invalid unary operation")
-                        exitProcess(0)
+                        Runtime.raiseError("invalid unary operation")
                     }
                     ValueType.BOOLEAN -> {
                         if (value.getValue() == true) {
@@ -43,22 +41,18 @@ class UnaryOp(operator: TokenType, expression: Expression): Node(), Expression {
                         return Value( (value.getValue() as Int) * -1, ValueType.INTEGER)
                     }
                     ValueType.STRING -> {
-                        println("invalid unary operation")
-                        exitProcess(0)
+                        Runtime.raiseError("invalid unary operation")
                     }
                     ValueType.BOOLEAN -> {
-                        println("invalid unary operation")
-                        exitProcess(0)
+                        Runtime.raiseError("invalid unary operation")
                     }
                 }
             }
             else -> {
-                println("invalid unary operator")
-                exitProcess(0)
+                Runtime.raiseError("invalid unary operator")
             }
         }
-        println("reached end of unary op conditionals")
-        exitProcess(0)
+        Runtime.raiseError("reached end of unary op conditionals")
     }
 
     override fun toString(): String {

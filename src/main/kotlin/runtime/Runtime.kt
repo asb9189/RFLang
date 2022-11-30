@@ -1,7 +1,6 @@
 package runtime
 
 import java.util.UUID
-import kotlin.system.exitProcess
 
 /**
  * Manages resources during execution of a RFLang program
@@ -28,8 +27,7 @@ class Runtime {
         }
 
         fun raiseError(msg: String): Nothing {
-            println(msg)
-            exitProcess(0)
+            throw ExceptionRF(msg)
         }
     }
 }

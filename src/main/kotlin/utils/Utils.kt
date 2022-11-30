@@ -1,7 +1,7 @@
 package utils
 
 import java.io.File
-import kotlin.system.exitProcess
+import runtime.Runtime
 
 sealed class Utils {
     companion object {
@@ -12,8 +12,7 @@ sealed class Utils {
         fun getFile(filePath: String): File {
             val file = isValidFilePath(filePath)
             if (file.second.not()) {
-                println("File '${filePath}' does not exist")
-                exitProcess(0)
+                Runtime.raiseError("File '${filePath}' does not exist")
             }
             return file.first
         }

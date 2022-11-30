@@ -11,8 +11,6 @@ import nodes.statements.*
 import tokens.Token
 import tokens.TokenType
 import runtime.Runtime
-import javax.swing.plaf.nimbus.State
-import kotlin.system.exitProcess
 
 class Parser(tokenStream: List<Token>) {
 
@@ -71,8 +69,8 @@ class Parser(tokenStream: List<Token>) {
                 return parseVarAssignmentStmt()
             }
             else -> {
-                println("Invalid statement in parse stmt")
-                exitProcess(0)
+                val msg = "Invalid statement in parse stmt"
+                Runtime.raiseError(msg)
             }
         }
     }
@@ -349,8 +347,8 @@ class Parser(tokenStream: List<Token>) {
             consume()
             return currentTokenTemp
         } else {
-            println("Expected to match token '$tokenType' but got '${currentToken.getType()}'")
-            exitProcess(0)
+            val msg = "Expected to match token '$tokenType' but got '${currentToken.getType()}'"
+            Runtime.raiseError(msg)
         }
     }
 
@@ -434,13 +432,13 @@ class Parser(tokenStream: List<Token>) {
             val expr = parseExpression()
 
             if (currentToken.getType() != TokenType.RIGHT_PAREN) {
-                println("Expected ')' at the end of expression")
-                exitProcess(0)
+                val msg = "Expected ')' at the end of expression"
+                Runtime.raiseError(msg)
             }
             consume()
             return Grouping(expr)
         }
-        println("Invalid Expression")
-        exitProcess(0)
+        val msg = "Invalid Expression"
+        Runtime.raiseError(msg)
     }
 }

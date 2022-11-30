@@ -11,7 +11,6 @@ import runtime.Runtime
 import standard_lib.objects.ListRF
 import standard_lib.objects.Object
 import standard_lib.objects.ObjectType
-import kotlin.system.exitProcess
 
 class Evaluator {
 
@@ -136,8 +135,7 @@ class Evaluator {
             val body = whileStmt.getBody()
 
             if (value.getType() != ValueType.BOOLEAN) {
-                println("While stmt condition did not resolve to type Boolean")
-                exitProcess(0)
+                Runtime.raiseError("While stmt condition did not resolve to type Boolean")
             }
 
             outer@ while (value.getValue() as Boolean) {
@@ -166,8 +164,7 @@ class Evaluator {
                 }
                 value = whileStmt.getCondition().eval()
                 if (value.getType() != ValueType.BOOLEAN) {
-                    println("While stmt condition did not resolve to type Boolean")
-                    exitProcess(0)
+                    Runtime.raiseError("While stmt condition did not resolve to type Boolean")
                 }
             }
             return Pair(Value(Value.Companion.NULL(), ValueType.NULL), false)
@@ -178,8 +175,7 @@ class Evaluator {
             val body = repeatStmt.getBody()
 
             if (value.getType() != ValueType.INTEGER) {
-                println("While stmt condition did not resolve to type Boolean")
-                exitProcess(0)
+                Runtime.raiseError("While stmt condition did not resolve to type Boolean")
             }
 
             run repeatBlock@ {

@@ -4,7 +4,6 @@ import tokens.Token
 import tokens.TokenType
 import runtime.Runtime
 import java.io.InputStreamReader
-import kotlin.system.exitProcess
 
 private const val EOF = -1
 
@@ -163,9 +162,7 @@ class Scanner constructor(streamReader: InputStreamReader) {
 
         //non-terminated string
         if (currentCharValue == EOF) {
-            //TODO handle errors better
-            println("non-terminated string caused fatal error")
-            exitProcess(0)
+            Runtime.raiseError("Non-terminated string")
         }
 
         nextChar()

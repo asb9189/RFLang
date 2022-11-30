@@ -6,9 +6,6 @@ import nodes.interfaces.Expression
 import nodes.root.Node
 import runtime.Runtime
 import tokens.TokenType
-import java.nio.channels.NotYetConnectedException
-import kotlin.system.exitProcess
-
 
 class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Expression {
 
@@ -33,8 +30,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
         when (operator) {
             TokenType.EQ_EQ -> {
                 if (lhs_type != rhs_type) {
-                    println("types must be equal in EQ EQ BinOp")
-                    exitProcess(0)
+                    Runtime.raiseError("types must be equal in EQ EQ BinOp")
                 }
 
                 when (lhs_type) {
@@ -59,8 +55,7 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
             }
             TokenType.BANG_EQ -> {
                 if (lhs_type != rhs_type) {
-                    println("types must be equal in EQ EQ BinOp")
-                    exitProcess(0)
+                    Runtime.raiseError("types must be equal in EQ EQ BinOp")
                 }
 
                 when (lhs_type) {
@@ -84,32 +79,28 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
             }
             TokenType.LT -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
-                    println("expected integer types for LT")
-                    exitProcess(0)
+                    Runtime.raiseError("expected integer types for LT")
                 }
                 val result = (lhs_value as Int) < (rhs_value as Int)
                 return Value(result, ValueType.BOOLEAN)
             }
             TokenType.LT_EQ -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
-                    println("expected integer types for LT EQ")
-                    exitProcess(0)
+                    Runtime.raiseError("expected integer types for LT EQ")
                 }
                 val result = (lhs_value as Int) <= (rhs_value as Int)
                 return Value(result, ValueType.BOOLEAN)
             }
             TokenType.GT -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
-                    println("expected integer types for GT")
-                    exitProcess(0)
+                    Runtime.raiseError("expected integer types for GT")
                 }
                 val result = (lhs_value as Int) > (rhs_value as Int)
                 return Value(result, ValueType.BOOLEAN)
             }
             TokenType.GT_EQ -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
-                    println("expected integer types for GT EQ")
-                    exitProcess(0)
+                    Runtime.raiseError("expected integer types for GT EQ")
                 }
                 val result = (lhs_value as Int) >= (rhs_value as Int)
                 return Value(result, ValueType.BOOLEAN)
@@ -144,54 +135,47 @@ class BinOp (lhs: Expression, operator: TokenType, rhs: Expression): Node(), Exp
                         }
                     }
                     else -> {
-                        println("addition can only occur on integers and strings")
-                        exitProcess(0)
+                        Runtime.raiseError("addition can only occur on integers and strings")
                     }
                 }
             }
             TokenType.MINUS -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
-                    println("expected integer types for subtraction")
-                    exitProcess(0)
+                    Runtime.raiseError("expected integer types for subtraction")
                 }
                 val result = (lhs_value as Int) - (rhs_value as Int)
                 return Value(result, ValueType.INTEGER)
             }
             TokenType.MULTIPLY -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
-                    println("expected integer types for multiplication")
-                    exitProcess(0)
+                    Runtime.raiseError("expected integer types for multiplication")
                 }
                 val result = (lhs_value as Int) * (rhs_value as Int)
                 return Value(result, ValueType.INTEGER)
             }
             TokenType.DIVIDE -> {
                 if (lhs_type != ValueType.INTEGER || rhs_type != ValueType.INTEGER) {
-                    println("expected integer types for division")
-                    exitProcess(0)
+                    Runtime.raiseError("expected integer types for division")
                 }
                 val result = (lhs_value as Int) / (rhs_value as Int)
                 return Value(result, ValueType.INTEGER)
             }
             TokenType.KEYWORD_AND -> {
                 if (lhs_type != ValueType.BOOLEAN || rhs_type != ValueType.BOOLEAN) {
-                    println("expected boolean types for AND operation")
-                    exitProcess(0)
+                    Runtime.raiseError("expected boolean types for AND operation")
                 }
                 val result = (lhs_value as Boolean) && (rhs_value as Boolean)
                 return Value(result, ValueType.BOOLEAN)
             }
             TokenType.KEYWORD_OR -> {
                 if (lhs_type != ValueType.BOOLEAN || rhs_type != ValueType.BOOLEAN) {
-                    println("expected boolean types for OR operation")
-                    exitProcess(0)
+                    Runtime.raiseError("expected boolean types for OR operation")
                 }
                 val result = (lhs_value as Boolean) || (rhs_value as Boolean)
                 return Value(result, ValueType.BOOLEAN)
             }
             else -> {
-                println("invalid BinOp operator")
-                exitProcess(0)
+                Runtime.raiseError("invalid BinOp operator")
             }
         }
     }
