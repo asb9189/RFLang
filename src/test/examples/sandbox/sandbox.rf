@@ -30,3 +30,5 @@ fun func() {
 
 @ Call func() with no arguments
 func()
+
+@ this is a comment to test merging
