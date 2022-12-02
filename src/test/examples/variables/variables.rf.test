@@ -1,0 +1,10 @@
+let myFavoriteNumber = 17
+let myName = "Yaga RF"
+let isKotlinBetterThanJava = false
+
+@ Fixing typo
+isKotlinBetterThanJava = true
+
+print(myFavoriteNumber)
+print(myName)
+print(isKotlinBetterThanJava)
