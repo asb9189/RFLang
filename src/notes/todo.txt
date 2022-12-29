@@ -1,21 +1,7 @@
 
-- write unit tests testing all features of RFLang using the new testing framework
-
 - fix recursive functions (issue has to do with popping off from functionStack too soon)
 
-- nested multiline comments don't work
-
-    The following snippet will fail to parse ...
-
-        @--
-
-        print (
-            List[1, 2].add(3).add(4).add(5).length()
-        )
-        @--
-        --@
-
-        --@
+- write unit tests testing all features of RFLang using the new testing framework
 
 - add more functions to standard lib
 
