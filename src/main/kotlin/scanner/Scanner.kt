@@ -81,26 +81,7 @@ class Scanner constructor(streamReader: InputStreamReader) {
             nextChar()
             if (currentChar == '-') {
                 nextChar()
-                // assume multi-line comment
-                while (true) {
-                    while (currentCharValue != EOF && currentChar != '-') {
-                        nextChar()
-                    }
-
-                    // found first '-' of '--@'
-                    if (currentChar == '-') {
-                        nextChar()
-                        if (currentChar == '-') {
-                            nextChar()
-                            if (currentChar == '@') {
-                                nextChar()
-                                return
-                            }
-                        }
-                    } else {
-                        Runtime.raiseError("Unterminated multi-line comment")
-                    }
-                }
+                parseMultilineComment(1)
             } else {
                 parseSingleLineComment()
             }
@@ -118,6 +99,45 @@ class Scanner constructor(streamReader: InputStreamReader) {
             nextChar()
         } else {
             Runtime.raiseError("Unterminated single line comment")
+        }
+    }
+
+    // Already consumed "@--"
+    private fun parseMultilineComment(depth: Int) {
+        while (currentCharValue != EOF && currentChar != '-' && currentChar != '@') {
+            nextChar()
+        }
+
+        if (currentChar == '@') {
+            nextChar()
+            if (currentChar == '-') {
+                nextChar()
+                if (currentChar == '-') {
+                    nextChar()
+                    parseMultilineComment(depth + 1)
+                } else {
+                    parseMultilineComment(depth)
+                }
+            } else {
+                parseMultilineComment(depth)
+            }
+        } else if (currentChar == '-') {
+            nextChar()
+            if (currentChar == '-') {
+                nextChar()
+                if (currentChar == '@') {
+                    nextChar()
+                    if (depth - 1 != 0) {
+                        parseMultilineComment(depth - 1)
+                    }
+                } else {
+                    parseMultilineComment(depth)
+                }
+            } else {
+                parseMultilineComment(depth)
+            }
+        } else {
+            Runtime.raiseError("Unterminated multi-line comment")
         }
     }
 
