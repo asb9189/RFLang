@@ -1,6 +1,4 @@
 
-- fix recursive functions (issue has to do with popping off from functionStack too soon)
-
 - write unit tests testing all features of RFLang using the new testing framework
 
 - add more functions to standard lib
