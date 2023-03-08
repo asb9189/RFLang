@@ -6,3 +6,17 @@ let myList = List [
 for num in myList {
     print(num)
 }
+
+@ Constructors for stdlib objects
+let myListTwo = List[
+    List[1, 2, 3],
+    List[4, 5, 6],
+    List[7, 8, 9]
+]
+
+@ 2D Arrays!
+myListTwo.add(List[10, 11, 12])
+
+for num in myListTwo {
+    print(num)
+}

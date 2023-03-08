@@ -1,32 +1,9 @@
 
 
+print(fib(20)) @ 6765
 
-print (
-    List[1, 2].add(3).add(4).add(5).length()
-)
-
-@ Constructors for stdlib objects
-let myList = List[
-    List[1, 2, 3],
-    List[4, 5, 6],
-    List[7, 8, 9]
-]
-
-@ 2D Arrays!
-myList.add(List[10, 11, 12])
-
-for item in myList {
-    print(item)
+fun fib(n) {
+    if n == 0 { return n }
+    if n == 1 { return n }
+    return fib(n - 1) + fib(n - 2)
 }
-
-@ func is a useless function!
-fun func() {
-    let cnt = 0
-    repeat 100 {
-        print("Iteration " + cnt)
-        cnt = cnt + 1
-    }
-}
-
-@ Call func() with no arguments
-func()
