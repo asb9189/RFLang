@@ -291,9 +291,12 @@ class Evaluator {
                                     " ${arguments.size} argument(s) instead")
                     }
 
+                    // eval each expression in arguments first because
+                    // it may rely on the old function environment (recursive functions)
+                    val resolved_arguments = arguments.map { it.eval() }
+
                     EnvironmentManager.pushFunctionEnvironment()
-                    arguments.forEachIndexed { index, expression ->
-                        val value = expression.eval()
+                    resolved_arguments.forEachIndexed { index, value ->
                         EnvironmentManager.declareVariable(
                             functionParams[index],
                             value.getValue(),
