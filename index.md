@@ -5,7 +5,7 @@ nav_order: 1
 permalink: /
 ---
 
-#RFLang, a modern programming language that offers 
+#Why RFLang?
 
 As a computer science student, I've always had an interest in programming language design. The majority of courses
 in a computer science curriculum are about learning what's going on "under the hood". However, the one tool
@@ -22,9 +22,26 @@ After completing PLC I decided (for better or for worse) to enroll in our gradua
 Compiler construction is known as one of the hardest courses offered in most computer science curriculums along with
 operating systems, and analysis of algorithms.
 
-Ironically, the language I built 'RFLang' after being inspired by my compiler construction course is not a compiled one and is instead an interpreted language.
+Ironically, After being inspired by my *compiler* construction course I built an *interpreted* language.
 After getting my ass kicked during the code generation portion of our semester long project I decided I didn't want to go down
 that path again and wanted to explore spinning up my own interpreter instead.
+
+# What is RFLang?
+
+```
+> Describe RFLang, a dynamically typed useless programming language
+```
+
+```
+ChatGPT
+
+RFLang is a dynamically typed programming language that offers very little in terms of 
+practical use. Its syntax is intentionally confusing and its features are limited, 
+making it a challenge to work with. It lacks standard libraries, type checking, and 
+other useful features that would normally be expected from a programming language. 
+Despite its uselessness, RFLang can provide a fun challenge for those who enjoy 
+pushing the limits of their programming skills.
+```
 
 
 
