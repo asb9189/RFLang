@@ -5,7 +5,7 @@ nav_order: 1
 permalink: /
 ---
 
-#Why RFLang?
+# Why RFLang?
 
 As a computer science student, I've always had an interest in programming language design. The majority of courses
 in a computer science curriculum are about learning what's going on "under the hood". However, the one tool
