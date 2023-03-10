@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="RFLang.main:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a3bc49ef-13ab-48b5-95d8-6db8faaa16e8" name="Changes" comment="Cleaned out gh-pages branch" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
+        <projects_view />
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Enum" />
+        <option value="Kotlin Interface" />
+        <option value="JUnit5 Test Class" />
+        <option value="Kotlin Script" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="master" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="2BudKa4AKIdMlltEV4UtUypyurs" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit5" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5" value="" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/test/examples/basics" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/examples/basics" />
+      <recent name="$PROJECT_DIR$/src/test/examples/lists" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/examples/sandbox" />
+      <recent name="$PROJECT_DIR$/src/test/examples/empty" />
+      <recent name="$PROJECT_DIR$/src/test/examples/comments" />
+      <recent name="$PROJECT_DIR$/src/examples/evaluator" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="nodes.expression_and_statement" />
+      <recent name="nodes.expressions" />
+      <recent name="nodes.expressions.expression" />
+      <recent name="nodes.oi" />
+      <recent name="nodes.interfaces" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="" />
+    </key>
+    <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
+      <recent name="nodes.statements" />
+      <recent name="nodes.expression_and_statement" />
+      <recent name="nodes.expressions" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Kotlin.DriverKt">
+    <configuration name="DriverKtTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;DriverKtTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="DriverKtTest.runAllTests" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;DriverKtTest.runAllTests&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="DriverKtTest.testEmpty" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;DriverKtTest.testEmpty&quot; --stacktrace" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="DriverKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="DriverKt" />
+      <module name="RFLang.main" />
+      <option name="PROGRAM_PARAMETERS" value="sandbox.rf" />
+      <shortenClasspath name="NONE" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/test/examples/sandbox" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="helper.kts" type="KotlinStandaloneScriptRunConfigurationType" temporary="true" nameIsGenerated="true">
+      <module name="RFLang" />
+      <option name="filePath" value="$PROJECT_DIR$/src/test/helpers/helper.kts" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Gradle.DriverKtTest" />
+      <item itemvalue="Gradle.DriverKtTest.testEmpty" />
+      <item itemvalue="Gradle.DriverKtTest.runAllTests" />
+      <item itemvalue="Kotlin.DriverKt" />
+      <item itemvalue="Kotlin script.helper.kts" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.DriverKt" />
+        <item itemvalue="Gradle.DriverKtTest.runAllTests" />
+        <item itemvalue="Gradle.DriverKtTest" />
+        <item itemvalue="Gradle.DriverKtTest.testEmpty" />
+        <item itemvalue="Kotlin script.helper.kts" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a3bc49ef-13ab-48b5-95d8-6db8faaa16e8" name="Changes" comment="" />
+      <created>1657759842155</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1657759842155</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Removed .eval() -&gt; Pair&lt;...&gt;">
+      <created>1659919144374</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1659919144374</updated>
+    </task>
+    <task id="LOCAL-00034" summary="Updating todo">
+      <created>1660094407351</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1660094407351</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Added Break stmt without implementation (need to refactor func calls first)">
+      <created>1660503858679</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1660503858679</updated>
+    </task>
+    <task id="LOCAL-00036" summary="Refactored function calls and method calls into a single place">
+      <created>1660526283143</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1660526283143</updated>
+    </task>
+    <task id="LOCAL-00037" summary="Refactored constructor calls into a single implementation">
+      <created>1660526954900</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1660526954900</updated>
+    </task>
+    <task id="LOCAL-00038" summary="List constructor accepts variable length comma separated items">
+      <created>1660527604849</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1660527604849</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Updated todo">
+      <created>1660528707471</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1660528707471</updated>
+    </task>
+    <task id="LOCAL-00040" summary="Implemented string concatenation">
+      <created>1660699274728</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1660699274728</updated>
+    </task>
+    <task id="LOCAL-00041" summary="Raised error if user defines nested function">
+      <created>1661522848613</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1661522848613</updated>
+    </task>
+    <task id="LOCAL-00042" summary="Partially implemented &quot;for in&quot; statements. Need to better handle return and break statements">
+      <created>1661524842966</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1661524842966</updated>
+    </task>
+    <task id="LOCAL-00043" summary="Added exit() stdlib function, and fixed up some env updating">
+      <created>1661539141650</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1661539141650</updated>
+    </task>
+    <task id="LOCAL-00044" summary="Removed hardcoded '-1' when returning null inside Value object">
+      <created>1661542739142</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1661542739142</updated>
+    </task>
+    <task id="LOCAL-00045" summary="Allowing var declarations to be re-defined over and over for ease of use.">
+      <created>1661635906494</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1661635906495</updated>
+    </task>
+    <task id="LOCAL-00046" summary="Cleaned up the Driver code">
+      <created>1661636661330</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1661636661330</updated>
+    </task>
+    <task id="LOCAL-00047" summary="Cleaned up todo list">
+      <created>1661636680914</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1661636680914</updated>
+    </task>
+    <task id="LOCAL-00048" summary="More todo cleanup">
+      <created>1661636757978</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1661636757978</updated>
+    </task>
+    <task id="LOCAL-00049" summary="Added new directions for building rflang">
+      <created>1661954833651</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1661954833651</updated>
+    </task>
+    <task id="LOCAL-00050" summary="Added first unit test for empty rf lang program">
+      <created>1661957236082</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1661957236083</updated>
+    </task>
+    <task id="LOCAL-00051" summary="Quick todo change to note missing comments + multi-line comments">
+      <created>1661957328664</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1661957328664</updated>
+    </task>
+    <task id="LOCAL-00052" summary="Added basic comment support">
+      <created>1662060635796</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1662060635797</updated>
+    </task>
+    <task id="LOCAL-00053" summary="Enhanced comment support to add support for both single and multiline comments">
+      <created>1662129017184</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1662129017184</updated>
+    </task>
+    <task id="LOCAL-00054" summary="Updated todo list + added minor documentation for build.gradle.kts to highlight JVM target version">
+      <created>1662217888419</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1662217888419</updated>
+    </task>
+    <task id="LOCAL-00055" summary="Cleaned up stdlib object implementation + method calls">
+      <created>1662341082237</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1662341082238</updated>
+    </task>
+    <task id="LOCAL-00056" summary="Implemented chained method calls">
+      <created>1662348479649</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1662348479649</updated>
+    </task>
+    <task id="LOCAL-00057" summary="Implemented basic break and end statements.">
+      <created>1662935829213</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1662935829214</updated>
+    </task>
+    <task id="LOCAL-00058" summary="Updated todo with new issue regarding 'return' and 'end' stmts">
+      <created>1662935924705</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1662935924705</updated>
+    </task>
+    <task id="LOCAL-00059" summary="Fixed return stmts for any depth in function call">
+      <created>1663270181406</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1663270181406</updated>
+    </task>
+    <task id="LOCAL-00060" summary="Finished testing framework">
+      <created>1663380117612</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1663380117613</updated>
+    </task>
+    <task id="LOCAL-00061" summary="Fixed stdout error in testing framework">
+      <created>1663548314190</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1663548314191</updated>
+    </task>
+    <task id="LOCAL-00062" summary="Replaced exitProcess with ExceptionRF">
+      <created>1669822736379</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1669822736380</updated>
+    </task>
+    <task id="LOCAL-00063" summary="Updated todo">
+      <created>1669822780580</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1669822780580</updated>
+    </task>
+    <task id="LOCAL-00064" summary="Adding new test dir for declaring and updating variables">
+      <created>1669996370080</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1669996370080</updated>
+    </task>
+    <task id="LOCAL-00065" summary="Fixed nested multiline comment parsing">
+      <created>1672332628657</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1672332628657</updated>
+    </task>
+    <task id="LOCAL-00066" summary="Updated todo">
+      <created>1672332925560</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1672332925560</updated>
+    </task>
+    <task id="LOCAL-00067" summary="Fixed recursive functions...">
+      <created>1678304117018</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1678304117019</updated>
+    </task>
+    <task id="LOCAL-00068" summary="Cleaned out sandbox into test">
+      <created>1678304862651</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1678304862651</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Removed recursive function note from todo!">
+      <created>1678304906285</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1678304906285</updated>
+    </task>
+    <task id="LOCAL-00070" summary="Creating index.html for GitHub pages">
+      <created>1678389444468</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1678389444468</updated>
+    </task>
+    <task id="LOCAL-00071" summary="jekyll new --skip-bundle">
+      <created>1678391742512</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1678391742512</updated>
+    </task>
+    <task id="LOCAL-00072" summary="Updating gemfile">
+      <created>1678392005640</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1678392005640</updated>
+    </task>
+    <task id="LOCAL-00073" summary="Added theme to yaml">
+      <created>1678392168927</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1678392168927</updated>
+    </task>
+    <task id="LOCAL-00074" summary="Added theme to yaml">
+      <created>1678392223891</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1678392223891</updated>
+    </task>
+    <task id="LOCAL-00075" summary="trying something else">
+      <created>1678394177816</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1678394177816</updated>
+    </task>
+    <task id="LOCAL-00076" summary="Changing theme again...">
+      <created>1678400743393</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1678400743393</updated>
+    </task>
+    <task id="LOCAL-00077" summary="Added to remote_theme">
+      <created>1678401032904</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1678401032904</updated>
+    </task>
+    <task id="LOCAL-00078" summary="Adding back theme">
+      <created>1678401148183</created>
+      <option name="number" value="00078" />
+      <option name="presentableId" value="LOCAL-00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1678401148183</updated>
+    </task>
+    <task id="LOCAL-00079" summary="...">
+      <created>1678401314071</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1678401314071</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Trying different yaml config">
+      <created>1678408854727</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1678408854727</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Cleaned out gh-pages branch">
+      <created>1678409302645</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1678409302645</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.test" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Cleaned up stdlib object implementation + method calls" />
+    <MESSAGE value="Implemented chained method calls" />
+    <MESSAGE value="Implemented basic break and end statements." />
+    <MESSAGE value="Updated todo with new issue regarding 'return' and 'end' stmts" />
+    <MESSAGE value="Fixed return stmts for any depth in function call" />
+    <MESSAGE value="Finished testing framework" />
+    <MESSAGE value="Fixed stdout error in testing framework" />
+    <MESSAGE value="Replaced exitProcess with ExceptionRF" />
+    <MESSAGE value="Adding new test dir for declaring and updating variables" />
+    <MESSAGE value="Fixed nested multiline comment parsing" />
+    <MESSAGE value="Updated todo" />
+    <MESSAGE value="Fixed recursive functions..." />
+    <MESSAGE value="Cleaned out sandbox into test" />
+    <MESSAGE value="Removed recursive function note from todo!" />
+    <MESSAGE value="Creating index.html for GitHub pages" />
+    <MESSAGE value="jekyll new --skip-bundle" />
+    <MESSAGE value="Updating gemfile" />
+    <MESSAGE value="Added theme to yaml" />
+    <MESSAGE value="trying something else" />
+    <MESSAGE value="Changing theme again..." />
+    <MESSAGE value="Added to remote_theme" />
+    <MESSAGE value="Adding back theme" />
+    <MESSAGE value="..." />
+    <MESSAGE value="Trying different yaml config" />
+    <MESSAGE value="Cleaned out gh-pages branch" />
+    <option name="LAST_COMMIT_MESSAGE" value="Cleaned out gh-pages branch" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/kotlin/nodes/expressions/BinOp.kt</url>
+          <line>163</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="java.util.HashMap$Node" memberName="key" />
+      </pinned-members>
+    </pin-to-top-manager>
+  </component>
+</project>
