@@ -1,0 +1,9 @@
+
+Install Gemfile dependencies
+'bundle install'
+
+Spin up localhost
+'bundle exec jekyll serve'
+
+Add missing dependency
+'bundle add webrick'
