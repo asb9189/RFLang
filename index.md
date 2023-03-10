@@ -1,25 +1,32 @@
 ---
 layout: default
-title: Home
+title: About
 nav_order: 1
-description: "{description goes here}"
 permalink: /
 ---
 
-This is a *bare-minimum* template to create a Jekyll site that uses the [Just the Docs] theme. You can easily set the created site to be published on [GitHub Pages] – the [README] file explains how to do that, along with other details.
+#RFLang, a modern programming language that offers 
 
-If [Jekyll] is installed on your computer, you can also build and preview the created site *locally*. This lets you test changes before committing them, and avoids waiting for GitHub Pages.[^1] And you will be able to deploy your local build to a different platform than GitHub Pages.
+As a computer science student, I've always had an interest in programming language design. The majority of courses
+in a computer science curriculum are about learning what's going on "under the hood". However, the one tool
+we seem to avoid talking about is the most important one of all, programming languages themselves.
 
-More specifically, the created site:
+In fact, we use programming languages to explore the many domains of computer science ranging from low level systems programming in C
+to abstract linear algebra in MATLAB all without having a clue how C or MATLAB work.
 
-- uses a gem-based approach, i.e. uses a `Gemfile` and loads the `just-the-docs` gem
-- uses the [GitHub Pages / Actions workflow] to build and publish the site on GitHub Pages
+Fortunately, my institution taught a programming language concepts (PLC) course where we got to dive into the inner
+workings of a programming language. More formally, how a language's syntax and semantics change the way in which
+we write programs using it.
 
-Other than that, you're free to customize sites that you create with this template, however you like. You can easily change the versions of `just-the-docs` and Jekyll it uses, as well as adding further plugins.
+After completing PLC I decided (for better or for worse) to enroll in our graduate course known as 'compiler construction'.
+Compiler construction is known as one of the hardest courses offered in most computer science curriculums along with
+operating systems, and analysis of algorithms.
 
-[Browse our documentation][Just the Docs] to learn more about how to use this theme.
+Ironically, the language I built 'RFLang' after being inspired by my compiler construction course is not a compiled one and is instead an interpreted language.
+After getting my ass kicked during the code generation portion of our semester long project I decided I didn't want to go down
+that path again and wanted to explore spinning up my own interpreter instead.
 
-To get started with creating a site, just click "[use this template]"!
+
 
 ----
 
